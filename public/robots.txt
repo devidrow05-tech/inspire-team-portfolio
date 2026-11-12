@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /admin
+Disallow: /member
+Disallow: /login
+Disallow: /change-password
+Disallow: /reset-password
+Disallow: /forgot-password
+Allow: /
+
+Sitemap: /sitemap.xml

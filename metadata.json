@@ -1,0 +1,6 @@
+{
+  "name": "Inspire Team - Management & Portfolio Platform",
+  "description": "Academy team management, assignment tracking, review & approval workflows, client-side Image-to-PDF tool, and bilingual (English/Urdu) public showcase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

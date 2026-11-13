@@ -63,6 +63,16 @@ export const ReviewDetailPage: React.FC = () => {
     setDecisionNotification('Project marked as rejected. Not visible on public website.');
   };
 
+  if (!project) {
+    return (
+      <div className="max-w-6xl mx-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-10 text-center space-y-3">
+        <h1 className="text-xl font-bold text-[var(--text)]">No submissions yet</h1>
+        <p className="text-sm text-[var(--text-muted)]">Project submissions will appear here after a member adds one.</p>
+        <Link to="/admin" className="text-sm font-semibold text-indigo-600 hover:underline">Back to dashboard</Link>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Top Header & Breadcrumbs */}

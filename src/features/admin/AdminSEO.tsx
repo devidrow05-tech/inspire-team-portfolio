@@ -199,7 +199,7 @@ export const AdminSEO: React.FC = () => {
                   <div className="w-4 h-4 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[9px] font-bold">
                     IA
                   </div>
-                  <span>inspireacademy.edu</span>
+                  <span>your-domain.com</span>
                   <span className="text-slate-400">› showcase</span>
                 </div>
                 <div className="text-sm font-semibold text-blue-700 hover:underline cursor-pointer truncate">

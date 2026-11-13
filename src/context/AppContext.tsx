@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { SiteConfig, defaultSiteConfig } from '../types/siteConfig';
+import { loadSeoSettings } from '../lib/siteSettings';
 
 export type Language = 'en' | 'ur';
 export type Theme = 'light' | 'dark' | 'system';
@@ -167,6 +168,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setThemeState(newTheme);
     localStorage.setItem('inspire_theme', newTheme);
   };
+
+  // Load shared SEO settings from Supabase so changes apply across browsers and visitors.
+  useEffect(() => {
+    let active = true;
+    loadSeoSettings()
+      .then((saved) => {
+        if (!active || !Object.keys(saved).length) return;
+        setConfig((prev) => {
+          const updated = { ...prev, ...saved };
+          localStorage.setItem('inspire_site_config', JSON.stringify(updated));
+          return updated;
+        });
+      })
+      .catch((error) => console.error('Unable to load shared SEO settings:', error));
+    return () => { active = false; };
+  }, []);
 
   // Sync Dynamic CSS variables for live Color & Typography control
   useEffect(() => {

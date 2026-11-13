@@ -1,197 +1,106 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useApp } from '../../context/AppContext';
-import {
-  Users,
-  Briefcase,
-  FolderGit2,
-  AlertCircle,
-  FileCheck2,
-  ArrowRight,
-  Sparkles,
-  TrendingUp,
-  FileStack,
-  CheckCircle2,
-  Clock
-} from 'lucide-react';
-import {
-  mockUsers,
-  mockAssignments,
-  mockWorkingProjects,
-  mockPublishedProjects
-} from '../../services/demo/data';
-import { StatusBadge } from '../../components/ui/StatusBadge';
+import { Users, FolderKanban, Globe, Search, Plus, ExternalLink, RefreshCw } from 'lucide-react';
+import { portfolioApi, type TeamMember, type PortfolioProject } from '../../lib/portfolio';
 
 export const AdminDashboard: React.FC = () => {
-  const { t } = useApp();
+  const [members, setMembers] = useState<TeamMember[]>([]);
+  const [projects, setProjects] = useState<PortfolioProject[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const totalMembers = mockUsers.filter((u) => u.role === 'member').length;
-  const activeAssignments = mockAssignments.filter((a) => a.status !== 'completed' && a.status !== 'cancelled').length;
-  const pendingReviews = mockWorkingProjects.filter((p) => p.status === 'submitted' || p.status === 'under_review').length;
-  const publishedWork = mockPublishedProjects.length;
+  const loadDashboard = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const [memberRows, projectRows] = await Promise.all([
+        portfolioApi.listMembers(),
+        portfolioApi.listProjects(),
+      ]);
+      setMembers(memberRows);
+      setProjects(projectRows);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unable to load dashboard data.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { void loadDashboard(); }, []);
+
+  const publishedMembers = members.filter((member) => member.is_published).length;
+  const publishedProjects = projects.filter((project) => project.is_published).length;
 
   return (
-    <div className="space-y-8">
-      {/* Top Banner / Welcome */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+    <div className="max-w-6xl mx-auto space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-800">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">
-            Executive Operations Dashboard
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Super Admin control center: assignments, member progress, approval queues, and storage governance.
-          </p>
+          <h1 className="text-2xl font-bold tracking-tight text-white">Admin Dashboard</h1>
+          <p className="text-xs text-slate-400 mt-1">Manage the public team directory, portfolio projects, and website SEO from one place.</p>
         </div>
-        <div className="flex items-center gap-2">
-          <Link
-            to="/admin/reviews"
-            className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow-sm transition"
-          >
-            <FileCheck2 className="w-4 h-4" />
-            <span>Open Review Queue ({pendingReviews})</span>
-          </Link>
+        <a href="/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-700 text-xs font-semibold text-slate-200 hover:bg-slate-800">
+          View Live Website <ExternalLink className="w-3.5 h-3.5" />
+        </a>
+      </div>
+
+      {error && <div role="alert" className="p-4 rounded-xl border border-rose-800 bg-rose-950/40 text-rose-300 text-xs">{error}</div>}
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+          <div className="flex items-center justify-between text-xs text-slate-400"><span>Team Members</span><Users className="w-4 h-4 text-indigo-400" /></div>
+          <div className="text-3xl font-extrabold text-white mt-3">{loading ? '—' : members.length}</div>
+          <div className="text-[11px] text-slate-500 mt-1">{publishedMembers} published on website</div>
+        </div>
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+          <div className="flex items-center justify-between text-xs text-slate-400"><span>Portfolio Projects</span><FolderKanban className="w-4 h-4 text-teal-400" /></div>
+          <div className="text-3xl font-extrabold text-white mt-3">{loading ? '—' : projects.length}</div>
+          <div className="text-[11px] text-slate-500 mt-1">{publishedProjects} published on website</div>
+        </div>
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+          <div className="flex items-center justify-between text-xs text-slate-400"><span>Draft Content</span><Globe className="w-4 h-4 text-amber-400" /></div>
+          <div className="text-3xl font-extrabold text-white mt-3">{loading ? '—' : (members.length - publishedMembers) + (projects.length - publishedProjects)}</div>
+          <div className="text-[11px] text-slate-500 mt-1">Only published content is public</div>
         </div>
       </div>
 
-      {/* 4 Primary KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-3">
-          <div className="flex items-center justify-between text-xs text-slate-400">
-            <span>Team Members</span>
-            <div className="w-7 h-7 rounded-lg bg-indigo-950/60 text-indigo-400 flex items-center justify-center">
-              <Users className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-white">{totalMembers}</div>
-          <div className="text-[11px] text-emerald-400 font-medium flex items-center gap-1">
-            <span>Member accounts</span>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-3">
-          <div className="flex items-center justify-between text-xs text-slate-400">
-            <span>Pending Approvals</span>
-            <div className="w-7 h-7 rounded-lg bg-amber-950/60 text-amber-400 flex items-center justify-center">
-              <AlertCircle className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-white">{pendingReviews}</div>
-          <div className="text-[11px] text-amber-400 font-medium">
-            Requires admin decision
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-3">
-          <div className="flex items-center justify-between text-xs text-slate-400">
-            <span>Active Assignments</span>
-            <div className="w-7 h-7 rounded-lg bg-teal-950/60 text-teal-400 flex items-center justify-center">
-              <Briefcase className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-white">{activeAssignments}</div>
-          <div className="text-[11px] text-slate-400">
-            In progress across academy
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-3">
-          <div className="flex items-center justify-between text-xs text-slate-400">
-            <span>Public Portfolio Live</span>
-            <div className="w-7 h-7 rounded-lg bg-emerald-950/60 text-emerald-400 flex items-center justify-center">
-              <FolderGit2 className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-white">{publishedWork}</div>
-          <div className="text-[11px] text-emerald-400 font-medium">
-            Published projects
-          </div>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Link to="/admin/members" className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 hover:border-indigo-500 transition space-y-3">
+          <Users className="w-5 h-5 text-indigo-400" />
+          <div className="font-bold text-white text-sm">Manage Team Members</div>
+          <p className="text-xs text-slate-400">Add profiles, photos, bios and control public visibility.</p>
+          <span className="text-xs font-semibold text-indigo-400 inline-flex items-center gap-2">Open members <Plus className="w-3.5 h-3.5" /></span>
+        </Link>
+        <Link to="/admin/projects" className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 hover:border-teal-500 transition space-y-3">
+          <FolderKanban className="w-5 h-5 text-teal-400" />
+          <div className="font-bold text-white text-sm">Manage Portfolio Projects</div>
+          <p className="text-xs text-slate-400">Create projects and assign them to a team member.</p>
+          <span className="text-xs font-semibold text-teal-400 inline-flex items-center gap-2">Open projects <Plus className="w-3.5 h-3.5" /></span>
+        </Link>
+        <Link to="/admin/seo" className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 hover:border-amber-500 transition space-y-3">
+          <Search className="w-5 h-5 text-amber-400" />
+          <div className="font-bold text-white text-sm">SEO & Search Appearance</div>
+          <p className="text-xs text-slate-400">Edit search titles, descriptions, social preview and analytics.</p>
+          <span className="text-xs font-semibold text-amber-400 inline-flex items-center gap-2">Configure SEO <ExternalLink className="w-3.5 h-3.5" /></span>
+        </Link>
       </div>
 
-      {/* Two Column Layout: Pending Submissions Queue & Active Assignments */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Review Queue */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <FileCheck2 className="w-4 h-4 text-indigo-400" />
-              Submissions Awaiting Review
-            </h3>
-            <Link to="/admin/reviews" className="text-xs text-indigo-400 hover:underline">
-              View queue →
-            </Link>
+      <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-bold text-white">Recently Added Members</h2>
+            <p className="text-xs text-slate-400 mt-1">Real records from your Supabase portfolio database</p>
           </div>
-
-          <div className="space-y-3">
-            {mockWorkingProjects
-              .filter((p) => p.status === 'submitted')
-              .map((project) => (
-                <div
-                  key={project.id}
-                  className="p-4 rounded-xl border border-slate-800 bg-slate-950/70 flex items-center justify-between gap-4"
-                >
-                  <div className="space-y-1 truncate">
-                    <div className="flex items-center gap-2">
-                      <StatusBadge status={project.status} />
-                      <span className="text-xs font-bold text-white truncate">
-                        {project.title}
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-slate-400">
-                      New submission
-                    </div>
-                  </div>
-                  <Link
-                    to={`/admin/reviews/${project.id}`}
-                    className="shrink-0 text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg transition shadow"
-                  >
-                    Review Now
-                  </Link>
-                </div>
-              ))}
-          </div>
+          <button onClick={() => void loadDashboard()} disabled={loading} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800 text-xs text-slate-200 hover:bg-slate-700 disabled:opacity-50"><RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh</button>
         </div>
-
-        {/* Assignments Progress Monitor */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Briefcase className="w-4 h-4 text-teal-400" />
-              Active Assignments Oversight
-            </h3>
-            <Link to="/admin/assignments" className="text-xs text-teal-400 hover:underline">
-              Manage tasks →
-            </Link>
-          </div>
-
-          <div className="space-y-3">
-            {mockAssignments.map((asg) => (
-              <div
-                key={asg.id}
-                className="p-4 rounded-xl border border-slate-800 bg-slate-950/70 space-y-2"
-              >
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-white truncate max-w-[70%]">
-                    {asg.title}
-                  </span>
-                  <StatusBadge status={asg.status} />
-                </div>
-                {/* Progress bar */}
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[10px] text-slate-400 font-medium">
-                    <span>Progress</span>
-                    <span>{asg.progress}%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-teal-500 rounded-full transition-all"
-                      style={{ width: `${asg.progress}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {!loading && members.length === 0 && <p className="text-xs text-slate-500 py-4">No members added yet. Add your first member to start building the public team directory.</p>}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {members.slice(0, 6).map((member) => (
+            <div key={member.id} className="flex items-center gap-3 rounded-xl bg-slate-950 border border-slate-800 p-3">
+              {member.avatar_url ? <img src={member.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover" /> : <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-xs text-slate-400">{member.display_name.slice(0, 1).toUpperCase()}</div>}
+              <div className="min-w-0"><div className="text-xs font-semibold text-white truncate">{member.display_name}</div><div className="text-[10px] text-slate-500 truncate">{member.title}</div></div>
+              <span className={`ml-auto text-[10px] ${member.is_published ? 'text-emerald-400' : 'text-amber-400'}`}>{member.is_published ? 'Live' : 'Draft'}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

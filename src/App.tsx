@@ -28,7 +28,6 @@ import { AdminBranding } from './features/admin/AdminBranding';
 import { AdminSEO } from './features/admin/AdminSEO';
 import { AdminSettings } from './features/admin/AdminSettings';
 import { AdminLogsPage } from './features/admin/AdminLogsPage';
-import { ReviewDetailPage } from './features/admin/ReviewDetailPage';
 import { AdminMembersPage } from './features/admin/AdminMembersPage';
 import { AdminPortfolioProjectsPage } from './features/admin/AdminPortfolioProjectsPage';
 import { AdminAssignmentsPage } from './features/admin/AdminAssignmentsPage';
@@ -37,6 +36,7 @@ import { AdminAssignmentsPage } from './features/admin/AdminAssignmentsPage';
 import { MemberDashboard } from './features/member/MemberDashboard';
 import { CreateProjectPage } from './features/member/CreateProjectPage';
 import { ImageToPdfTool } from './features/pdf-tool/ImageToPdfTool';
+import { SeoManager } from './components/SeoManager';
 
 function NotFoundPage() {
   const { config } = useApp();
@@ -95,6 +95,7 @@ export default function App() {
     <AppProvider>
       <AuthProvider>
         <BrowserRouter>
+          <SeoManager />
           <Routes>
             {/* Public Showcase Routes */}
             <Route
@@ -249,37 +250,6 @@ export default function App() {
               element={
                 <AdminGuard>
                   <AdminAssignmentsPage />
-                </AdminGuard>
-              }
-            />
-            <Route
-              path="/admin/reviews"
-              element={
-                <AdminGuard>
-                  <div className="space-y-4">
-                    <h1 className="text-2xl font-bold text-white">Pending Review Queue</h1>
-                    <p className="text-xs text-slate-400">Submissions awaiting faculty sign-off before publishing.</p>
-                    <ReviewDetailPage />
-                  </div>
-                </AdminGuard>
-              }
-            />
-            <Route
-              path="/admin/reviews/:projectId"
-              element={
-                <AdminGuard>
-                  <ReviewDetailPage />
-                </AdminGuard>
-              }
-            />
-            <Route
-              path="/admin/submissions"
-              element={
-                <AdminGuard>
-                  <div className="space-y-4">
-                    <h1 className="text-2xl font-bold text-white">All Project Submissions</h1>
-                    <ReviewDetailPage />
-                  </div>
                 </AdminGuard>
               }
             />

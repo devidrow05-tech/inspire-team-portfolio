@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { saveSeoSettings } from '../../lib/siteSettings';
 import {
   Search,
   Save,
@@ -14,6 +15,8 @@ import {
 export const AdminSEO: React.FC = () => {
   const { config, updateConfig } = useApp();
   const [saveToast, setSaveToast] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<'global' | 'pages' | 'analytics'>('global');
 
   // Global SEO States
@@ -25,6 +28,24 @@ export const AdminSEO: React.FC = () => {
   const [defaultOgImage, setDefaultOgImage] = useState(config.seo_default_og_image || '');
   const [googleAnalyticsId, setGoogleAnalyticsId] = useState(config.google_analytics_id || '');
   const [searchConsoleCode, setSearchConsoleCode] = useState(config.google_search_console_code || '');
+
+  useEffect(() => {
+    setDefaultTitle(config.seo_default_title || '');
+    setDefaultDesc(config.seo_default_description || '');
+    setDefaultOgImage(config.seo_default_og_image || '');
+    setGoogleAnalyticsId(config.google_analytics_id || '');
+    setSearchConsoleCode(config.google_search_console_code || '');
+    setHomeTitle(config.seo_pages?.home?.title || '');
+    setHomeDesc(config.seo_pages?.home?.description || '');
+    setProjectsTitle(config.seo_pages?.projects?.title || '');
+    setProjectsDesc(config.seo_pages?.projects?.description || '');
+    setTeamTitle(config.seo_pages?.team?.title || '');
+    setTeamDesc(config.seo_pages?.team?.description || '');
+    setAboutTitle(config.seo_pages?.about?.title || '');
+    setAboutDesc(config.seo_pages?.about?.description || '');
+    setContactTitle(config.seo_pages?.contact?.title || '');
+    setContactDesc(config.seo_pages?.contact?.description || '');
+  }, [config.seo_default_title, config.seo_default_description, config.seo_default_og_image, config.google_analytics_id, config.google_search_console_code, config.seo_pages]);
 
   // Per-Page Titles
   const [homeTitle, setHomeTitle] = useState(config.seo_pages?.home?.title || 'Inspire Academy | Home & Featured Work');
@@ -38,23 +59,44 @@ export const AdminSEO: React.FC = () => {
   const [contactTitle, setContactTitle] = useState(config.seo_pages?.contact?.title || 'Contact Admissions & Faculty | Inspire Academy');
   const [contactDesc, setContactDesc] = useState(config.seo_pages?.contact?.description || 'Get in touch for inquiries and partnerships.');
 
-  const handleSave = () => {
-    updateConfig({
-      seo_default_title: defaultTitle,
-      seo_default_description: defaultDesc,
-      seo_default_og_image: defaultOgImage,
-      google_analytics_id: googleAnalyticsId,
-      google_search_console_code: searchConsoleCode,
+  const handleSave = async () => {
+    setSaveError('');
+    if (googleAnalyticsId.trim() && !/^G-[A-Z0-9]+$/i.test(googleAnalyticsId.trim())) {
+      setSaveError('Google Analytics ID must look like G-XXXXXXXXXX.');
+      setActiveTab('analytics');
+      return;
+    }
+    if (defaultOgImage.trim()) {
+      try { new URL(defaultOgImage.trim()); }
+      catch { setSaveError('OpenGraph image must be a valid public URL.'); setActiveTab('global'); return; }
+    }
+
+    const settings = {
+      seo_default_title: defaultTitle.trim(),
+      seo_default_description: defaultDesc.trim(),
+      seo_default_og_image: defaultOgImage.trim(),
+      google_analytics_id: googleAnalyticsId.trim(),
+      google_search_console_code: searchConsoleCode.trim(),
       seo_pages: {
-        home: { title: homeTitle, description: homeDesc, og_image: defaultOgImage },
-        projects: { title: projectsTitle, description: projectsDesc },
-        team: { title: teamTitle, description: teamDesc },
-        about: { title: aboutTitle, description: aboutDesc },
-        contact: { title: contactTitle, description: contactDesc },
+        home: { title: homeTitle.trim(), description: homeDesc.trim(), og_image: defaultOgImage.trim() },
+        projects: { title: projectsTitle.trim(), description: projectsDesc.trim() },
+        team: { title: teamTitle.trim(), description: teamDesc.trim() },
+        about: { title: aboutTitle.trim(), description: aboutDesc.trim() },
+        contact: { title: contactTitle.trim(), description: contactDesc.trim() },
       },
-    });
-    setSaveToast(true);
-    setTimeout(() => setSaveToast(false), 3000);
+    };
+
+    setIsSaving(true);
+    try {
+      await saveSeoSettings(settings);
+      updateConfig(settings);
+      setSaveToast(true);
+      window.setTimeout(() => setSaveToast(false), 3000);
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : 'SEO settings could not be saved.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -75,12 +117,15 @@ export const AdminSEO: React.FC = () => {
 
         <button
           onClick={handleSave}
+          disabled={isSaving}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-lg shadow-indigo-600/30"
         >
           <Save className="w-4 h-4" />
-          <span>Save SEO Configuration</span>
+          <span>{isSaving ? 'Saving...' : 'Save SEO Configuration'}</span>
         </button>
       </div>
+
+      {saveError && <div role="alert" className="p-3 rounded-xl border border-rose-800 bg-rose-950/40 text-rose-300 text-xs">{saveError}</div>}
 
       {/* Toast Notification */}
       {saveToast && (

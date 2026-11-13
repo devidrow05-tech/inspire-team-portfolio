@@ -9,9 +9,7 @@ import {
   Search,
   Users,
   Briefcase,
-  FileCheck2,
   FolderArchive,
-  FolderSearch,
   FolderOpen,
   Tag,
   Bell,
@@ -88,9 +86,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     {
       title: 'PROJECT WORKFLOW',
       items: [
-        { label: 'Pending Review', path: '/admin/reviews', icon: FileCheck2, badge: '1', highlight: true },
         { label: 'Published Work', path: '/admin/projects/published', icon: FolderArchive },
-        { label: 'All Submissions', path: '/admin/submissions', icon: FolderSearch },
       ],
     },
     {

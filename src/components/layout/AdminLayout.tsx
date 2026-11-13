@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
 import {
@@ -24,6 +24,8 @@ import {
   X,
   Sparkles,
   ChevronRight,
+  ArrowLeft,
+  Home,
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -49,6 +51,11 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const { config } = useApp();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const handleBack = () => {
+    if (window.history.length > 1 && location.key !== 'default') navigate(-1);
+    else navigate('/admin');
+  };
 
   const handleLogout = () => {
     logout();
@@ -203,7 +210,25 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden bg-slate-950">
         {/* Topbar */}
         <header className="h-16 border-b border-slate-800/80 bg-slate-900/50 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={handleBack}
+              title="Go back to previous page"
+              aria-label="Go back to previous page"
+              className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Back</span>
+            </button>
+            <button
+              onClick={() => navigate('/admin')}
+              title="Go to Admin Dashboard"
+              aria-label="Go to Admin Dashboard"
+              className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition"
+            >
+              <Home className="w-4 h-4" />
+              <span className="hidden sm:inline">Dashboard</span>
+            </button>
             <button
               onClick={() => setMobileSidebarOpen(true)}
               className="lg:hidden p-2 rounded-xl text-slate-400 hover:bg-slate-800"

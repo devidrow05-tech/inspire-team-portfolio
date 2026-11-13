@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import type { User } from '@supabase/supabase-js';
+import type { SupabaseUser } from '../lib/supabase';
 import { supabase } from '../lib/supabase';
 import type { Profile, UserRole } from '../types/database';
 
@@ -18,7 +18,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-function profileFromUser(user: User): Profile | null {
+function profileFromUser(user: SupabaseUser): Profile | null {
   const role = user.app_metadata?.role;
   if (role !== 'admin' && role !== 'member') return null;
 

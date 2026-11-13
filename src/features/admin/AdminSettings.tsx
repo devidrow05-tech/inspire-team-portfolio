@@ -27,7 +27,7 @@ export const AdminSettings: React.FC = () => {
   const [maintenanceMessage, setMaintenanceMessage] = useState(
     config.maintenance_message || 'Inspire Academy portal is undergoing scheduled maintenance. Please check back shortly.'
   );
-  const [submissionEmail, setSubmissionEmail] = useState(config.contact_submission_email || 'admin@inspireacademy.edu');
+  const [submissionEmail, setSubmissionEmail] = useState(config.contact_submission_email || '');
   const [privacyContent, setPrivacyContent] = useState(
     config.privacy_content ||
       'We respect data privacy. Private assignments and non-public drafts are strictly protected within authenticated administrative boundaries.'

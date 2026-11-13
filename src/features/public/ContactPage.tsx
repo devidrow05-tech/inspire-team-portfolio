@@ -45,7 +45,7 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <div className="font-semibold text-[var(--text)]">Official Email</div>
                   <div className="text-[var(--text-muted)] mt-0.5">
-                    {config.contact_email || 'contact@inspireacademy.edu'}
+                    {config.contact_email || ''}
                   </div>
                 </div>
               </div>

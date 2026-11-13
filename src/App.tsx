@@ -30,6 +30,7 @@ import { AdminSettings } from './features/admin/AdminSettings';
 import { AdminLogsPage } from './features/admin/AdminLogsPage';
 import { ReviewDetailPage } from './features/admin/ReviewDetailPage';
 import { AdminMembersPage } from './features/admin/AdminMembersPage';
+import { AdminPortfolioProjectsPage } from './features/admin/AdminPortfolioProjectsPage';
 import { AdminAssignmentsPage } from './features/admin/AdminAssignmentsPage';
 
 // Member Pages
@@ -238,6 +239,10 @@ export default function App() {
                   <AdminMembersPage />
                 </AdminGuard>
               }
+            />
+            <Route
+              path="/admin/projects"
+              element={<AdminGuard><AdminPortfolioProjectsPage /></AdminGuard>}
             />
             <Route
               path="/admin/assignments"

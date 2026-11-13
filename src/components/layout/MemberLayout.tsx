@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -19,7 +19,8 @@ import {
   Menu,
   X,
   FileStack,
-  Layers
+  Layers,
+  ArrowLeft
 } from 'lucide-react';
 
 export const MemberLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -27,6 +28,11 @@ export const MemberLayout: React.FC<{ children: React.ReactNode }> = ({ children
   const { currentUser, logout, role } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const handleBack = () => {
+    if (window.history.length > 1 && location.key !== 'default') navigate(-1);
+    else navigate('/member');
+  };
 
   const handleLogout = () => {
     logout();
@@ -127,7 +133,17 @@ export const MemberLayout: React.FC<{ children: React.ReactNode }> = ({ children
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Header */}
         <header className="h-14 border-b border-[var(--border)] bg-[var(--surface)] flex items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleBack}
+              title="Go back"
+              aria-label="Go back"
+              className="inline-flex items-center justify-center gap-1.5 p-1.5 rounded-lg border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] transition"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden sm:inline text-xs font-semibold">Back</span>
+            </button>
             <button
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden p-1.5 rounded-lg text-[var(--text-muted)] hover:bg-[var(--surface-2)]"

@@ -44,10 +44,8 @@ export const SeoManager: React.FC = () => {
     setMeta('twitter:card', 'summary_large_image');
     setMeta('twitter:title', title);
     setMeta('twitter:description', description);
-    if (image) {
-      setMeta('og:image', image, true);
-      setMeta('twitter:image', image);
-    }
+    setMeta('og:image', image, true);
+    setMeta('twitter:image', image);
 
     if (config.favicon_url) {
       let favicon = document.head.querySelector<HTMLLinkElement>('link[rel="icon"]');
@@ -57,11 +55,11 @@ export const SeoManager: React.FC = () => {
         document.head.appendChild(favicon);
       }
       favicon.href = config.favicon_url;
+    } else {
+      document.head.querySelector('link[rel="icon"]')?.remove();
     }
 
-    if (!privateRoute && config.google_search_console_code) {
-      setMeta('google-site-verification', config.google_search_console_code);
-    }
+    setMeta('google-site-verification', !privateRoute ? config.google_search_console_code || '' : '');
 
     const measurementId = config.google_analytics_id?.trim();
     const existingAnalytics = document.getElementById('inspire-ga-script') as HTMLScriptElement | null;

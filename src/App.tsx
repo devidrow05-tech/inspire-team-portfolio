@@ -253,37 +253,6 @@ export default function App() {
               }
             />
             <Route
-              path="/admin/reviews"
-              element={
-                <AdminGuard>
-                  <div className="space-y-4">
-                    <h1 className="text-2xl font-bold text-white">Pending Review Queue</h1>
-                    <p className="text-xs text-slate-400">Submissions awaiting faculty sign-off before publishing.</p>
-                    <ReviewDetailPage />
-                  </div>
-                </AdminGuard>
-              }
-            />
-            <Route
-              path="/admin/reviews/:projectId"
-              element={
-                <AdminGuard>
-                  <ReviewDetailPage />
-                </AdminGuard>
-              }
-            />
-            <Route
-              path="/admin/submissions"
-              element={
-                <AdminGuard>
-                  <div className="space-y-4">
-                    <h1 className="text-2xl font-bold text-white">All Project Submissions</h1>
-                    <ReviewDetailPage />
-                  </div>
-                </AdminGuard>
-              }
-            />
-            <Route
               path="/admin/projects/published"
               element={
                 <AdminGuard>

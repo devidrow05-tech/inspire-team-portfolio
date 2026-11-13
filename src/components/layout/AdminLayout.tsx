@@ -181,7 +181,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </div>
               <div className="truncate">
                 <div className="text-xs font-semibold text-white truncate">
-                  {currentUser?.full_name || 'Prof. Zafar Iqbal'}
+                  {currentUser?.full_name || 'Super Admin'}
                 </div>
                 <div className="text-[10px] text-indigo-400 truncate font-mono">
                   Super Admin

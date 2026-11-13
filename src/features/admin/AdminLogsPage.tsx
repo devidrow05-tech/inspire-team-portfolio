@@ -21,68 +21,7 @@ interface AuditItem {
   ip: string;
 }
 
-const INITIAL_LOGS: AuditItem[] = [
-  {
-    id: 'log-101',
-    timestamp: '2026-11-12 18:30:15 UTC',
-    actor: 'Prof. Zafar Iqbal',
-    role: 'SUPER_ADMIN',
-    action: 'CMS.UPDATE_HOMEPAGE_HERO',
-    target: 'public_hero_section',
-    status: 'SUCCESS',
-    ip: '192.168.1.42',
-  },
-  {
-    id: 'log-102',
-    timestamp: '2026-11-12 18:14:02 UTC',
-    actor: 'Prof. Zafar Iqbal',
-    role: 'SUPER_ADMIN',
-    action: 'BRANDING.UPDATE_PALETTE',
-    target: 'theme_variables',
-    status: 'SUCCESS',
-    ip: '192.168.1.42',
-  },
-  {
-    id: 'log-103',
-    timestamp: '2026-11-12 17:55:40 UTC',
-    actor: 'Hamza Farooq',
-    role: 'MEMBER',
-    action: 'PROJECT.SUBMIT_REVIEW',
-    target: 'proj-003 (Nova AI Support)',
-    status: 'SUCCESS',
-    ip: '110.38.22.19',
-  },
-  {
-    id: 'log-104',
-    timestamp: '2026-11-12 16:20:11 UTC',
-    actor: 'Prof. Zafar Iqbal',
-    role: 'SUPER_ADMIN',
-    action: 'PROJECT.APPROVE_PUBLISH',
-    target: 'proj-001 (Lumina Analytics Portal)',
-    status: 'SUCCESS',
-    ip: '192.168.1.42',
-  },
-  {
-    id: 'log-105',
-    timestamp: '2026-11-12 14:10:05 UTC',
-    actor: 'Security Daemon',
-    role: 'SYSTEM',
-    action: 'AUTH.FAILED_ATTEMPT_CHECK',
-    target: 'admin_login_endpoint',
-    status: 'WARNING',
-    ip: '185.220.101.5',
-  },
-  {
-    id: 'log-106',
-    timestamp: '2026-11-12 12:00:00 UTC',
-    actor: 'Prof. Zafar Iqbal',
-    role: 'SUPER_ADMIN',
-    action: 'ASSIGNMENT.CREATE',
-    target: 'asg-001 (E-Commerce Design Kit)',
-    status: 'SUCCESS',
-    ip: '192.168.1.42',
-  },
-];
+const INITIAL_LOGS: AuditItem[] = [];
 
 export const AdminLogsPage: React.FC = () => {
   const [logs, setLogs] = useState<AuditItem[]>(INITIAL_LOGS);
@@ -180,7 +119,9 @@ export const AdminLogsPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-mono text-[11px]">
-              {filteredLogs.map((log) => (
+              {filteredLogs.length === 0 ? (
+                <tr><td colSpan={6} className="py-10 text-center text-slate-400">No activity has been recorded yet.</td></tr>
+              ) : filteredLogs.map((log) => (
                 <tr key={log.id} className="hover:bg-slate-800/40 transition">
                   <td className="py-3 px-4 text-slate-400 whitespace-nowrap">
                     {log.timestamp}

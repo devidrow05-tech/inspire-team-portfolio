@@ -19,6 +19,7 @@ export const CategoriesPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {mockCategories.length === 0 && <p className="col-span-full py-12 text-center text-sm text-[var(--text-muted)]">No categories have been added yet.</p>}
         {mockCategories.map((cat) => (
           <Link
             key={cat.id}

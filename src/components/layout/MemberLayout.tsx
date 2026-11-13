@@ -108,7 +108,7 @@ export const MemberLayout: React.FC<{ children: React.ReactNode }> = ({ children
                 HF
               </div>
               <div className="truncate">
-                <div className="text-xs font-semibold truncate text-[var(--text)]">Hamza Farooq</div>
+                <div className="text-xs font-semibold truncate text-[var(--text)]">Team Member</div>
                 <div className="text-[10px] text-[var(--text-muted)] truncate">Team Member (Full-Stack)</div>
               </div>
             </div>

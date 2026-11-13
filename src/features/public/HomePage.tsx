@@ -72,23 +72,19 @@ export const HomePage: React.FC = () => {
               </Link>
             </div>
 
-            {/* Key Metrics Strip */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-10 border-t border-[var(--border)]/70 max-w-4xl mx-auto">
+            {/* Live counts only; no sample metrics */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-10 border-t border-[var(--border)]/70 max-w-4xl mx-auto">
               <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">100%</div>
-                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">{t('hero.statReview')}</div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">{mockPublishedProjects.length}</div>
+                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">Projects published</div>
               </div>
               <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-teal-600 dark:text-teal-400">8+</div>
-                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">{t('hero.statCategories')}</div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-teal-600 dark:text-teal-400">{mockCategories.length}</div>
+                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">Categories added</div>
               </div>
               <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">30+</div>
-                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">{t('hero.statMembers')}</div>
-              </div>
-              <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-teal-600 dark:text-teal-400">Zero</div>
-                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">Unapproved Leaks</div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">{mockMemberProfiles.length}</div>
+                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">Team members</div>
               </div>
             </div>
           </div>
@@ -116,6 +112,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {mockPublishedProjects.length === 0 && <p className="col-span-full py-10 text-center text-sm text-[var(--text-muted)]">No projects have been added yet.</p>}
           {mockPublishedProjects.map((project) => (
             <Link
               key={project.id}
@@ -245,6 +242,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {mockCategories.length === 0 && <p className="col-span-full py-8 text-center text-sm text-[var(--text-muted)]">No categories have been added yet.</p>}
           {mockCategories.map((cat) => (
             <Link
               key={cat.id}
@@ -288,6 +286,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {mockMemberProfiles.length === 0 && <p className="col-span-full py-8 text-center text-sm text-[var(--text-muted)]">Team profiles will appear here when added.</p>}
           {mockMemberProfiles.map((member) => (
             <Link
               key={member.id}

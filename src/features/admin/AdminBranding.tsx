@@ -589,7 +589,7 @@ export const AdminBranding: React.FC = () => {
                   />
                 </div>
                 <div className="text-xs font-bold" style={{ color: colorText, fontFamily: fontHeading }}>
-                  Lumina Analytics Portal
+                  Your Project Title
                 </div>
                 <div className="text-[10px] opacity-70">
                   Real-time data visualization platform with encrypted export tooling.

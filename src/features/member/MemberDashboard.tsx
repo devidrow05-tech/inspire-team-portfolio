@@ -122,6 +122,7 @@ export const MemberDashboard: React.FC = () => {
           </div>
 
           <div className="space-y-3">
+            {myAssignments.length === 0 && <p className="text-xs text-[var(--text-muted)]">No assignments yet.</p>}
             {myAssignments.slice(0, 2).map((asg) => (
               <div
                 key={asg.id}
@@ -156,6 +157,7 @@ export const MemberDashboard: React.FC = () => {
           </div>
 
           <div className="space-y-3">
+            {myProjects.length === 0 && <p className="text-xs text-[var(--text-muted)]">No projects yet. Create your first project to get started.</p>}
             {myProjects.map((proj) => (
               <div
                 key={proj.id}

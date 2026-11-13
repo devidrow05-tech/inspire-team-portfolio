@@ -22,6 +22,7 @@ export const TeamPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {publishedMembers.length === 0 && <p className="col-span-full py-12 text-center text-sm text-[var(--text-muted)]">Team profiles will appear here when added.</p>}
         {publishedMembers.map((member) => (
           <Link
             key={member.id}

@@ -28,7 +28,6 @@ import { AdminBranding } from './features/admin/AdminBranding';
 import { AdminSEO } from './features/admin/AdminSEO';
 import { AdminSettings } from './features/admin/AdminSettings';
 import { AdminLogsPage } from './features/admin/AdminLogsPage';
-import { ReviewDetailPage } from './features/admin/ReviewDetailPage';
 import { AdminMembersPage } from './features/admin/AdminMembersPage';
 import { AdminPortfolioProjectsPage } from './features/admin/AdminPortfolioProjectsPage';
 import { AdminAssignmentsPage } from './features/admin/AdminAssignmentsPage';
@@ -37,6 +36,7 @@ import { AdminAssignmentsPage } from './features/admin/AdminAssignmentsPage';
 import { MemberDashboard } from './features/member/MemberDashboard';
 import { CreateProjectPage } from './features/member/CreateProjectPage';
 import { ImageToPdfTool } from './features/pdf-tool/ImageToPdfTool';
+import { SeoManager } from './components/SeoManager';
 
 function NotFoundPage() {
   const { config } = useApp();

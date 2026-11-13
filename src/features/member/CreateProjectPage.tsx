@@ -24,12 +24,12 @@ export const CreateProjectPage: React.FC = () => {
   const [shortDesc, setShortDesc] = useState('');
   const [shortDescUr, setShortDescUr] = useState('');
   const [fullDesc, setFullDesc] = useState('');
-  const [categoryId, setCategoryId] = useState(mockCategories[0].id);
-  const [selectedTags, setSelectedTags] = useState<string[]>(['react', 'typescript']);
+  const [categoryId, setCategoryId] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [githubUrl, setGithubUrl] = useState('');
   const [roleContribution, setRoleContribution] = useState('');
-  const [completionDate, setCompletionDate] = useState('2026-11-10');
+  const [completionDate, setCompletionDate] = useState('');
   const [autosavedTime, setAutosavedTime] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);

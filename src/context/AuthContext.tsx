@@ -1,113 +1,129 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Profile } from '../types/database';
-import { mockUsers } from '../services/demo/data';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import type { User } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase';
+import type { Profile, UserRole } from '../types/database';
+
+type AppRole = UserRole | 'visitor';
+type LoginResult = { success: boolean; error?: string };
 
 interface AuthContextType {
   currentUser: Profile | null;
-  role: 'admin' | 'member' | 'visitor';
-  login: (email: string, password?: string) => { success: boolean; error?: string };
-  logout: () => void;
+  role: AppRole;
+  login: (email: string, password: string, requiredRole: UserRole) => Promise<LoginResult>;
+  logout: () => Promise<void>;
   failedAttempts: number;
   lockoutUntil: number | null;
+  authLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Visitor by default on public site; admin logs in explicitly at /admin
-  const [role, setRole] = useState<'admin' | 'member' | 'visitor'>('visitor');
-  const [currentUser, setCurrentUser] = useState<Profile | null>(null);
-  const [failedAttempts, setFailedAttempts] = useState<number>(0);
-  const [lockoutUntil, setLockoutUntil] = useState<number | null>(null);
+function profileFromUser(user: User): Profile | null {
+  const role = user.app_metadata?.role;
+  if (role !== 'admin' && role !== 'member') return null;
 
-  // Check persisted admin session (if logged in before)
+  const now = new Date().toISOString();
+  return {
+    id: user.id,
+    email: user.email ?? '',
+    full_name: user.user_metadata?.full_name ?? user.email ?? 'Inspire Team User',
+    role,
+    status: 'active',
+    must_change_password: false,
+    preferred_language: 'en',
+    preferred_theme: 'system',
+    notification_prefs: {},
+    last_login_at: now,
+    created_at: user.created_at ?? now,
+    updated_at: now,
+  };
+}
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [role, setRole] = useState<AppRole>('visitor');
+  const [currentUser, setCurrentUser] = useState<Profile | null>(null);
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [lockoutUntil, setLockoutUntil] = useState<number | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
   useEffect(() => {
-    try {
-      const savedAdmin = sessionStorage.getItem('inspire_admin_session');
-      if (savedAdmin) {
-        setRole('admin');
-        setCurrentUser(mockUsers[0]);
-      }
-    } catch {
-      // ignore
-    }
+    let mounted = true;
+
+    const applyUser = (user: User | null) => {
+      if (!mounted) return;
+      const profile = user ? profileFromUser(user) : null;
+      setCurrentUser(profile);
+      setRole(profile?.role ?? 'visitor');
+    };
+
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (error) console.error('Unable to restore Supabase session:', error.message);
+      applyUser(data.session?.user ?? null);
+      if (mounted) setAuthLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      applyUser(session?.user ?? null);
+      if (mounted) setAuthLoading(false);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const login = (email: string, password = ''): { success: boolean; error?: string } => {
+  const login = async (email: string, password: string, requiredRole: UserRole): Promise<LoginResult> => {
     const now = Date.now();
-
-    // Check 15-minute lockout (Security requirement: 5 failed attempts -> 15 min lockout)
     if (lockoutUntil && now < lockoutUntil) {
       const remainingMinutes = Math.ceil((lockoutUntil - now) / 60000);
+      return { success: false, error: `Too many failed attempts. Try again in ${remainingMinutes} minutes.` };
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
+    });
+
+    if (error || !data.user) {
+      const attempts = failedAttempts + 1;
+      setFailedAttempts(attempts);
+      if (attempts >= 5) {
+        setLockoutUntil(now + 15 * 60 * 1000);
+        return { success: false, error: 'Too many failed attempts. Try again in 15 minutes.' };
+      }
+      return { success: false, error: error?.message || 'Invalid email or password.' };
+    }
+
+    const profile = profileFromUser(data.user);
+    if (!profile || profile.role !== requiredRole) {
+      await supabase.auth.signOut();
+      setCurrentUser(null);
+      setRole('visitor');
       return {
         success: false,
-        error: `Too many failed attempts. Access is locked for ${remainingMinutes} more minutes.`,
+        error: requiredRole === 'admin'
+          ? 'This account is not authorized as an admin. Contact the Super Admin.'
+          : 'This account is not registered as a team member.',
       };
     }
 
-    const cleanEmail = email.trim().toLowerCase();
-    const cleanPassword = password.trim();
-
-    // Admin authentication
-    if (
-      cleanEmail === 'owner@inspireacademy.edu' ||
-      cleanEmail === 'admin@inspireacademy.edu' ||
-      cleanEmail === 'admin'
-    ) {
-      // In demo mode or production password verification
-      if (cleanPassword === 'SuperSecret2026!' || cleanPassword === 'admin' || cleanPassword === 'admin123') {
-        setCurrentUser(mockUsers[0]);
-        setRole('admin');
-        setFailedAttempts(0);
-        setLockoutUntil(null);
-        try {
-          sessionStorage.setItem('inspire_admin_session', 'true');
-        } catch {}
-        return { success: true };
-      }
-    }
-
-    // Member authentication
-    const member = mockUsers.find((u) => u.email.toLowerCase() === cleanEmail && u.role === 'member');
-    if (member) {
-      if (cleanPassword === 'MemberPassword2026!' || cleanPassword === 'member123') {
-        setCurrentUser(member);
-        setRole('member');
-        setFailedAttempts(0);
-        setLockoutUntil(null);
-        return { success: true };
-      }
-    }
-
-    // Failed attempt handling
-    const newAttempts = failedAttempts + 1;
-    setFailedAttempts(newAttempts);
-
-    if (newAttempts >= 5) {
-      const lockTime = now + 15 * 60 * 1000; // 15 minutes lockout
-      setLockoutUntil(lockTime);
-      return {
-        success: false,
-        error: 'Account locked due to 5 consecutive failed attempts. Try again in 15 minutes.',
-      };
-    }
-
-    return {
-      success: false,
-      error: 'Invalid credentials. Please verify your email and password.',
-    };
+    setCurrentUser(profile);
+    setRole(profile.role);
+    setFailedAttempts(0);
+    setLockoutUntil(null);
+    return { success: true };
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error('Supabase sign out failed:', error.message);
     setCurrentUser(null);
     setRole('visitor');
-    try {
-      sessionStorage.removeItem('inspire_admin_session');
-    } catch {}
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, role, login, logout, failedAttempts, lockoutUntil }}>
+    <AuthContext.Provider value={{ currentUser, role, login, logout, failedAttempts, lockoutUntil, authLoading }}>
       {children}
     </AuthContext.Provider>
   );

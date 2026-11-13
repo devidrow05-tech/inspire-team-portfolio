@@ -72,19 +72,19 @@ export const HomePage: React.FC = () => {
               </Link>
             </div>
 
-            {/* Key Metrics Strip */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-10 border-t border-[var(--border)]/70 max-w-4xl mx-auto">
+            {/* Live counts only; no sample metrics */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-10 border-t border-[var(--border)]/70 max-w-4xl mx-auto">
               <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
                 <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">{mockPublishedProjects.length}</div>
-                <div className="text-xs text-[var(--text-muted)] font-medium mt-1"Projects published</div>
+                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">Projects published</div>
               </div>
               <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
                 <div className="text-2xl sm:text-3xl font-extrabold text-teal-600 dark:text-teal-400">{mockCategories.length}</div>
-                <div className="text-xs text-[var(--text-muted)] font-medium mt-1"Categories added</div>
+                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">Categories added</div>
               </div>
               <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
                 <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">{mockMemberProfiles.length}</div>
-                <div className="text-xs text-[var(--text-muted)] font-medium mt-1"Team members
+                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">Team members</div>
               </div>
             </div>
           </div>

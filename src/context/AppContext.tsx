@@ -61,8 +61,8 @@ const enDict: Record<string, string> = {
 
   // Common UI
   'common.loading': 'Loading data...',
-  'common.demoBanner': 'DEMO MODE ACTIVE — Using in-memory operational data. Ready for Supabase connection.',
-  'common.switchRole': 'Switch Demo Role:',
+  'common.demoBanner': '',
+  'common.switchRole': '',
   'common.roleAdmin': 'Super Admin',
   'common.roleMember': 'Team Member',
   'common.roleVisitor': 'Public Visitor',
@@ -114,8 +114,8 @@ const urDict: Record<string, string> = {
 
   // Common UI
   'common.loading': 'لوڈ ہو رہا ہے...',
-  'common.demoBanner': 'ڈیمو موڈ فعال ہے — یہ نمونہ ڈیٹا پر چل رہا ہے جو سپابیس سے فوری منسلک ہو سکتا ہے۔',
-  'common.switchRole': 'ڈیمو کردار تبدیل کریں:',
+  'common.demoBanner': '',
+  'common.switchRole': '',
   'common.roleAdmin': 'سپر ایڈمن',
   'common.roleMember': 'ٹیم ممبر',
   'common.roleVisitor': 'عام وزٹر',

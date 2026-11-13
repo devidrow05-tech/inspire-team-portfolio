@@ -80,7 +80,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     {
       title: 'TEAM & TASKS',
       items: [
-        { label: 'Team Members', path: '/admin/members', icon: Users, badge: '3' },
+        { label: 'Team Members', path: '/admin/members', icon: Users },
+        { label: 'Portfolio Projects', path: '/admin/projects', icon: FolderArchive },
         { label: 'Assignments', path: '/admin/assignments', icon: Briefcase, badge: '2' },
       ],
     },

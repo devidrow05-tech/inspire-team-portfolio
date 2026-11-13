@@ -28,7 +28,7 @@ export const SeoManager: React.FC = () => {
     const page = pageKey ? config.seo_pages?.[pageKey] : undefined;
     const title = page?.title || config.seo_default_title || config.site_name;
     const description = page?.description || config.seo_default_description || config.site_tagline;
-    const image = ('og_image' in (page || {}) ? page?.og_image : '') || config.seo_default_og_image || '';
+    const image = (pageKey === 'home' ? config.seo_pages?.home?.og_image : '') || config.seo_default_og_image || '';
 
     document.title = title;
     setMeta('description', description);
@@ -59,16 +59,22 @@ export const SeoManager: React.FC = () => {
     }
 
     const measurementId = config.google_analytics_id?.trim();
-    if (measurementId && /^G-[A-Z0-9]+$/i.test(measurementId) && !document.getElementById('inspire-ga-script')) {
-      const script = document.createElement('script');
-      script.id = 'inspire-ga-script';
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;
-      document.head.appendChild(script);
-      const inline = document.createElement('script');
-      inline.id = 'inspire-ga-init';
-      inline.text = `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${measurementId}');`;
-      document.head.appendChild(inline);
+    const existingAnalytics = document.getElementById('inspire-ga-script') as HTMLScriptElement | null;
+    if (existingAnalytics?.dataset.measurementId !== measurementId) {
+      existingAnalytics?.remove();
+      document.getElementById('inspire-ga-init')?.remove();
+      if (measurementId && /^G-[A-Z0-9]+$/i.test(measurementId)) {
+        const script = document.createElement('script');
+        script.id = 'inspire-ga-script';
+        script.dataset.measurementId = measurementId;
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;
+        document.head.appendChild(script);
+        const inline = document.createElement('script');
+        inline.id = 'inspire-ga-init';
+        inline.text = `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${measurementId}');`;
+        document.head.appendChild(inline);
+      }
     }
   }, [config, pathname]);
 

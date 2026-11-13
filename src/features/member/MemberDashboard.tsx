@@ -28,7 +28,7 @@ export const MemberDashboard: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[var(--text)]">
-            Welcome back, Hamza
+            Welcome to your workspace
           </h1>
           <p className="text-xs text-[var(--text-muted)] mt-1">
             Track your assigned deliverables, upload working drafts, and access the client-side Image-to-PDF tool.
@@ -84,8 +84,8 @@ export const MemberDashboard: React.FC = () => {
             <span>My Active Assignments</span>
             <Briefcase className="w-4 h-4 text-teal-600" />
           </div>
-          <div className="text-3xl font-extrabold text-[var(--text)]">2</div>
-          <div className="text-[11px] text-teal-600 font-medium">1 due this week</div>
+          <div className="text-3xl font-extrabold text-[var(--text)]">{myAssignments.filter((item) => item.status !== "completed" && item.status !== "cancelled").length}</div>
+          <div className="text-[11px] text-teal-600 font-medium">Current assignments</div>
         </div>
 
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 space-y-2">
@@ -93,8 +93,8 @@ export const MemberDashboard: React.FC = () => {
             <span>Submitted / In Review</span>
             <Clock className="w-4 h-4 text-indigo-600" />
           </div>
-          <div className="text-3xl font-extrabold text-[var(--text)]">1</div>
-          <div className="text-[11px] text-indigo-600 font-medium">Pending faculty audit</div>
+          <div className="text-3xl font-extrabold text-[var(--text)]">{myProjects.filter((item) => item.status === "submitted" || item.status === "under_review").length}</div>
+          <div className="text-[11px] text-indigo-600 font-medium">Awaiting review</div>
         </div>
 
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 space-y-2">
@@ -102,8 +102,8 @@ export const MemberDashboard: React.FC = () => {
             <span>Approved & Published</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
           </div>
-          <div className="text-3xl font-extrabold text-[var(--text)]">1</div>
-          <div className="text-[11px] text-emerald-600 font-medium">Live on academy portfolio</div>
+          <div className="text-3xl font-extrabold text-[var(--text)]">{myProjects.filter((item) => item.status === "published").length}</div>
+          <div className="text-[11px] text-emerald-600 font-medium">Published projects</div>
         </div>
       </div>
 

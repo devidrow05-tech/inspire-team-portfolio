@@ -1,74 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
-import { mockMemberProfiles } from '../../services/demo/data';
-import { ChevronRight, Award, Layers } from 'lucide-react';
+import { portfolioApi, type TeamMember } from '../../lib/portfolio';
+import { ChevronRight } from 'lucide-react';
 
 export const TeamPage: React.FC = () => {
-  const { lang, t } = useApp();
-
-  // Directory lists only published members (PRD PUBLIC-002)
-  const publishedMembers = mockMemberProfiles.filter((m) => m.is_published);
-
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      <div className="max-w-3xl space-y-2">
-        <h1 className="text-3xl font-extrabold tracking-tight text-[var(--text)]">
-          {t('nav.team')}
-        </h1>
-        <p className="text-sm text-[var(--text-muted)] leading-relaxed">
-          Meet the verified specialists, software engineers, and product designers leading technical workflows at Inspire Academy.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {publishedMembers.length === 0 && <p className="col-span-full py-12 text-center text-sm text-[var(--text-muted)]">Team profiles will appear here when added.</p>}
-        {publishedMembers.map((member) => (
-          <Link
-            key={member.id}
-            to={`/team/${member.slug}`}
-            className="group rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 flex flex-col justify-between hover:shadow-xl hover:border-teal-400/50 transition-all duration-200 hover:-translate-y-1"
-          >
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-500 text-white font-bold text-lg flex items-center justify-center shadow-md">
-                  {member.display_name.slice(0, 2).toUpperCase()}
-                </div>
-                <div>
-                  <h3 className="font-bold text-base text-[var(--text)] group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                    {member.display_name}
-                  </h3>
-                  <p className="text-xs text-[var(--text-muted)]">
-                    {lang === 'ur' && member.title_ur ? member.title_ur : member.title}
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-xs text-[var(--text-muted)] line-clamp-3 leading-relaxed">
-                {lang === 'ur' && member.bio_ur ? member.bio_ur : member.bio}
-              </p>
-
-              <div className="space-y-1.5">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-[var(--text-muted)]">
-                  Primary Capabilities
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {member.skills.map((skill) => (
-                    <span key={skill} className="text-[10px] px-2 py-0.5 rounded-md bg-teal-50 dark:bg-teal-950/40 text-teal-700 dark:text-teal-300 font-medium">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-4 mt-6 border-t border-[var(--border)] flex items-center justify-between text-xs">
-              <span className="text-[var(--text-muted)] font-medium">Explore Projects</span>
-              <ChevronRight className="w-4 h-4 text-teal-600 dark:text-teal-400 rtl:-scale-x-100 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" />
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
+  const { t } = useApp();
+  const [members, setMembers] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => { portfolioApi.listMembers().then(rows=>setMembers(rows.filter(m=>m.is_published))).catch(console.error).finally(()=>setLoading(false)); }, []);
+  return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-3xl space-y-2"><h1 className="text-3xl font-extrabold text-[var(--text)]">{t('nav.team')}</h1><p className="text-sm text-[var(--text-muted)]">Meet the people behind our work. Open a profile to explore that member’s projects.</p></div>
+    {loading ? <p className="py-12 text-center text-sm text-[var(--text-muted)]">Loading team…</p> : members.length===0 ? <p className="py-12 text-center text-sm text-[var(--text-muted)]">Team profiles will appear here when the admin adds and publishes members.</p> :
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">{members.map(m=><Link key={m.id} to={`/team/${m.slug}`} className="group rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 hover:-translate-y-1 hover:shadow-xl transition">
+        <div className="flex items-center gap-4">{m.avatar_url ? <img src={m.avatar_url} alt={m.display_name} className="w-16 h-16 rounded-2xl object-cover" /> : <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-500 text-white font-bold text-lg flex items-center justify-center">{m.display_name.slice(0,2).toUpperCase()}</div>}
+          <div className="min-w-0"><h2 className="font-bold text-base text-[var(--text)] group-hover:text-teal-600">{m.display_name}</h2><p className="text-xs text-[var(--text-muted)]">{m.title}</p></div>
+        </div><p className="mt-4 text-xs text-[var(--text-muted)] line-clamp-3">{m.bio}</p>
+        <div className="mt-4 flex flex-wrap gap-1.5">{m.skills.slice(0,4).map(s=><span key={s} className="text-[10px] rounded-md bg-[var(--surface-2)] px-2 py-1 text-[var(--text-muted)]">{s}</span>)}</div>
+        <div className="mt-5 pt-4 border-t border-[var(--border)] flex justify-between items-center text-xs font-semibold text-teal-600"><span>View member projects</span><ChevronRight className="w-4 h-4"/></div>
+      </Link>)}</div>}
+  </div>;
 };

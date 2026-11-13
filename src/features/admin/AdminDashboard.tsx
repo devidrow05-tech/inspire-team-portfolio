@@ -64,7 +64,7 @@ export const AdminDashboard: React.FC = () => {
           </div>
           <div className="text-3xl font-extrabold text-white">{totalMembers}</div>
           <div className="text-[11px] text-emerald-400 font-medium flex items-center gap-1">
-            <span>All accounts active</span>
+            <span>Member accounts</span>
           </div>
         </div>
 
@@ -103,7 +103,7 @@ export const AdminDashboard: React.FC = () => {
           </div>
           <div className="text-3xl font-extrabold text-white">{publishedWork}</div>
           <div className="text-[11px] text-emerald-400 font-medium">
-            100% Admin Curated
+            Published projects
           </div>
         </div>
       </div>
@@ -138,7 +138,7 @@ export const AdminDashboard: React.FC = () => {
                       </span>
                     </div>
                     <div className="text-[11px] text-slate-400">
-                      Author: Hamza Farooq · Submitted today
+                      New submission
                     </div>
                   </div>
                   <Link

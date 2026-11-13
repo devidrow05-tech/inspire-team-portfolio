@@ -95,8 +95,8 @@ export default function App() {
     <AppProvider>
       <AuthProvider>
         <BrowserRouter>
+          <SeoManager />
           <Routes>
-            <SeoManager />
             {/* Public Showcase Routes */}
             <Route
               path="/"

@@ -119,7 +119,9 @@ export const AdminLogsPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-mono text-[11px]">
-              {filteredLogs.map((log) => (
+              {filteredLogs.length === 0 ? (
+                <tr><td colSpan={6} className="py-10 text-center text-slate-400">No activity has been recorded yet.</td></tr>
+              ) : filteredLogs.map((log) => (
                 <tr key={log.id} className="hover:bg-slate-800/40 transition">
                   <td className="py-3 px-4 text-slate-400 whitespace-nowrap">
                     {log.timestamp}

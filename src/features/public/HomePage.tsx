@@ -112,6 +112,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {mockPublishedProjects.length === 0 && <p className="col-span-full py-10 text-center text-sm text-[var(--text-muted)]">No projects have been added yet.</p>}
           {mockPublishedProjects.map((project) => (
             <Link
               key={project.id}
@@ -241,6 +242,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {mockCategories.length === 0 && <p className="col-span-full py-8 text-center text-sm text-[var(--text-muted)]">No categories have been added yet.</p>}
           {mockCategories.map((cat) => (
             <Link
               key={cat.id}
@@ -284,6 +286,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {mockMemberProfiles.length === 0 && <p className="col-span-full py-8 text-center text-sm text-[var(--text-muted)]">Team profiles will appear here when added.</p>}
           {mockMemberProfiles.map((member) => (
             <Link
               key={member.id}

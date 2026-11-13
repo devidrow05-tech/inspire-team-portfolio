@@ -30,8 +30,13 @@ export const SeoManager: React.FC = () => {
     const description = page?.description || config.seo_default_description || config.site_tagline;
     const image = (pageKey === 'home' ? config.seo_pages?.home?.og_image : '') || config.seo_default_og_image || '';
 
+    const privateRoute = pathname.startsWith('/admin') || pathname.startsWith('/member');
     document.title = title;
     setMeta('description', description);
+    setMeta('robots', privateRoute ? 'noindex, nofollow' : 'index, follow');
+    let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
+    canonical.href = window.location.origin + pathname;
     setMeta('og:type', 'website', true);
     setMeta('og:title', title, true);
     setMeta('og:description', description, true);
@@ -54,16 +59,16 @@ export const SeoManager: React.FC = () => {
       favicon.href = config.favicon_url;
     }
 
-    if (config.google_search_console_code) {
+    if (!privateRoute && config.google_search_console_code) {
       setMeta('google-site-verification', config.google_search_console_code);
     }
 
     const measurementId = config.google_analytics_id?.trim();
     const existingAnalytics = document.getElementById('inspire-ga-script') as HTMLScriptElement | null;
-    if (existingAnalytics?.dataset.measurementId !== measurementId) {
+    if (existingAnalytics?.dataset.measurementId !== measurementId || privateRoute) {
       existingAnalytics?.remove();
       document.getElementById('inspire-ga-init')?.remove();
-      if (measurementId && /^G-[A-Z0-9]+$/i.test(measurementId)) {
+      if (!privateRoute && measurementId && /^G-[A-Z0-9]+$/i.test(measurementId)) {
         const script = document.createElement('script');
         script.id = 'inspire-ga-script';
         script.dataset.measurementId = measurementId;

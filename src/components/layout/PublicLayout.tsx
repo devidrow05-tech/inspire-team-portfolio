@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import {
   Globe,
@@ -10,11 +10,18 @@ import {
   Sparkles,
   PhoneCall,
   AlertTriangle,
+  ArrowLeft,
 } from 'lucide-react';
 
 export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { lang, setLang, theme, setTheme, t, config } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const handleBack = () => {
+    if (window.history.length > 1 && location.key !== 'default') navigate(-1);
+    else navigate('/');
+  };
 
   // If maintenance mode is enabled by admin in Section 12, display friendly maintenance banner/screen
   if (config.maintenance_mode) {
@@ -63,6 +70,18 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          {/* Back navigation */}
+          <button
+            type="button"
+            onClick={handleBack}
+            title="Go back"
+            aria-label="Go back"
+            className="shrink-0 inline-flex items-center justify-center gap-1.5 p-2 rounded-lg border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] transition"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="hidden sm:inline text-xs font-semibold">Back</span>
+          </button>
+
           {/* Logo & Brand - Controlled from Admin */}
           <Link to="/" className="flex items-center gap-3 group">
             {config.logo_url ? (

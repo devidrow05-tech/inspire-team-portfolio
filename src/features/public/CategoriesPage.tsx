@@ -62,13 +62,13 @@ export const CategoriesPage: React.FC = () => {
       >
         <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200/70 dark:border-indigo-400/20 bg-indigo-50 dark:bg-indigo-950/40 px-3 py-1.5 text-[11px] font-bold tracking-[0.16em] uppercase text-indigo-700 dark:text-indigo-300">
           <Sparkles className="h-3.5 w-3.5 animate-pulse" />
-          Inspire Academy disciplines
+          Inspire disciplines
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text)]">
           {t('nav.categories')}
         </h1>
         <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-          Explore the core learning and professional domains at Inspire Academy.
+          Explore the core learning and professional domains at Inspire.
           Choose a discipline to discover the specialists behind the work.
         </p>
       </motion.header>

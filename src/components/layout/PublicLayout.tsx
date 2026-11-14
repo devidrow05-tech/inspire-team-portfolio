@@ -133,7 +133,7 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
             )}
             <div className="min-w-0">
               <div className="font-extrabold text-base sm:text-lg tracking-tight truncate">
-                <GradientText>{config.site_name || 'INSPIRE ACADEMY'}</GradientText>
+                <GradientText>{config.site_name || 'INSPIRE'}</GradientText>
               </div>
               <div className="hidden sm:block text-[10px] uppercase tracking-wider text-[var(--text-muted)] font-medium truncate">
                 {config.site_tagline || 'Digital Academy Team'}

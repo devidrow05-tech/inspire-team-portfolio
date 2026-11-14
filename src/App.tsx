@@ -98,7 +98,7 @@ export default function App() {
           <SeoManager />
           <Routes>
             {/* Public Showcase Routes */}
-            <Route path="/" element={<Navigate to="/team" replace />} />
+            <Route path="/" element={<PublicLayout><TeamPage /></PublicLayout>} />
             <Route
               path="/projects"
               element={<PublicLayout><ProjectsPage /></PublicLayout>}
@@ -111,14 +111,7 @@ export default function App() {
                 </PublicLayout>
               }
             />
-            <Route
-              path="/team"
-              element={
-                <PublicLayout>
-                  <TeamPage />
-                </PublicLayout>
-              }
-            />
+            <Route path="/team" element={<Navigate to="/" replace />} />
             <Route
               path="/team/:slug"
               element={

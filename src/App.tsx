@@ -16,7 +16,6 @@ import {
   ScrollProgressBar,
   MagneticCursor,
   PageLoader,
-  AnimatedBarChart,
 } from './frontend/components/animations';
 
 // Public Pages

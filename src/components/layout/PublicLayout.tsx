@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import {
   Globe,
@@ -16,11 +16,11 @@ import {
 export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { lang, setLang, theme, setTheme, t, config } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const location = useLocation();
   const navigate = useNavigate();
   const handleBack = () => {
-    if (window.history.length > 1 && location.key !== 'default') navigate(-1);
-    else navigate('/');
+    const historyIndex = window.history.state?.idx;
+    if (typeof historyIndex === 'number' && historyIndex > 0) navigate(-1);
+    else navigate('/team');
   };
 
   // If maintenance mode is enabled by admin in Section 12, display friendly maintenance banner/screen

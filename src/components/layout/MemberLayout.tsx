@@ -69,7 +69,7 @@ export const MemberLayout: React.FC<{ children: React.ReactNode }> = ({ children
             </motion.div>
             <div>
               <div className="font-bold text-sm tracking-tight text-[var(--text)]">MEMBER WORKSPACE</div>
-              <div className="text-[10px] text-teal-600 dark:text-teal-400 font-medium tracking-wide">INSPIRE ACADEMY</div>
+              <div className="text-[10px] text-teal-600 dark:text-teal-400 font-medium tracking-wide">INSPIRE</div>
             </div>
           </Link>
           <Link to="/" title="View Public Site" className="text-[var(--text-muted)] hover:text-teal-500 transition">

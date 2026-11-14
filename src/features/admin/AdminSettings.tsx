@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import {
-  mockPublishedProjects,
-  mockWorkingProjects,
-  mockUsers,
-  mockAssignments,
-} from '../../services/demo/data';
-import {
   Settings,
   Save,
   Download,
@@ -63,12 +57,8 @@ export const AdminSettings: React.FC = () => {
   const handleExportDatabase = () => {
     const backupData = {
       exported_at: new Date().toISOString(),
-      system: 'Inspire Master Control',
+      system: 'Inspire Website Settings',
       config,
-      users: mockUsers,
-      working_projects: mockWorkingProjects,
-      published_projects: mockPublishedProjects,
-      assignments: mockAssignments,
     };
 
     const blob = new Blob([JSON.stringify(backupData, null, 2)], {
@@ -77,11 +67,11 @@ export const AdminSettings: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `inspire-academy-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `inspire-website-settings-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
 
-    showAnimatedToast('Database JSON snapshot downloaded successfully!', 'info');
+    showAnimatedToast('Website settings export downloaded successfully!', 'info');
   };
 
   return (
@@ -96,7 +86,7 @@ export const AdminSettings: React.FC = () => {
             </h1>
           </div>
           <p className="text-xs text-slate-400 mt-1">
-            Emergency maintenance mode, legal terms, custom 404 handler, and full database snapshots.
+            Emergency maintenance mode, legal terms, custom 404 handler, and website configuration and maintenance controls.
           </p>
         </div>
 
@@ -106,7 +96,7 @@ export const AdminSettings: React.FC = () => {
             className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold transition"
           >
             <Download className="w-4 h-4 text-emerald-400" />
-            <span>Export Database JSON</span>
+            <span>Export Website Settings</span>
           </AnimatedButton>
           <MagneticButton
             onClick={handleSave}

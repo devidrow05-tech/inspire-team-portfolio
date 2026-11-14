@@ -31,7 +31,7 @@ export const AdminSettings: React.FC = () => {
   // Settings states matching SiteConfig
   const [maintenanceMode, setMaintenanceMode] = useState(config.maintenance_mode || false);
   const [maintenanceMessage, setMaintenanceMessage] = useState(
-    config.maintenance_message || 'Inspire Academy portal is undergoing scheduled maintenance. Please check back shortly.'
+    config.maintenance_message || 'Inspire portal is undergoing scheduled maintenance. Please check back shortly.'
   );
   const [submissionEmail, setSubmissionEmail] = useState(config.contact_submission_email || '');
   const [privacyContent, setPrivacyContent] = useState(
@@ -40,7 +40,7 @@ export const AdminSettings: React.FC = () => {
   );
   const [termsContent, setTermsContent] = useState(
     config.terms_content ||
-      'All deliverables published through the Inspire Academy portal undergo academic peer review. Members retain authorship rights while granting the institution showcase licensing.'
+      'All deliverables published through the Inspire portal undergo academic peer review. Members retain authorship rights while granting the institution showcase licensing.'
   );
   const [custom404Heading, setCustom404Heading] = useState(config.custom_404_heading || '404 - Academic Resource Not Found');
   const [custom404Message, setCustom404Message] = useState(
@@ -63,7 +63,7 @@ export const AdminSettings: React.FC = () => {
   const handleExportDatabase = () => {
     const backupData = {
       exported_at: new Date().toISOString(),
-      system: 'Inspire Academy Master Control',
+      system: 'Inspire Master Control',
       config,
       users: mockUsers,
       working_projects: mockWorkingProjects,

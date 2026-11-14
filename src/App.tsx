@@ -98,22 +98,8 @@ export default function App() {
           <SeoManager />
           <Routes>
             {/* Public Showcase Routes */}
-            <Route
-              path="/"
-              element={
-                <PublicLayout>
-                  <HomePage />
-                </PublicLayout>
-              }
-            />
-            <Route
-              path="/projects"
-              element={
-                <PublicLayout>
-                  <ProjectsPage />
-                </PublicLayout>
-              }
-            />
+            <Route path="/" element={<Navigate to="/team" replace />} />
+            <Route path="/projects" element={<Navigate to="/team" replace />} />
             <Route
               path="/projects/:slug"
               element={

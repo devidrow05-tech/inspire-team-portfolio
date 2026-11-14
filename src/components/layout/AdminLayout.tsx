@@ -68,8 +68,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   };
 
   const handleBack = () => {
-    if (window.history.length > 1 && location.key !== 'default') navigate(-1);
-    else navigate('/admin');
+    navigate('/');
   };
 
   const handleLogout = () => {
@@ -252,8 +251,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             <AnimatedButton
               type="button"
               onClick={handleBack}
-              title="Go back to previous page"
-              aria-label="Go back to previous page"
+              title="Back to public website"
+              aria-label="Back to public website"
               className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition"
             >
               <ArrowLeft className="w-4 h-4" />

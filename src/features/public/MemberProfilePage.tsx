@@ -3,10 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { mockMemberProfiles, mockPublishedProjects } from '../../services/demo/data';
-import { ImageSlot } from '../../components/ui/ImageSlot';
-import { AnimatedCard, RevealSection } from '../../components/ui/MotionPrimitives';
+import { RevealSection } from '../../components/ui/MotionPrimitives';
+import { WordReveal, DepthCard } from '../../frontend/components/animations';
 import { staggerContainer, fadeUp, EASINGS, useDeviceMotionPrefs } from '../../frontend/lib/animations';
-import { Github, Linkedin, ChevronLeft, ArrowRight } from 'lucide-react';
+import { Github, Linkedin, ChevronLeft } from 'lucide-react';
 import { safeUrl } from '../../lib/format';
 
 export const MemberProfilePage: React.FC = () => {
@@ -162,9 +162,10 @@ export const MemberProfilePage: React.FC = () => {
       {/* Member Approved Projects */}
       <RevealSection className="space-y-6">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-[var(--text)]">
-            Approved Portfolio Deliverables ({memberProjects.length})
-          </h2>
+          <WordReveal
+            text={`Approved Portfolio Deliverables (${memberProjects.length})`}
+            className="text-2xl font-bold tracking-tight text-[var(--text)]"
+          />
           <p className="text-xs text-[var(--text-muted)] mt-1">
             Faculty-reviewed projects delivered by {member.display_name}.
           </p>
@@ -183,35 +184,8 @@ export const MemberProfilePage: React.FC = () => {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {memberProjects.map((project) => (
-              <motion.div key={project.id} variants={fadeUp}>
-                <AnimatedCard className="h-full">
-                  <Link
-                    to={`/projects/${project.slug}`}
-                    className="group h-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-xl hover:border-teal-400/50"
-                  >
-                    <ImageSlot
-                      src={project.cover_public_path}
-                      alt={project.title}
-                      aspect="16/10"
-                      fallbackText={project.title}
-                      badge={project.category_name}
-                    />
-                    <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
-                      <div>
-                        <h3 className="font-bold text-base text-[var(--text)] group-hover:text-teal-600 transition-colors">
-                          {project.title}
-                        </h3>
-                        <p className="text-xs text-[var(--text-muted)] line-clamp-2 mt-1 leading-relaxed">
-                          {project.short_description}
-                        </p>
-                      </div>
-                      <div className="pt-3 border-t border-[var(--border)] flex items-center justify-between text-xs font-semibold text-teal-600">
-                        <span>Explore Case Study</span>
-                        <ArrowRight className="w-3.5 h-3.5 rtl:-scale-x-100 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  </Link>
-                </AnimatedCard>
+              <motion.div key={project.id} variants={fadeUp} className="h-full">
+                <DepthCard project={project} lang={lang} />
               </motion.div>
             ))}
           </motion.div>

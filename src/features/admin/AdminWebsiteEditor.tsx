@@ -13,10 +13,13 @@ import {
   Sparkles,
 } from 'lucide-react';
 import {
-  AnimatedButton,
-  RevealSection,
   showAnimatedToast,
 } from '../../components/ui/MotionPrimitives';
+import {
+  LiquidToggle,
+  PremiumInput,
+  MagneticButton,
+} from '../../frontend/components/animations';
 import { DURATIONS, EASINGS } from '../../frontend/lib/animations';
 
 export const AdminWebsiteEditor: React.FC = () => {
@@ -150,13 +153,13 @@ export const AdminWebsiteEditor: React.FC = () => {
             Edit text, headings, buttons, and section visibility across the public website. Zero code required.
           </p>
         </div>
-        <AnimatedButton
+        <MagneticButton
           onClick={handleSave}
           className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-lg shadow-indigo-600/30 transition"
         >
           <Save className="w-4 h-4" />
           <span>Save All Changes</span>
-        </AnimatedButton>
+        </MagneticButton>
       </div>
 
       {/* Tabs */}
@@ -207,37 +210,28 @@ export const AdminWebsiteEditor: React.FC = () => {
                 <LayoutTemplate className="w-4 h-4 text-indigo-400" />
                 Hero Section
               </h3>
-              <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={heroVisible}
-                  onChange={(e) => setHeroVisible(e.target.checked)}
-                  className="rounded border-slate-700 text-indigo-600 focus:ring-0"
-                />
-                <span>Visible on Homepage</span>
-              </label>
+              <LiquidToggle
+                darkSurface
+                checked={heroVisible}
+                onChange={setHeroVisible}
+                label="Visible on Homepage"
+              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-300">Badge Text</label>
-                <input
-                  type="text"
-                  value={heroBadge}
-                  onChange={(e) => setHeroBadge(e.target.value)}
-                  className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-white outline-none focus:border-indigo-500"
-                />
-              </div>
+              <PremiumInput
+                darkSurface
+                label="Badge Text"
+                value={heroBadge}
+                onChange={(e) => setHeroBadge(e.target.value)}
+              />
 
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-300">Main Heading</label>
-                <input
-                  type="text"
-                  value={heroHeading}
-                  onChange={(e) => setHeroHeading(e.target.value)}
-                  className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-white outline-none focus:border-indigo-500"
-                />
-              </div>
+              <PremiumInput
+                darkSurface
+                label="Main Heading"
+                value={heroHeading}
+                onChange={(e) => setHeroHeading(e.target.value)}
+              />
             </div>
 
             <div className="space-y-1">
@@ -305,15 +299,12 @@ export const AdminWebsiteEditor: React.FC = () => {
                 Services & Disciplines Cards
               </h3>
               <div className="flex items-center gap-4">
-                <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={servicesVisible}
-                    onChange={(e) => setServicesVisible(e.target.checked)}
-                    className="rounded border-slate-700 text-indigo-600 focus:ring-0"
-                  />
-                  <span>Show Section</span>
-                </label>
+                <LiquidToggle
+                  darkSurface
+                  checked={servicesVisible}
+                  onChange={setServicesVisible}
+                  label="Show Section"
+                />
                 <button
                   type="button"
                   onClick={handleAddService}
@@ -376,15 +367,12 @@ export const AdminWebsiteEditor: React.FC = () => {
                 <Sparkles className="w-4 h-4 text-amber-400" />
                 Bottom Call-to-Action (CTA) Band
               </h3>
-              <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={ctaVisible}
-                  onChange={(e) => setCtaVisible(e.target.checked)}
-                  className="rounded border-slate-700 text-indigo-600 focus:ring-0"
-                />
-                <span>Show CTA</span>
-              </label>
+              <LiquidToggle
+                darkSurface
+                checked={ctaVisible}
+                onChange={setCtaVisible}
+                label="Show CTA"
+              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -555,15 +543,12 @@ export const AdminWebsiteEditor: React.FC = () => {
             </div>
 
             <div className="pt-2">
-              <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={contactFormEnabled}
-                  onChange={(e) => setContactFormEnabled(e.target.checked)}
-                  className="rounded border-slate-700 text-indigo-600 focus:ring-0"
-                />
-                <span>Enable Public Contact Submission Form</span>
-              </label>
+              <LiquidToggle
+                darkSurface
+                checked={contactFormEnabled}
+                onChange={setContactFormEnabled}
+                label="Enable Public Contact Submission Form"
+              />
             </div>
           </div>
         </motion.div>

@@ -19,6 +19,11 @@ import {
   RevealSection,
   showAnimatedToast,
 } from '../../components/ui/MotionPrimitives';
+import {
+  LiquidToggle,
+  PremiumInput,
+  MagneticButton,
+} from '../../frontend/components/animations';
 
 export const AdminSettings: React.FC = () => {
   const { config, updateConfig } = useApp();
@@ -103,13 +108,13 @@ export const AdminSettings: React.FC = () => {
             <Download className="w-4 h-4 text-emerald-400" />
             <span>Export Database JSON</span>
           </AnimatedButton>
-          <AnimatedButton
+          <MagneticButton
             onClick={handleSave}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-lg shadow-indigo-600/30"
           >
             <Save className="w-4 h-4" />
             <span>Save System Settings</span>
-          </AnimatedButton>
+          </MagneticButton>
         </div>
       </div>
 
@@ -133,15 +138,12 @@ export const AdminSettings: React.FC = () => {
             </p>
           </div>
 
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={maintenanceMode}
-              onChange={(e) => setMaintenanceMode(e.target.checked)}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
-          </label>
+          <LiquidToggle
+            darkSurface
+            checked={maintenanceMode}
+            onChange={setMaintenanceMode}
+            label={maintenanceMode ? 'Active' : 'Off'}
+          />
         </div>
 
         {maintenanceMode && (
@@ -165,16 +167,17 @@ export const AdminSettings: React.FC = () => {
           Notification & Destination Email
         </h2>
 
-        <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1.5">
+        <div className="max-w-md space-y-1.5">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-300 mb-1">
             <Mail className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Contact Submissions Recipient Email</span>
-          </label>
-          <input
+            <span>Routing Recipient</span>
+          </div>
+          <PremiumInput
+            darkSurface
             type="email"
+            label="Contact Submissions Recipient Email"
             value={submissionEmail}
             onChange={(e) => setSubmissionEmail(e.target.value)}
-            className="w-full max-w-md px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-indigo-500"
           />
           <p className="text-[10px] text-slate-500 mt-1">
             Inquiries submitted via the public contact form will be routed to this address.
@@ -224,28 +227,18 @@ export const AdminSettings: React.FC = () => {
           Custom 404 Not Found Page
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-              404 Page Heading
-            </label>
-            <input
-              type="text"
-              value={custom404Heading}
-              onChange={(e) => setCustom404Heading(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-indigo-500"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-              404 Explanation Message
-            </label>
-            <input
-              type="text"
-              value={custom404Message}
-              onChange={(e) => setCustom404Message(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-indigo-500"
-            />
-          </div>
+          <PremiumInput
+            darkSurface
+            label="404 Page Heading"
+            value={custom404Heading}
+            onChange={(e) => setCustom404Heading(e.target.value)}
+          />
+          <PremiumInput
+            darkSurface
+            label="404 Explanation Message"
+            value={custom404Message}
+            onChange={(e) => setCustom404Message(e.target.value)}
+          />
         </div>
       </div>
     </div>

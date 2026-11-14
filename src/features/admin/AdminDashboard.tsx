@@ -13,14 +13,19 @@ import {
   mockAssignments,
   mockWorkingProjects,
   mockPublishedProjects,
+  mockAuditLogs,
 } from '../../services/demo/data';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import {
-  AnimatedButton,
   AnimatedCard,
   AnimatedCounter,
   RevealSection,
 } from '../../components/ui/MotionPrimitives';
+import {
+  LiveActivityFeed,
+  ScrambleText,
+  MagneticButton,
+} from '../../frontend/components/animations';
 import { staggerContainer, fadeUp, EASINGS } from '../../frontend/lib/animations';
 
 export const AdminDashboard: React.FC = () => {
@@ -35,27 +40,39 @@ export const AdminDashboard: React.FC = () => {
   ).length;
   const publishedWork = mockPublishedProjects.length;
 
+  const activities = mockAuditLogs.slice(0, 8).map((log) => ({
+    id: String(log.id),
+    message: `${log.actor_name || 'System'}: ${log.action} (${log.entity_type})`,
+    time: log.created_at,
+    colorClass:
+      log.outcome === 'success'
+        ? 'bg-emerald-400'
+        : log.outcome === 'denied'
+        ? 'bg-amber-400'
+        : 'bg-rose-400',
+  }));
+
   return (
     <div className="space-y-8">
       {/* Top Banner */}
       <RevealSection className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">
-            Executive Operations Dashboard
+            <ScrambleText text="Executive Operations Dashboard" />
           </h1>
           <p className="text-xs text-slate-400 mt-1">
             Super Admin control center: assignments, member progress, approval queues, and storage governance.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <AnimatedButton
+          <MagneticButton
             type="button"
             onClick={() => navigate('/admin/reviews')}
             className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow-sm transition"
           >
             <FileCheck2 className="w-4 h-4" />
             <span>Open Review Queue ({pendingReviews})</span>
-          </AnimatedButton>
+          </MagneticButton>
         </div>
       </RevealSection>
 
@@ -222,6 +239,20 @@ export const AdminDashboard: React.FC = () => {
           </div>
         </RevealSection>
       </div>
+
+      {/* Live Activity Feed */}
+      <RevealSection className="rounded-2xl border border-slate-800 bg-slate-900 p-6 space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+          <h3 className="text-sm font-bold text-white">Live Governance Activity Feed</h3>
+          <Link to="/admin/logs" className="text-xs text-indigo-400 hover:underline">
+            Full audit log →
+          </Link>
+        </div>
+        <LiveActivityFeed
+          activities={activities}
+          emptyText="No recent administrative activity recorded yet."
+        />
+      </RevealSection>
     </div>
   );
 };

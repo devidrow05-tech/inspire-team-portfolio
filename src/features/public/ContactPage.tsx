@@ -8,6 +8,13 @@ import {
   RevealSection,
   showAnimatedToast,
 } from '../../components/ui/MotionPrimitives';
+import {
+  ScrambleText,
+  WordReveal,
+  MaskReveal,
+  PremiumInput,
+  MagneticButton,
+} from '../../frontend/components/animations';
 import { EASINGS, scaleIn } from '../../frontend/lib/animations';
 import { Mail, Phone, MapPin, Send, CheckCircle2, PhoneCall, Loader2, Check } from 'lucide-react';
 
@@ -43,7 +50,7 @@ export const ContactPage: React.FC = () => {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       <RevealSection className="text-center max-w-2xl mx-auto space-y-3">
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text)]">
-          {config.contact_heading || 'Contact & Admissions Desk'}
+          <ScrambleText text={config.contact_heading || 'Contact & Admissions Desk'} />
         </h1>
         <p className="text-sm text-[var(--text-muted)] leading-relaxed">
           {config.contact_subheading ||
@@ -53,11 +60,12 @@ export const ContactPage: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* Contact Information & WhatsApp */}
-        <div className="space-y-6">
+        <MaskReveal className="space-y-6">
           <AnimatedCard className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 space-y-5 shadow-sm">
-            <h3 className="text-base font-bold text-[var(--text)]">
-              Direct Communication Channels
-            </h3>
+            <WordReveal
+              text="Direct Communication Channels"
+              className="text-base font-bold text-[var(--text)]"
+            />
 
             <div className="space-y-4 text-xs">
               <div className="flex items-start gap-3">
@@ -123,10 +131,10 @@ export const ContactPage: React.FC = () => {
               </a>
             </AnimatedCard>
           )}
-        </div>
+        </MaskReveal>
 
-        {/* Contact Form with Floating Labels & Morphing Submit Button */}
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 shadow-sm">
+        {/* Contact Form with PremiumInputs & Magnetic Morphing Submit Button */}
+        <MaskReveal className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 shadow-sm">
           {config.contact_form_enabled === false ? (
             <div className="p-8 text-center text-xs text-[var(--text-muted)] space-y-2">
               <Mail className="w-8 h-8 mx-auto text-slate-400" />
@@ -164,88 +172,50 @@ export const ContactPage: React.FC = () => {
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
-              <h3 className="text-base font-bold text-[var(--text)] mb-1">
-                Send an Official Inquiry
-              </h3>
+              <WordReveal
+                text="Send an Official Inquiry"
+                className="text-base font-bold text-[var(--text)] mb-1"
+              />
 
-              {/* Floating Label: Full Name */}
-              <div className="relative">
-                <input
-                  id="contact-name"
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder=" "
-                  className="peer w-full text-xs px-3.5 pt-5 pb-2 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                />
-                <label
-                  htmlFor="contact-name"
-                  className="pointer-events-none absolute start-3.5 top-3.5 text-xs text-[var(--text-muted)] transition-all duration-200 peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:font-semibold peer-focus:text-indigo-500 peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:font-semibold"
-                >
-                  Your Full Name
-                </label>
-              </div>
+              <PremiumInput
+                id="contact-name"
+                label="Your Full Name"
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
 
-              {/* Floating Label: Email */}
-              <div className="relative">
-                <input
-                  id="contact-email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder=" "
-                  className="peer w-full text-xs px-3.5 pt-5 pb-2 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                />
-                <label
-                  htmlFor="contact-email"
-                  className="pointer-events-none absolute start-3.5 top-3.5 text-xs text-[var(--text-muted)] transition-all duration-200 peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:font-semibold peer-focus:text-indigo-500 peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:font-semibold"
-                >
-                  Email Address
-                </label>
-              </div>
+              <PremiumInput
+                id="contact-email"
+                label="Email Address"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
 
-              {/* Floating Label: Subject */}
-              <div className="relative">
-                <input
-                  id="contact-subject"
-                  type="text"
-                  required
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                  placeholder=" "
-                  className="peer w-full text-xs px-3.5 pt-5 pb-2 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                />
-                <label
-                  htmlFor="contact-subject"
-                  className="pointer-events-none absolute start-3.5 top-3.5 text-xs text-[var(--text-muted)] transition-all duration-200 peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:font-semibold peer-focus:text-indigo-500 peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:font-semibold"
-                >
-                  Subject
-                </label>
-              </div>
+              <PremiumInput
+                id="contact-subject"
+                label="Subject"
+                type="text"
+                required
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+              />
 
-              {/* Floating Label: Message */}
-              <div className="relative">
-                <textarea
-                  id="contact-message"
-                  rows={4}
-                  required
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder=" "
-                  className="peer w-full text-xs px-3.5 pt-6 pb-2 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none transition"
-                />
-                <label
-                  htmlFor="contact-message"
-                  className="pointer-events-none absolute start-3.5 top-3.5 text-xs text-[var(--text-muted)] transition-all duration-200 peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:font-semibold peer-focus:text-indigo-500 peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:font-semibold"
-                >
-                  Message
-                </label>
-              </div>
+              <PremiumInput
+                id="contact-message"
+                label="Message"
+                multiline
+                rows={4}
+                required
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
 
-              {/* Morphing Submit Button */}
-              <AnimatedButton
+              {/* Magnetic Morphing Submit Button */}
+              <MagneticButton
                 type="submit"
                 disabled={submitState !== 'idle'}
                 className={`w-full py-3 px-4 rounded-xl text-white font-semibold text-xs transition flex items-center justify-center gap-2 shadow-lg ${
@@ -293,10 +263,10 @@ export const ContactPage: React.FC = () => {
                     </motion.span>
                   )}
                 </AnimatePresence>
-              </AnimatedButton>
+              </MagneticButton>
             </form>
           )}
-        </div>
+        </MaskReveal>
       </div>
     </div>
   );

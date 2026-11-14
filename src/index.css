@@ -1,5 +1,55 @@
 @import "tailwindcss";
 
+@theme {
+  --animate-gradient-flow: gradientFlow 3s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow-pulse: glowPulse 2s ease-in-out infinite;
+  --animate-slide-up: slideUp 0.5s ease-out forwards;
+  --animate-fade-in: fadeIn 0.4s ease-out forwards;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-rotate-slow: rotateSlow 20s linear infinite;
+  --animate-bounce-subtle: bounceSubtle 2s ease-in-out infinite;
+  --animate-ping-slow: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-text-glow: textGlow 2s ease-in-out infinite;
+
+  @keyframes gradientFlow {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(108, 71, 255, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(108, 71, 255, 0.7), 0 0 80px rgba(108, 71, 255, 0.3); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes rotateSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes bounceSubtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @keyframes textGlow {
+    0%, 100% { text-shadow: 0 0 10px rgba(108, 71, 255, 0.45); }
+    50% { text-shadow: 0 0 20px rgba(108, 71, 255, 0.85), 0 0 40px rgba(108, 71, 255, 0.45); }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
 @layer base {
   :root {
     --bg: #F8FAFC;
@@ -81,6 +131,13 @@
   background: var(--text-muted);
 }
 
+/* Desktop-only custom cursor mode */
+@media (hover: hover) and (pointer: fine) {
+  body.inspire-custom-cursor,
+  body.inspire-custom-cursor * {
+    cursor: none !important;
+  }
+}
 
 /* 3D card flip utilities for TeamPage and shimmer bar for MotionPrimitives */
 .perspective-1000 { perspective: 1000px; }
@@ -94,6 +151,15 @@
 }
 .inspire-shimmer-bar { animation: inspire-shimmer 2.2s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) {
-  .inspire-shimmer-bar { animation: none !important; }
+  .inspire-shimmer-bar,
+  .animate-gradient-flow,
+  .animate-float,
+  .animate-glow-pulse,
+  .animate-shimmer,
+  .animate-rotate-slow,
+  .animate-bounce-subtle,
+  .animate-ping-slow,
+  .animate-text-glow {
+    animation: none !important;
+  }
 }
-

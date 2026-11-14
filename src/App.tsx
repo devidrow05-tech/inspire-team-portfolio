@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { MotionConfig, AnimatePresence } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
@@ -11,6 +11,13 @@ import { AdminGuard } from './components/layout/AdminGuard';
 import { MemberLayout } from './components/layout/MemberLayout';
 import { PageWrapper, CursorGlow } from './components/ui/MotionPrimitives';
 import { SeoManager } from './components/SeoManager';
+import { useSmoothScroll } from './frontend/lib/smoothScroll';
+import {
+  ScrollProgressBar,
+  MagneticCursor,
+  PageLoader,
+  AnimatedBarChart,
+} from './frontend/components/animations';
 
 // Public Pages
 import { HomePage } from './features/public/HomePage';
@@ -343,7 +350,7 @@ function AnimatedRoutes() {
           path="/admin/analytics"
           element={
             <AdminGuard>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <h1 className="text-2xl font-bold text-white">Academy Analytics & Reports</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="p-5 rounded-2xl border border-slate-800 bg-slate-900">
@@ -358,6 +365,29 @@ function AnimatedRoutes() {
                     <div className="text-xs text-slate-400">Storage Utilized</div>
                     <div className="text-2xl font-bold text-teal-400 mt-1">52 MB / 1024 MB</div>
                   </div>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <AnimatedBarChart
+                    label="Monthly Submissions Reviewed"
+                    data={[
+                      { label: 'Jan', value: 12 },
+                      { label: 'Feb', value: 19 },
+                      { label: 'Mar', value: 24 },
+                      { label: 'Apr', value: 18 },
+                      { label: 'May', value: 29 },
+                      { label: 'Jun', value: 34 },
+                    ]}
+                  />
+                  <AnimatedBarChart
+                    label="Deliverables by Discipline"
+                    data={[
+                      { label: 'Web', value: 42 },
+                      { label: 'Android', value: 28 },
+                      { label: 'UI/UX', value: 31 },
+                      { label: 'Backend', value: 22 },
+                      { label: 'AI/ML', value: 16 },
+                    ]}
+                  />
                 </div>
               </div>
             </AdminGuard>
@@ -489,12 +519,30 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  useSmoothScroll();
+  const [showLoader, setShowLoader] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return !window.sessionStorage.getItem('visited');
+  });
+
+  const handleLoaderComplete = () => {
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.setItem('visited', '1');
+    }
+    setShowLoader(false);
+  };
+
   return (
     <MotionConfig reducedMotion="user">
       <AppProvider>
         <AuthProvider>
           <BrowserRouter>
+            <ScrollProgressBar />
             <CursorGlow />
+            <MagneticCursor />
+            <AnimatePresence>
+              {showLoader && <PageLoader onComplete={handleLoaderComplete} />}
+            </AnimatePresence>
             <Toaster position="bottom-right" />
             <SeoManager />
             <AnimatedRoutes />

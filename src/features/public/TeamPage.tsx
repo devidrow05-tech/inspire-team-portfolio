@@ -3,14 +3,18 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { RevealSection } from '../../components/ui/MotionPrimitives';
+import {
+  ScrambleText,
+  PremiumInput,
+  MaskReveal,
+} from '../../frontend/components/animations';
 import { staggerContainer, fadeUp, useDeviceMotionPrefs } from '../../frontend/lib/animations';
 import { mockMemberProfiles } from '../../services/demo/data';
-import { ChevronRight, Search, Sparkles } from 'lucide-react';
+import { ChevronRight, Sparkles } from 'lucide-react';
 
 export const TeamPage: React.FC = () => {
   const { lang, t } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchFocused, setSearchFocused] = useState(false);
   const { isMobile, prefersReduced } = useDeviceMotionPrefs();
 
   const publishedMembers = mockMemberProfiles.filter((m) => {
@@ -33,46 +37,31 @@ export const TeamPage: React.FC = () => {
             <span>Verified Specialists</span>
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight text-[var(--text)]">
-            {t('nav.team')}
+            <ScrambleText text={t('nav.team')} />
           </h1>
           <p className="text-sm text-[var(--text-muted)] leading-relaxed">
             Meet the verified specialists, software engineers, and product designers leading technical workflows at Inspire Academy.
           </p>
         </div>
 
-        {/* Animated Focus Search Bar */}
-        <div className="relative w-full md:w-72">
-          <Search
-            className={`w-4 h-4 absolute start-3 top-3 transition-colors ${
-              searchFocused ? 'text-teal-500' : 'text-[var(--text-muted)]'
-            }`}
-          />
-          <input
-            type="text"
+        {/* Premium Floating-Label Search Bar */}
+        <div className="w-full md:w-72">
+          <PremiumInput
+            id="team-search"
+            label="Filter by name, role, or skill..."
             value={searchTerm}
-            onFocus={() => setSearchFocused(true)}
-            onBlur={() => setSearchFocused(false)}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Filter by name, role, or skill..."
-            aria-label="Filter team members"
-            className="w-full text-xs ps-9 pe-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] outline-none"
-          />
-          <motion.div
-            aria-hidden="true"
-            initial={false}
-            animate={{ scaleX: searchFocused ? 1 : 0, opacity: searchFocused ? 1 : 0 }}
-            transition={{ duration: 0.2 }}
-            className="absolute inset-x-3 bottom-0 h-0.5 bg-teal-500 rounded-full origin-left"
           />
         </div>
       </RevealSection>
 
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        animate="show"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
+      <MaskReveal>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
         {publishedMembers.length === 0 && (
           <p className="col-span-full py-12 text-center text-sm text-[var(--text-muted)] rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)]">
             {searchTerm
@@ -164,7 +153,8 @@ export const TeamPage: React.FC = () => {
             </Link>
           </motion.div>
         ))}
-      </motion.div>
+        </motion.div>
+      </MaskReveal>
     </div>
   );
 };

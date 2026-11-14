@@ -8,6 +8,13 @@ import {
   showAnimatedToast,
 } from '../../components/ui/MotionPrimitives';
 import {
+  ScrambleText,
+  PremiumInput,
+  AnimatedSelect,
+  MagneticButton,
+  SubmissionSuccess,
+} from '../../frontend/components/animations';
+import {
   DURATIONS,
   EASINGS,
   getStepProgressPercent,
@@ -44,6 +51,7 @@ export const CreateProjectPage: React.FC = () => {
   const [completionDate, setCompletionDate] = useState('');
   const [autosavedTime, setAutosavedTime] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
 
   const toggleTag = (slug: string) => {
@@ -97,19 +105,34 @@ export const CreateProjectPage: React.FC = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       showAnimatedToast('Project submitted for Super Admin review!', 'success');
-      navigate('/member/projects');
+      setShowSuccessOverlay(true);
     }, 600);
   };
 
   const progressPct = getStepProgressPercent(step, STEPS.length);
+  const categoryOptions = [
+    { value: 'general', label: 'General Engineering' },
+    ...mockCategories.map((c) => ({ value: c.id, label: c.name_en })),
+  ];
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
+      <AnimatePresence>
+        {showSuccessOverlay && (
+          <SubmissionSuccess
+            onDone={() => {
+              setShowSuccessOverlay(false);
+              navigate('/member/projects');
+            }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Top Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[var(--text)]">
-            Create New Project
+            <ScrambleText text="Create New Project" />
           </h1>
           <p className="text-xs text-[var(--text-muted)] mt-1">
             Fill in deliverable details. Project stays in Draft until you submit it for Super Admin review.
@@ -209,69 +232,48 @@ export const CreateProjectPage: React.FC = () => {
               <h3 className="text-sm font-bold text-[var(--text)]">1. Basics & Category</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label htmlFor="proj-title-en" className="text-xs font-semibold text-[var(--text)]">
-                    Project Title (English) *
-                  </label>
-                  <input
-                    id="proj-title-en"
-                    type="text"
-                    required
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="e.g. Lumina SaaS Analytics"
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
+                <PremiumInput
+                  id="proj-title-en"
+                  label="Project Title (English) *"
+                  type="text"
+                  required
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="e.g. Lumina SaaS Analytics"
+                />
 
-                <div className="space-y-1">
-                  <label htmlFor="proj-title-ur" className="text-xs font-semibold text-[var(--text)]">
-                    Project Title (Urdu - اختیاری)
-                  </label>
-                  <input
-                    id="proj-title-ur"
-                    type="text"
-                    dir="rtl"
-                    value={titleUr}
-                    onChange={(e) => setTitleUr(e.target.value)}
-                    placeholder="مثال: لومینا اینالیٹکس پورٹل"
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none focus:ring-2 focus:ring-indigo-500 font-urdu"
-                  />
-                </div>
+                <PremiumInput
+                  id="proj-title-ur"
+                  label="Project Title (Urdu - اختیاری)"
+                  type="text"
+                  dir="rtl"
+                  value={titleUr}
+                  onChange={(e) => setTitleUr(e.target.value)}
+                  placeholder="مثال: لومینا اینالیٹکس پورٹل"
+                  className="font-urdu"
+                />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label htmlFor="proj-category" className="text-xs font-semibold text-[var(--text)]">
+                  <label htmlFor="proj-category" className="text-xs font-semibold text-[var(--text)] block">
                     Category *
                   </label>
-                  <select
+                  <AnimatedSelect
                     id="proj-category"
+                    options={categoryOptions}
                     value={categoryId}
-                    onChange={(e) => setCategoryId(e.target.value)}
-                    className="w-full text-xs px-3 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none font-medium"
-                  >
-                    <option value="general">General Engineering</option>
-                    {mockCategories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name_en}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label htmlFor="proj-date" className="text-xs font-semibold text-[var(--text)]">
-                    Completion Date
-                  </label>
-                  <input
-                    id="proj-date"
-                    type="date"
-                    value={completionDate}
-                    onChange={(e) => setCompletionDate(e.target.value)}
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none"
+                    onChange={setCategoryId}
                   />
                 </div>
+
+                <PremiumInput
+                  id="proj-date"
+                  label="Completion Date"
+                  type="date"
+                  value={completionDate}
+                  onChange={(e) => setCompletionDate(e.target.value)}
+                />
               </div>
             </motion.div>
           )}
@@ -288,37 +290,30 @@ export const CreateProjectPage: React.FC = () => {
               <h3 className="text-sm font-bold text-[var(--text)]">2. Descriptions</h3>
 
               <div className="space-y-1">
-                <label htmlFor="proj-short-desc" className="text-xs font-semibold text-[var(--text)]">
-                  Short Description (Max 200 chars) *
-                </label>
-                <input
+                <PremiumInput
                   id="proj-short-desc"
+                  label="Short Description (Max 200 chars) *"
                   type="text"
                   required
                   maxLength={200}
                   value={shortDesc}
                   onChange={(e) => setShortDesc(e.target.value)}
                   placeholder="Brief summary displayed on project cards"
-                  className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <div className="text-[10px] text-end text-[var(--text-muted)]">
                   {shortDesc.length}/200
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label htmlFor="proj-full-desc" className="text-xs font-semibold text-[var(--text)]">
-                  Full Project Case Study & Architecture
-                </label>
-                <textarea
-                  id="proj-full-desc"
-                  rows={5}
-                  value={fullDesc}
-                  onChange={(e) => setFullDesc(e.target.value)}
-                  placeholder="Describe technical implementation, benchmarks, and deliverables..."
-                  className="w-full text-xs p-3.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+              <PremiumInput
+                id="proj-full-desc"
+                label="Full Project Case Study & Architecture"
+                multiline
+                rows={5}
+                value={fullDesc}
+                onChange={(e) => setFullDesc(e.target.value)}
+                placeholder="Describe technical implementation, benchmarks, and deliverables..."
+              />
             </motion.div>
           )}
 
@@ -334,33 +329,23 @@ export const CreateProjectPage: React.FC = () => {
               <h3 className="text-sm font-bold text-[var(--text)]">3. Artifact Links & Tech Tags</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label htmlFor="proj-web-url" className="text-xs font-semibold text-[var(--text)]">
-                    Production Website URL
-                  </label>
-                  <input
-                    id="proj-web-url"
-                    type="url"
-                    value={websiteUrl}
-                    onChange={(e) => setWebsiteUrl(e.target.value)}
-                    placeholder="https://example.com"
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none"
-                  />
-                </div>
+                <PremiumInput
+                  id="proj-web-url"
+                  label="Production Website URL"
+                  type="url"
+                  value={websiteUrl}
+                  onChange={(e) => setWebsiteUrl(e.target.value)}
+                  placeholder="https://example.com"
+                />
 
-                <div className="space-y-1">
-                  <label htmlFor="proj-github-url" className="text-xs font-semibold text-[var(--text)]">
-                    GitHub Repository
-                  </label>
-                  <input
-                    id="proj-github-url"
-                    type="url"
-                    value={githubUrl}
-                    onChange={(e) => setGithubUrl(e.target.value)}
-                    placeholder="https://github.com/org/repo"
-                    className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none"
-                  />
-                </div>
+                <PremiumInput
+                  id="proj-github-url"
+                  label="GitHub Repository"
+                  type="url"
+                  value={githubUrl}
+                  onChange={(e) => setGithubUrl(e.target.value)}
+                  placeholder="https://github.com/org/repo"
+                />
               </div>
 
               <div className="space-y-2">
@@ -429,7 +414,7 @@ export const CreateProjectPage: React.FC = () => {
               <ArrowRight className="w-4 h-4 rtl:-scale-x-100" />
             </AnimatedButton>
           ) : (
-            <AnimatedButton
+            <MagneticButton
               type="submit"
               disabled={isSubmitting}
               className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md transition flex items-center gap-2"
@@ -442,7 +427,7 @@ export const CreateProjectPage: React.FC = () => {
                   <ArrowRight className="w-4 h-4 rtl:-scale-x-100" />
                 </>
               )}
-            </AnimatedButton>
+            </MagneticButton>
           )}
         </div>
       </form>

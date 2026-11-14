@@ -5,6 +5,11 @@ import { useGSAP } from '@gsap/react';
 import { motion } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { AnimatedCard, RevealSection } from '../../components/ui/MotionPrimitives';
+import {
+  ScrambleText,
+  WordReveal,
+  MaskReveal,
+} from '../../frontend/components/animations';
 import { EASINGS, useDeviceMotionPrefs } from '../../frontend/lib/animations';
 import { ShieldCheck, Award, Users, Target, Compass, Sparkles, GitBranch } from 'lucide-react';
 
@@ -75,20 +80,23 @@ export const AboutPage: React.FC = () => {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       <RevealSection className="text-center max-w-3xl mx-auto space-y-3">
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text)]">
-          {config.about_heading || 'About Inspire Academy'}
+          <ScrambleText text={config.about_heading || 'About Inspire Academy'} />
         </h1>
         <p className="text-sm text-[var(--text-muted)] leading-relaxed">
           Pioneering technical education, digital craftsmanship, and faculty-governed engineering.
         </p>
       </RevealSection>
 
-      <RevealSection className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 sm:p-12 space-y-8 shadow-sm">
+      <MaskReveal className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 sm:p-12 space-y-8 shadow-sm">
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider">
             <Sparkles className="w-4 h-4" />
             <span>Academic Philosophy</span>
           </div>
-          <h2 className="text-xl font-bold text-[var(--text)]">Our Vision & Core Mandate</h2>
+          <WordReveal
+            text="Our Vision & Core Mandate"
+            className="text-xl font-bold text-[var(--text)]"
+          />
           <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed whitespace-pre-line">
             {config.about_full_text ||
               'Inspire Academy operates as an elite digital institute dedicated to turning emerging engineers, designers, and marketers into world-class practitioners. Unlike standard portfolio sites where members self-publish unchecked work, Inspire Team enforces an iron-clad faculty approval workflow: every piece of public portfolio code, design token, or media is supervised, tested, and approved by the Super Admin.'}
@@ -164,7 +172,7 @@ export const AboutPage: React.FC = () => {
             </p>
           </AnimatedCard>
         </div>
-      </RevealSection>
+      </MaskReveal>
 
       {/* GSAP ScrollTrigger Governance Timeline */}
       <div

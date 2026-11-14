@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { AnimatedButton, RevealSection } from '../ui/MotionPrimitives';
+import { GradientText, PremiumTooltip } from '../../frontend/components/animations';
 import { DURATIONS, EASINGS } from '../../frontend/lib/animations';
 import {
   Globe,
@@ -95,16 +96,17 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
           {/* Back navigation */}
-          <AnimatedButton
-            type="button"
-            onClick={handleBack}
-            title="Go back"
-            aria-label="Go back"
-            className="shrink-0 inline-flex items-center justify-center gap-1.5 p-2 rounded-lg border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] transition"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline text-xs font-semibold">Back</span>
-          </AnimatedButton>
+          <PremiumTooltip tip="Go back">
+            <AnimatedButton
+              type="button"
+              onClick={handleBack}
+              aria-label="Go back"
+              className="shrink-0 inline-flex items-center justify-center gap-1.5 p-2 rounded-lg border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] transition"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden sm:inline text-xs font-semibold">Back</span>
+            </AnimatedButton>
+          </PremiumTooltip>
 
           {/* Logo & Brand */}
           <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0 flex-1 md:flex-initial">
@@ -130,11 +132,8 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
               </motion.div>
             )}
             <div className="min-w-0">
-              <div
-                className="font-extrabold text-base sm:text-lg tracking-tight truncate"
-                style={{ color: config.color_primary || 'var(--text)' }}
-              >
-                {config.site_name || 'INSPIRE ACADEMY'}
+              <div className="font-extrabold text-base sm:text-lg tracking-tight truncate">
+                <GradientText>{config.site_name || 'INSPIRE ACADEMY'}</GradientText>
               </div>
               <div className="hidden sm:block text-[10px] uppercase tracking-wider text-[var(--text-muted)] font-medium truncate">
                 {config.site_tagline || 'Digital Academy Team'}
@@ -178,49 +177,52 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
           {/* Right Controls: Language & Theme ONLY (NO admin button/hint) */}
           <div className="flex items-center gap-2 shrink-0">
-            <AnimatedButton
-              type="button"
-              onClick={() => setLang(lang === 'en' ? 'ur' : 'en')}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-[var(--border)] hover:bg-[var(--surface-2)] transition"
-              title="Toggle English / اردو"
-              aria-label="Toggle language"
-            >
-              <Globe className="w-3.5 h-3.5 text-indigo-500" />
-              <span>{lang === 'en' ? 'اردو' : 'English'}</span>
-            </AnimatedButton>
+            <PremiumTooltip tip={lang === 'en' ? 'Switch to Urdu (اردو)' : 'Switch to English'}>
+              <AnimatedButton
+                type="button"
+                onClick={() => setLang(lang === 'en' ? 'ur' : 'en')}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-[var(--border)] hover:bg-[var(--surface-2)] transition"
+                aria-label="Toggle language"
+              >
+                <Globe className="w-3.5 h-3.5 text-indigo-500" />
+                <span>{lang === 'en' ? 'اردو' : 'English'}</span>
+              </AnimatedButton>
+            </PremiumTooltip>
 
-            <AnimatedButton
-              type="button"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-lg border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] transition"
-              aria-label="Toggle theme"
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                {theme === 'dark' ? (
-                  <motion.span
-                    key="sun"
-                    initial={{ rotate: -60, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 60, opacity: 0 }}
-                    transition={{ duration: 0.18 }}
-                    className="block"
-                  >
-                    <Sun className="w-4 h-4 text-amber-400" />
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    key="moon"
-                    initial={{ rotate: 60, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -60, opacity: 0 }}
-                    transition={{ duration: 0.18 }}
-                    className="block"
-                  >
-                    <Moon className="w-4 h-4 text-slate-600" />
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </AnimatedButton>
+            <PremiumTooltip tip={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+              <AnimatedButton
+                type="button"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="p-2 rounded-lg border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] transition"
+                aria-label="Toggle theme"
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {theme === 'dark' ? (
+                    <motion.span
+                      key="sun"
+                      initial={{ rotate: -60, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 60, opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="block"
+                    >
+                      <Sun className="w-4 h-4 text-amber-400" />
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="moon"
+                      initial={{ rotate: 60, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -60, opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="block"
+                    >
+                      <Moon className="w-4 h-4 text-slate-600" />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </AnimatedButton>
+            </PremiumTooltip>
 
             <AnimatedButton
               type="button"

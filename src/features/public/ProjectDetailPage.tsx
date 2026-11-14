@@ -9,6 +9,7 @@ import {
   RevealSection,
   showAnimatedToast,
 } from '../../components/ui/MotionPrimitives';
+import { ScrambleText, MaskReveal } from '../../frontend/components/animations';
 import { staggerContainer, scaleIn, EASINGS } from '../../frontend/lib/animations';
 import { mockPublishedProjects, mockMemberProfiles } from '../../services/demo/data';
 import {
@@ -22,17 +23,43 @@ import {
 } from 'lucide-react';
 import { safeUrl, formatDate } from '../../lib/format';
 
-export const ProjectDetailPage: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const { lang } = useApp();
+const ParallaxHeroCover: React.FC<{
+  src: string;
+  alt: string;
+  onExpand: () => void;
+}> = ({ src, alt, onExpand }) => {
   const coverRef = useRef<HTMLDivElement>(null);
-  const [lightboxImage, setLightboxImage] = useState<{ src?: string; alt: string } | null>(null);
-
   const { scrollYProgress } = useScroll({
     target: coverRef,
     offset: ['start end', 'end start'],
   });
   const parallaxY = useTransform(scrollYProgress, [0, 1], ['-4%', '4%']);
+
+  return (
+    <div
+      ref={coverRef}
+      className="relative rounded-3xl overflow-hidden border border-[var(--border)] shadow-xl group cursor-zoom-in"
+    >
+      <motion.div style={{ y: parallaxY }}>
+        <ImageSlot src={src} alt={alt} aspect="16/10" fallbackText={alt} />
+      </motion.div>
+      <button
+        type="button"
+        onClick={onExpand}
+        aria-label="Inspect full-screen cover"
+        className="absolute bottom-4 right-4 p-2.5 rounded-xl bg-slate-950/75 text-white opacity-0 group-hover:opacity-100 transition flex items-center gap-1.5 text-xs font-semibold backdrop-blur-sm cursor-pointer"
+      >
+        <Maximize2 className="w-3.5 h-3.5" />
+        <span>Expand</span>
+      </button>
+    </div>
+  );
+};
+
+export const ProjectDetailPage: React.FC = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const { lang } = useApp();
+  const [lightboxImage, setLightboxImage] = useState<{ src?: string; alt: string } | null>(null);
 
   const project = mockPublishedProjects.find((p) => p.slug === slug);
 
@@ -81,7 +108,7 @@ export const ProjectDetailPage: React.FC = () => {
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[var(--text)]">
-          {lang === 'ur' && project.title_ur ? project.title_ur : project.title}
+          <ScrambleText text={lang === 'ur' && project.title_ur ? project.title_ur : project.title} />
         </h1>
 
         <p className="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed max-w-4xl">
@@ -89,38 +116,21 @@ export const ProjectDetailPage: React.FC = () => {
         </p>
 
         {/* Parallax Hero Cover with Click-to-Lightbox */}
-        <div
-          ref={coverRef}
-          className="relative rounded-3xl overflow-hidden border border-[var(--border)] shadow-xl group cursor-zoom-in"
-        >
-          <motion.div style={{ y: parallaxY }}>
-            <ImageSlot
-              src={project.cover_public_path}
-              alt={project.title}
-              aspect="16/10"
-              fallbackText={project.title}
-            />
-          </motion.div>
-          <button
-            type="button"
-            onClick={() =>
-              setLightboxImage({ src: project.cover_public_path, alt: project.title })
-            }
-            aria-label="Inspect full-screen cover"
-            className="absolute bottom-4 right-4 p-2.5 rounded-xl bg-slate-950/75 text-white opacity-0 group-hover:opacity-100 transition flex items-center gap-1.5 text-xs font-semibold backdrop-blur-sm cursor-pointer"
-          >
-            <Maximize2 className="w-3.5 h-3.5" />
-            <span>Expand</span>
-          </button>
-        </div>
+        <ParallaxHeroCover
+          src={project.cover_public_path}
+          alt={project.title}
+          onExpand={() =>
+            setLightboxImage({ src: project.cover_public_path, alt: project.title })
+          }
+        />
       </div>
 
       {/* Content Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2 space-y-8">
-          <RevealSection className="prose dark:prose-invert max-w-none text-sm leading-relaxed text-[var(--text)] whitespace-pre-line">
+          <MaskReveal className="prose dark:prose-invert max-w-none text-sm leading-relaxed text-[var(--text)] whitespace-pre-line">
             {lang === 'ur' && project.full_description_ur ? project.full_description_ur : project.full_description}
-          </RevealSection>
+          </MaskReveal>
 
           {/* Project Gallery with Lightbox */}
           {project.gallery.length > 0 && (

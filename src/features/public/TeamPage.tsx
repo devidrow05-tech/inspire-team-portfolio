@@ -40,7 +40,7 @@ export const TeamPage: React.FC = () => {
             <ScrambleText text={t('nav.team')} />
           </h1>
           <p className="text-sm text-[var(--text-muted)] leading-relaxed">
-            Meet the verified specialists, software engineers, and product designers leading technical workflows at Inspire Academy.
+            Meet the verified specialists, software engineers, and product designers leading technical workflows at Inspire.
           </p>
         </div>
 

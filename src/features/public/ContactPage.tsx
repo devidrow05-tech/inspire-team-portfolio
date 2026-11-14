@@ -44,7 +44,8 @@ export const ContactPage: React.FC = () => {
     }, 550);
   };
 
-  const cleanWhatsapp = (config.whatsapp_number || '+923001234567').replace(/[^0-9]/g, '');
+  const contactNumber = '03093534289';
+  const cleanWhatsapp = '923093534289';
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
@@ -80,14 +81,14 @@ export const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              {config.contact_phone && (
+              {true && (
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
                     <div className="font-semibold text-[var(--text)]">Direct Campus Hotline</div>
-                    <div className="text-[var(--text-muted)] mt-0.5">{config.contact_phone}</div>
+                    <a href="tel:+923093534289" className="text-[var(--text-muted)] mt-0.5 hover:text-indigo-600 transition-colors">{contactNumber}</a>
                   </div>
                 </div>
               )}
@@ -106,7 +107,7 @@ export const ContactPage: React.FC = () => {
             </div>
           </AnimatedCard>
 
-          {config.whatsapp_number && (
+          {true && (
             <AnimatedCard className="rounded-2xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/50 dark:bg-emerald-950/30 p-6 space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow">
@@ -117,7 +118,7 @@ export const ContactPage: React.FC = () => {
                     Instant WhatsApp Support
                   </h4>
                   <p className="text-xs text-emerald-700 dark:text-emerald-400">
-                    Direct line: {config.whatsapp_number}
+                    Direct line: {contactNumber}
                   </p>
                 </div>
               </div>

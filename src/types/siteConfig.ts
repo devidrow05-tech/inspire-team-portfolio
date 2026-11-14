@@ -233,7 +233,7 @@ export const defaultSiteConfig: SiteConfig = {
   contact_heading: 'Connect with Inspire',
   contact_subheading: 'Reach out for corporate project consultations, academic programs, or technical team inquiries.',
   contact_email: 'contact@inspireacademy.edu',
-  contact_phone: '+92 (0) 42 3578 9900',
+  contact_phone: '03093534289',
   contact_address: 'Inspire Digital Campus, Tech Avenue, Lahore, Pakistan',
   contact_form_enabled: true,
   contact_fields: {
@@ -244,7 +244,7 @@ export const defaultSiteConfig: SiteConfig = {
     message: true,
   },
   contact_submission_email: 'admin@inspireacademy.edu',
-  whatsapp_number: '+923001234567',
+  whatsapp_number: '+923093534289',
 
   footer_tagline: 'The premier digital showcase and project operations platform of Inspire. Curated, reviewed, and published by faculty leadership.',
   footer_copyright: '© 2026 Inspire Team Hub. All Rights Reserved.',

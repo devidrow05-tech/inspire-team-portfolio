@@ -25,6 +25,7 @@ import {
   Sparkles,
   ArrowLeft,
   Home,
+  Mail,
   PanelLeftClose,
   PanelLeftOpen,
 } from 'lucide-react';
@@ -84,42 +85,26 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
   const navGroups: NavGroup[] = [
     {
-      title: 'OVERVIEW',
+      title: 'MAIN',
       items: [
         { label: 'Dashboard', path: '/admin', icon: LayoutDashboard, end: true },
+        { label: 'Contact Inbox', path: '/admin/messages', icon: Mail },
       ],
     },
     {
-      title: 'CONTENT & CMS',
+      title: 'WEBSITE',
       items: [
         { label: 'Website Editor', path: '/admin/website', icon: Globe },
-        { label: 'Branding & Appearance', path: '/admin/branding', icon: Palette },
+        { label: 'Branding', path: '/admin/branding', icon: Palette },
         { label: 'SEO Settings', path: '/admin/seo', icon: Search },
+        { label: 'Website Settings', path: '/admin/settings', icon: Settings },
       ],
     },
     {
-      title: 'TEAM & TASKS',
+      title: 'PORTFOLIO',
       items: [
         { label: 'Team Members', path: '/admin/members', icon: Users },
         { label: 'Portfolio Projects', path: '/admin/projects', icon: FolderArchive },
-        { label: 'Assignments', path: '/admin/assignments', icon: Briefcase, badge: '2' },
-      ],
-    },
-    {
-      title: 'PROJECT WORKFLOW',
-      items: [
-        { label: 'Published Work', path: '/admin/projects/published', icon: FolderArchive },
-      ],
-    },
-    {
-      title: 'SYSTEM & LOGS',
-      items: [
-        { label: 'File Manager', path: '/admin/files', icon: FolderOpen },
-        { label: 'Categories & Tags', path: '/admin/categories', icon: Tag },
-        { label: 'Notifications', path: '/admin/notifications', icon: Bell },
-        { label: 'Analytics & KPIs', path: '/admin/analytics', icon: BarChart3 },
-        { label: 'Audit Log', path: '/admin/logs', icon: ScrollText },
-        { label: 'Website Settings', path: '/admin/settings', icon: Settings },
       ],
     },
   ];

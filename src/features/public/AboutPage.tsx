@@ -80,7 +80,7 @@ export const AboutPage: React.FC = () => {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       <RevealSection className="text-center max-w-3xl mx-auto space-y-3">
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text)]">
-          <ScrambleText text={config.about_heading || 'About Inspire Academy'} />
+          <ScrambleText text={config.about_heading || 'About Inspire'} />
         </h1>
         <p className="text-sm text-[var(--text-muted)] leading-relaxed">
           Pioneering technical education, digital craftsmanship, and faculty-governed engineering.
@@ -99,7 +99,7 @@ export const AboutPage: React.FC = () => {
           />
           <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed whitespace-pre-line">
             {config.about_full_text ||
-              'Inspire Academy operates as an elite digital institute dedicated to turning emerging engineers, designers, and marketers into world-class practitioners. Unlike standard portfolio sites where members self-publish unchecked work, Inspire Team enforces an iron-clad faculty approval workflow: every piece of public portfolio code, design token, or media is supervised, tested, and approved by the Super Admin.'}
+              'Inspire operates as an elite digital institute dedicated to turning emerging engineers, designers, and marketers into world-class practitioners. Unlike standard portfolio sites where members self-publish unchecked work, Inspire Team enforces an iron-clad faculty approval workflow: every piece of public portfolio code, design token, or media is supervised, tested, and approved by the Super Admin.'}
           </p>
         </div>
 

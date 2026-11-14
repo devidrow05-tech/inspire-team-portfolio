@@ -39,53 +39,71 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="space-y-16 sm:space-y-24 pb-20">
-      {/* 1A Hero Section - Controlled completely by CMS */}
+      {/* 1A Hero Section - CMS content with a visual showcase */}
       {config.hero_visible !== false && (
-        <section className="relative overflow-hidden pt-12 sm:pt-20 pb-16 px-4 sm:px-6 lg:px-8 border-b border-[var(--border)] bg-gradient-to-b from-indigo-50/50 via-[var(--bg)] to-[var(--bg)] dark:from-indigo-950/20">
-          <div className="max-w-5xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-xs font-semibold tracking-wide">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{config.hero_badge || t('hero.badge')}</span>
+        <section className="inspire-hero relative isolate overflow-hidden border-b border-[var(--border)]">
+          <div className="inspire-hero-glow inspire-hero-glow-one" aria-hidden="true" />
+          <div className="inspire-hero-glow inspire-hero-glow-two" aria-hidden="true" />
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24 grid lg:grid-cols-[1.02fr_0.98fr] items-center gap-12 lg:gap-8">
+            <div className="max-w-2xl text-center lg:text-left rtl:lg:text-right mx-auto lg:mx-0 space-y-6">
+              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs font-bold tracking-wide shadow-sm">
+                <Sparkles className="w-4 h-4" />
+                <span>{config.hero_badge || t('hero.badge')}</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" />
+              </div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight text-[var(--text)] leading-[1.08]">
+                {config.hero_heading || t('hero.title')}
+              </h1>
+              <p className="max-w-xl mx-auto lg:mx-0 text-base sm:text-lg text-[var(--text-muted)] leading-relaxed">
+                {config.hero_subheading || t('hero.subtitle')}
+              </p>
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
+                <Link to={config.hero_btn1_link || '/projects'} className="group inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-6 py-3.5 rounded-xl shadow-xl shadow-indigo-600/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-indigo-600/40">
+                  <span>{config.hero_btn1_text || t('hero.ctaProjects')}</span>
+                  <ArrowRight className="w-4 h-4 rtl:-scale-x-100 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+                </Link>
+                <Link to={config.hero_btn2_link || '/contact'} className="inline-flex items-center gap-2 bg-[var(--surface)]/80 hover:bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] font-bold text-sm px-6 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-1">
+                  <span>{config.hero_btn2_text || t('hero.ctaContact')}</span>
+                </Link>
+              </div>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-x-5 gap-y-2 pt-2 text-xs font-semibold text-[var(--text-muted)]">
+                <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-teal-500" /> Real student work</span>
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-indigo-500" /> Reviewed showcases</span>
+              </div>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[var(--text)] leading-tight sm:leading-tight">
-              {config.hero_heading || t('hero.title')}
-            </h1>
-
-            <p className="max-w-3xl mx-auto text-base sm:text-lg text-[var(--text-muted)] leading-relaxed font-normal">
-              {config.hero_subheading || t('hero.subtitle')}
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-              <Link
-                to={config.hero_btn1_link || '/projects'}
-                className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-lg shadow-indigo-600/25 transition-transform hover:-translate-y-0.5"
-              >
-                <span>{config.hero_btn1_text || t('hero.ctaProjects')}</span>
-                <ArrowRight className="w-4 h-4 rtl:-scale-x-100" />
-              </Link>
-              <Link
-                to={config.hero_btn2_link || '/contact'}
-                className="inline-flex items-center gap-2 bg-[var(--surface)] hover:bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] font-semibold text-sm px-6 py-3 rounded-xl transition"
-              >
-                <span>{config.hero_btn2_text || t('hero.ctaContact')}</span>
-              </Link>
+            <div className="inspire-hero-art relative w-full max-w-[560px] mx-auto h-[330px] sm:h-[430px] lg:h-[480px]" aria-label="A visual collage representing creative technology projects">
+              <div className="absolute inset-[8%] rounded-[2rem] bg-gradient-to-br from-indigo-500/15 via-violet-500/10 to-teal-400/15 blur-2xl" />
+              <div className="inspire-orbit absolute inset-[7%] rounded-full border border-indigo-400/20" />
+              <div className="inspire-orbit inspire-orbit-two absolute inset-[18%] rounded-full border border-teal-400/20" />
+              <div className="inspire-poster inspire-poster-main absolute left-[20%] top-[9%] w-[58%] h-[76%] rounded-[1.6rem] overflow-hidden border border-white/30 shadow-2xl bg-gradient-to-br from-[#172554] via-[#4338ca] to-[#0f766e] p-5 sm:p-7 flex flex-col justify-between text-white">
+                <div className="absolute -right-12 -top-10 w-48 h-48 rounded-full border-[26px] border-white/10" />
+                <div className="absolute right-5 top-20 w-20 h-20 rounded-3xl rotate-12 bg-teal-300/20 backdrop-blur-sm border border-white/20" />
+                <div className="relative flex items-center justify-between text-[10px] sm:text-xs font-bold tracking-[.22em] uppercase text-white/75"><span>INSPIRE / LAB</span><Sparkles className="w-5 h-5" /></div>
+                <div className="relative space-y-2 sm:space-y-3">
+                  <div className="text-[10px] sm:text-xs uppercase tracking-[.25em] text-teal-200 font-bold">Ideas into impact</div>
+                  <div className="text-3xl sm:text-5xl font-black leading-[.98] tracking-tight">CREATE.<br/>BUILD.<br/><span className="text-teal-200">INSPIRE.</span></div>
+                  <div className="h-1 w-14 rounded-full bg-teal-300" />
+                  <p className="text-[10px] sm:text-xs text-white/75 max-w-[190px]">A showcase of curious minds and bold digital work.</p>
+                </div>
+                <div className="relative flex items-center justify-between text-[9px] sm:text-[10px] tracking-widest text-white/60"><span>DESIGN · CODE · FUTURE</span><span>01 — 03</span></div>
+              </div>
+              <div className="inspire-float inspire-float-left absolute left-0 top-[25%] w-[34%] h-[37%] rounded-2xl border border-white/40 dark:border-white/10 bg-gradient-to-br from-amber-300 to-orange-500 shadow-2xl p-3 sm:p-4 text-slate-950 rotate-[-9deg]">
+                <div className="text-[9px] sm:text-[10px] font-black tracking-[.18em]">DESIGN STUDIO</div><div className="mt-4 sm:mt-6 text-xl sm:text-3xl font-black leading-none">Think<br/>different<span className="text-white">.</span></div><div className="mt-3 w-8 h-1 bg-slate-950 rounded-full" />
+              </div>
+              <div className="inspire-float inspire-float-right absolute right-0 top-[48%] w-[33%] h-[36%] rounded-2xl border border-white/30 shadow-2xl p-3 sm:p-4 text-white rotate-[8deg] bg-gradient-to-br from-fuchsia-600 via-violet-600 to-indigo-800">
+                <div className="flex items-center justify-between"><Code2 className="w-5 h-5"/><span className="text-[9px] font-bold tracking-widest">DEV / 24</span></div><div className="mt-5 sm:mt-7 text-xl sm:text-3xl font-black leading-none">Build<br/>what's<br/>next.</div><div className="mt-3 flex gap-1"><i className="w-5 h-1 rounded-full bg-teal-300"/><i className="w-2 h-1 rounded-full bg-white/60"/><i className="w-2 h-1 rounded-full bg-white/60"/></div>
+              </div>
+              <div className="absolute left-[17%] bottom-[1%] rounded-2xl border border-[var(--border)] bg-[var(--surface)]/90 backdrop-blur-xl shadow-xl px-3.5 py-3 flex items-center gap-3 inspire-float-badge">
+                <div className="w-9 h-9 rounded-xl bg-teal-500/15 text-teal-600 dark:text-teal-300 flex items-center justify-center"><Award className="w-5 h-5"/></div><div><div className="text-xs font-extrabold text-[var(--text)]">Made to stand out</div><div className="text-[10px] text-[var(--text-muted)]">Student creativity, on display</div></div>
+              </div>
+              <div className="absolute right-[13%] top-[5%] w-3 h-3 rounded-full bg-teal-400 shadow-[0_0_24px_8px_rgba(45,212,191,.35)] animate-pulse" />
             </div>
 
-            {/* Live counts only; no sample metrics */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-10 border-t border-[var(--border)]/70 max-w-4xl mx-auto">
-              <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">{mockPublishedProjects.length}</div>
-                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">Projects published</div>
-              </div>
-              <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-teal-600 dark:text-teal-400">{mockCategories.length}</div>
-                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">Categories added</div>
-              </div>
-              <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">{mockMemberProfiles.length}</div>
-                <div className="text-xs text-[var(--text-muted)] font-medium mt-1">Team members</div>
-              </div>
+            <div className="lg:col-span-2 grid grid-cols-3 gap-2 sm:gap-4 pt-7 border-t border-[var(--border)]/80 max-w-4xl w-full mx-auto">
+              <div className="text-center p-3 sm:p-4 rounded-2xl bg-[var(--surface)]/70 border border-[var(--border)] backdrop-blur-sm"><div className="text-2xl sm:text-3xl font-black text-indigo-600 dark:text-indigo-400">{mockPublishedProjects.length}</div><div className="text-[10px] sm:text-xs text-[var(--text-muted)] font-semibold mt-1">Projects published</div></div>
+              <div className="text-center p-3 sm:p-4 rounded-2xl bg-[var(--surface)]/70 border border-[var(--border)] backdrop-blur-sm"><div className="text-2xl sm:text-3xl font-black text-teal-600 dark:text-teal-400">{mockCategories.length}</div><div className="text-[10px] sm:text-xs text-[var(--text-muted)] font-semibold mt-1">Categories added</div></div>
+              <div className="text-center p-3 sm:p-4 rounded-2xl bg-[var(--surface)]/70 border border-[var(--border)] backdrop-blur-sm"><div className="text-2xl sm:text-3xl font-black text-indigo-600 dark:text-indigo-400">{mockMemberProfiles.length}</div><div className="text-[10px] sm:text-xs text-[var(--text-muted)] font-semibold mt-1">Team members</div></div>
             </div>
           </div>
         </section>

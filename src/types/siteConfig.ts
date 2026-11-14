@@ -134,7 +134,7 @@ export interface SiteConfig {
 }
 
 export const defaultSiteConfig: SiteConfig = {
-  site_name: 'Inspire Academy',
+  site_name: 'Inspire',
   site_tagline: 'Professional Digital Team & Academy Portfolio',
   logo_url: '',
   favicon_url: '',
@@ -155,7 +155,7 @@ export const defaultSiteConfig: SiteConfig = {
   hero_visible: true,
   hero_badge: 'Official Academy Digital Team',
   hero_heading: 'Digital Excellence, Delivered.',
-  hero_subheading: 'A private-plus-public operations and showcase platform. Every project is assigned, rigorously reviewed, and curated by Inspire Academy leadership before public showcase.',
+  hero_subheading: 'A private-plus-public operations and showcase platform. Every project is assigned, rigorously reviewed, and curated by Inspire leadership before public showcase.',
   hero_btn1_text: 'Explore Our Team',
   hero_btn1_link: '/team',
   hero_btn2_text: 'Get in Touch',
@@ -195,7 +195,7 @@ export const defaultSiteConfig: SiteConfig = {
 
   about_preview_visible: true,
   about_preview_heading: 'Academic Rigor Meets Real-World Craft',
-  about_preview_text: 'Inspire Academy bridges high-end technical training with disciplined production standards. Every project is quality audited before release.',
+  about_preview_text: 'Inspire bridges high-end technical training with disciplined production standards. Every project is quality audited before release.',
   about_preview_image: '',
 
   cta_visible: true,
@@ -204,8 +204,8 @@ export const defaultSiteConfig: SiteConfig = {
   cta_btn_text: 'Contact Us Today',
   cta_btn_link: '/contact',
 
-  about_heading: 'About Inspire Academy',
-  about_full_text: 'Inspire Academy operates as an elite digital institute dedicated to turning emerging engineers, designers, and marketers into world-class practitioners. Unlike standard portfolio sites where members self-publish unchecked work, Inspire Team enforces an iron-clad faculty approval workflow: every piece of public portfolio code, design token, or media is supervised, tested, and approved by the Super Admin.',
+  about_heading: 'About Inspire',
+  about_full_text: 'Inspire operates as an elite digital institute dedicated to turning emerging engineers, designers, and marketers into world-class practitioners. Unlike standard portfolio sites where members self-publish unchecked work, Inspire Team enforces an iron-clad faculty approval workflow: every piece of public portfolio code, design token, or media is supervised, tested, and approved by the Super Admin.',
   about_banner_image: '',
   about_mission: 'To cultivate world-class software engineers, designers, and digital architects through rigorous real-world client-grade deliverables.',
   about_vision: 'A unified digital operations ecosystem where quality is guaranteed, transparency is absolute, and excellence is verifiable.',
@@ -230,7 +230,7 @@ export const defaultSiteConfig: SiteConfig = {
     },
   ],
 
-  contact_heading: 'Connect with Inspire Academy',
+  contact_heading: 'Connect with Inspire',
   contact_subheading: 'Reach out for corporate project consultations, academic programs, or technical team inquiries.',
   contact_email: 'contact@inspireacademy.edu',
   contact_phone: '+92 (0) 42 3578 9900',
@@ -246,12 +246,12 @@ export const defaultSiteConfig: SiteConfig = {
   contact_submission_email: 'admin@inspireacademy.edu',
   whatsapp_number: '+923001234567',
 
-  footer_tagline: 'The premier digital showcase and project operations platform of Inspire Academy. Curated, reviewed, and published by faculty leadership.',
-  footer_copyright: '© 2026 Inspire Academy Team Hub. All Rights Reserved.',
+  footer_tagline: 'The premier digital showcase and project operations platform of Inspire. Curated, reviewed, and published by faculty leadership.',
+  footer_copyright: '© 2026 Inspire Team Hub. All Rights Reserved.',
   footer_nav_links: [
     { label: 'Academy Specialists', url: '/team' },
     { label: 'Disciplines & Domains', url: '/categories' },
-    { label: 'About Inspire Academy', url: '/about' },
+    { label: 'About Inspire', url: '/about' },
   ],
   social_links: {
     github: { enabled: true, url: 'https://github.com/inspire-team' },
@@ -270,38 +270,38 @@ export const defaultSiteConfig: SiteConfig = {
     { id: 'nav-6', label: 'Contact Us', path: '/contact', enabled: true },
   ],
 
-  seo_default_title: 'Inspire Academy — Digital Team Portfolio & Operations Hub',
-  seo_default_description: 'Discover curated, audited projects and certified engineers from Inspire Academy.',
+  seo_default_title: 'Inspire — Digital Team Portfolio & Operations Hub',
+  seo_default_description: 'Discover curated, audited projects and certified engineers from Inspire.',
   seo_default_og_image: '',
   google_analytics_id: '',
   google_search_console_code: '',
   seo_pages: {
     home: {
-      title: 'Inspire Academy — Professional Digital Team & Showcase',
+      title: 'Inspire — Professional Digital Team & Showcase',
       description: 'Explore approved, production-grade applications built by certified specialists.',
       og_image: '',
     },
     team: {
-      title: 'Our Specialists & Engineers — Inspire Academy',
+      title: 'Our Specialists & Engineers — Inspire',
       description: 'Meet our certified software engineers, UI/UX designers, and mobile architects.',
     },
     projects: {
-      title: 'Curated Portfolio Projects — Inspire Academy',
+      title: 'Curated Portfolio Projects — Inspire',
       description: 'Browse client-ready digital systems, mobile apps, and designs audited by faculty.',
     },
     about: {
-      title: 'About Our Digital Academy & Standards — Inspire Academy',
+      title: 'About Our Digital Academy & Standards — Inspire',
       description: 'Pioneering technical excellence, rigorous quality gating, and certified craftsmanship.',
     },
     contact: {
-      title: 'Contact Inspire Academy & Project Inquiries',
+      title: 'Contact Inspire & Project Inquiries',
       description: 'Get in touch for custom digital development, student admissions, and corporate partnerships.',
     },
   },
 
   maintenance_mode: false,
   maintenance_message: 'We are currently performing scheduled maintenance on the public showcase. We will be back online shortly!',
-  privacy_content: 'Inspire Academy complies with strict privacy and intellectual property standards. Private assignments, drafts, and client materials remain strictly isolated under Row-Level Security until authorized by leadership.',
+  privacy_content: 'Inspire complies with strict privacy and intellectual property standards. Private assignments, drafts, and client materials remain strictly isolated under Row-Level Security until authorized by leadership.',
   terms_content: 'All published projects on this platform represent verified, approved academic and commercial deliverables. Unapproved or student drafts are not accessible publicly.',
   custom_404_heading: 'Page Not Found',
   custom_404_message: 'The requested page or portfolio case study does not exist or has been relocated by academy administration.',

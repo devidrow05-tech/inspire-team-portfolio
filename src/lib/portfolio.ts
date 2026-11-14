@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { isSupabaseConfigured, supabase } from './supabase';
 
 export interface TeamMember {
   id: string;
@@ -31,8 +31,8 @@ export interface PortfolioProject {
   is_published: boolean;
   sort_order: number;
 }
-const baseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
+const baseUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined) || '';
+const publishableKey = (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) || '';
 
 async function headers(extra: Record<string, string> = {}) {
   const { data } = await supabase.auth.getSession();
@@ -43,6 +43,10 @@ async function headers(extra: Record<string, string> = {}) {
   };
 }
 async function request<T>(table: string, query = '', init: RequestInit = {}): Promise<T> {
+  if (!isSupabaseConfigured) {
+    if (!init.method || init.method === 'GET') return [] as T;
+    throw new Error('Supabase configuration is missing.');
+  }
   const response = await fetch(`${baseUrl}/rest/v1/${table}${query}`, {
     ...init,
     headers: await headers({

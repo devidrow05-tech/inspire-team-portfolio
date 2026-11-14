@@ -5,12 +5,16 @@ import {
   Image as ImageIcon,
   Type,
   Save,
-  CheckCircle2,
   Sparkles,
   RotateCcw,
   Eye,
   Sliders,
 } from 'lucide-react';
+import {
+  AnimatedButton,
+  RevealSection,
+  showAnimatedToast,
+} from '../../components/ui/MotionPrimitives';
 
 const PRESET_PALETTES = [
   {
@@ -71,7 +75,6 @@ const FONTS_LIST = [
 
 export const AdminBranding: React.FC = () => {
   const { config, updateConfig } = useApp();
-  const [saveToast, setSaveToast] = useState(false);
 
   // Form states matching SiteConfig
   const [siteName, setSiteName] = useState(config.site_name);
@@ -117,8 +120,7 @@ export const AdminBranding: React.FC = () => {
       font_body: fontBody,
       font_size_base: fontSizeBase,
     });
-    setSaveToast(true);
-    setTimeout(() => setSaveToast(false), 3000);
+    showAnimatedToast('Branding styles applied instantly to public website!', 'success');
   };
 
   const handleResetDefaults = () => {
@@ -126,6 +128,7 @@ export const AdminBranding: React.FC = () => {
     setFontHeading('Plus Jakarta Sans');
     setFontBody('Inter');
     setFontSizeBase('medium');
+    showAnimatedToast('Palette reset to Inspire Indigo defaults.', 'info');
   };
 
   return (
@@ -145,37 +148,29 @@ export const AdminBranding: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          <AnimatedButton
             onClick={handleResetDefaults}
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition border border-slate-800"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset Colors</span>
-          </button>
-          <button
+          </AnimatedButton>
+          <AnimatedButton
             onClick={handleSave}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-lg shadow-indigo-600/30"
           >
             <Save className="w-4 h-4" />
             <span>Apply & Save Branding</span>
-          </button>
+          </AnimatedButton>
         </div>
       </div>
-
-      {/* Toast Notification */}
-      {saveToast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-emerald-600 text-white px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold animate-bounce">
-          <CheckCircle2 className="w-5 h-5" />
-          <span>Branding styles applied instantly to public website!</span>
-        </div>
-      )}
 
       {/* Grid: Settings on left, Real-time preview on right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column: Form Controls (7 cols) */}
         <div className="lg:col-span-7 space-y-8">
           {/* Quick Preset Themes */}
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+          <RevealSection className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-400" />
               <h2 className="text-sm font-bold text-white uppercase tracking-wider">
@@ -212,7 +207,7 @@ export const AdminBranding: React.FC = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </RevealSection>
 
           {/* Identity & Logos */}
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-5">

@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
-import { saveSeoSettings } from '../../lib/siteSettings';
 import {
   Search,
   Save,
-  CheckCircle2,
   Globe2,
   Sparkles,
   ShieldCheck,
   FileCode,
   Layers,
 } from 'lucide-react';
+import {
+  AnimatedButton,
+  showAnimatedToast,
+} from '../../components/ui/MotionPrimitives';
+import { DURATIONS, EASINGS } from '../../frontend/lib/animations';
 
 export const AdminSEO: React.FC = () => {
   const { config, updateConfig } = useApp();
-  const [saveToast, setSaveToast] = useState(false);
-  const [saveError, setSaveError] = useState('');
-  const [isSaving, setIsSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<'global' | 'pages' | 'analytics'>('global');
 
   // Global SEO States
@@ -28,24 +29,6 @@ export const AdminSEO: React.FC = () => {
   const [defaultOgImage, setDefaultOgImage] = useState(config.seo_default_og_image || '');
   const [googleAnalyticsId, setGoogleAnalyticsId] = useState(config.google_analytics_id || '');
   const [searchConsoleCode, setSearchConsoleCode] = useState(config.google_search_console_code || '');
-
-  useEffect(() => {
-    setDefaultTitle(config.seo_default_title || '');
-    setDefaultDesc(config.seo_default_description || '');
-    setDefaultOgImage(config.seo_default_og_image || '');
-    setGoogleAnalyticsId(config.google_analytics_id || '');
-    setSearchConsoleCode(config.google_search_console_code || '');
-    setHomeTitle(config.seo_pages?.home?.title || '');
-    setHomeDesc(config.seo_pages?.home?.description || '');
-    setProjectsTitle(config.seo_pages?.projects?.title || '');
-    setProjectsDesc(config.seo_pages?.projects?.description || '');
-    setTeamTitle(config.seo_pages?.team?.title || '');
-    setTeamDesc(config.seo_pages?.team?.description || '');
-    setAboutTitle(config.seo_pages?.about?.title || '');
-    setAboutDesc(config.seo_pages?.about?.description || '');
-    setContactTitle(config.seo_pages?.contact?.title || '');
-    setContactDesc(config.seo_pages?.contact?.description || '');
-  }, [config.seo_default_title, config.seo_default_description, config.seo_default_og_image, config.google_analytics_id, config.google_search_console_code, config.seo_pages]);
 
   // Per-Page Titles
   const [homeTitle, setHomeTitle] = useState(config.seo_pages?.home?.title || 'Inspire Academy | Home & Featured Work');
@@ -59,44 +42,22 @@ export const AdminSEO: React.FC = () => {
   const [contactTitle, setContactTitle] = useState(config.seo_pages?.contact?.title || 'Contact Admissions & Faculty | Inspire Academy');
   const [contactDesc, setContactDesc] = useState(config.seo_pages?.contact?.description || 'Get in touch for inquiries and partnerships.');
 
-  const handleSave = async () => {
-    setSaveError('');
-    if (googleAnalyticsId.trim() && !/^G-[A-Z0-9]+$/i.test(googleAnalyticsId.trim())) {
-      setSaveError('Google Analytics ID must look like G-XXXXXXXXXX.');
-      setActiveTab('analytics');
-      return;
-    }
-    if (defaultOgImage.trim()) {
-      try { new URL(defaultOgImage.trim()); }
-      catch { setSaveError('OpenGraph image must be a valid public URL.'); setActiveTab('global'); return; }
-    }
-
-    const settings = {
-      seo_default_title: defaultTitle.trim(),
-      seo_default_description: defaultDesc.trim(),
-      seo_default_og_image: defaultOgImage.trim(),
-      google_analytics_id: googleAnalyticsId.trim(),
-      google_search_console_code: searchConsoleCode.trim(),
+  const handleSave = () => {
+    updateConfig({
+      seo_default_title: defaultTitle,
+      seo_default_description: defaultDesc,
+      seo_default_og_image: defaultOgImage,
+      google_analytics_id: googleAnalyticsId,
+      google_search_console_code: searchConsoleCode,
       seo_pages: {
-        home: { title: homeTitle.trim(), description: homeDesc.trim(), og_image: defaultOgImage.trim() },
-        projects: { title: projectsTitle.trim(), description: projectsDesc.trim() },
-        team: { title: teamTitle.trim(), description: teamDesc.trim() },
-        about: { title: aboutTitle.trim(), description: aboutDesc.trim() },
-        contact: { title: contactTitle.trim(), description: contactDesc.trim() },
+        home: { title: homeTitle, description: homeDesc, og_image: defaultOgImage },
+        projects: { title: projectsTitle, description: projectsDesc },
+        team: { title: teamTitle, description: teamDesc },
+        about: { title: aboutTitle, description: aboutDesc },
+        contact: { title: contactTitle, description: contactDesc },
       },
-    };
-
-    setIsSaving(true);
-    try {
-      await saveSeoSettings(settings);
-      updateConfig(settings);
-      setSaveToast(true);
-      window.setTimeout(() => setSaveToast(false), 3000);
-    } catch (error) {
-      setSaveError(error instanceof Error ? error.message : 'SEO settings could not be saved.');
-    } finally {
-      setIsSaving(false);
-    }
+    });
+    showAnimatedToast('SEO and metadata updated successfully!', 'success');
   };
 
   return (
@@ -115,66 +76,56 @@ export const AdminSEO: React.FC = () => {
           </p>
         </div>
 
-        <button
+        <AnimatedButton
           onClick={handleSave}
-          disabled={isSaving}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-lg shadow-indigo-600/30"
         >
           <Save className="w-4 h-4" />
-          <span>{isSaving ? 'Saving...' : 'Save SEO Configuration'}</span>
-        </button>
+          <span>Save SEO Configuration</span>
+        </AnimatedButton>
       </div>
-
-      {saveError && <div role="alert" className="p-3 rounded-xl border border-rose-800 bg-rose-950/40 text-rose-300 text-xs">{saveError}</div>}
-
-      {/* Toast Notification */}
-      {saveToast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-emerald-600 text-white px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold animate-bounce">
-          <CheckCircle2 className="w-5 h-5" />
-          <span>SEO and metadata updated successfully!</span>
-        </div>
-      )}
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
-        <button
-          onClick={() => setActiveTab('global')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
-            activeTab === 'global'
-              ? 'bg-slate-800 text-white shadow-sm'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <Globe2 className="w-4 h-4" />
-          <span>Global SEO & Metadata</span>
-        </button>
-        <button
-          onClick={() => setActiveTab('pages')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
-            activeTab === 'pages'
-              ? 'bg-slate-800 text-white shadow-sm'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <Layers className="w-4 h-4" />
-          <span>Per-Page Titles & Overrides</span>
-        </button>
-        <button
-          onClick={() => setActiveTab('analytics')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
-            activeTab === 'analytics'
-              ? 'bg-slate-800 text-white shadow-sm'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <ShieldCheck className="w-4 h-4" />
-          <span>Webmaster & Analytics</span>
-        </button>
+      <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3">
+        {[
+          { id: 'global', label: 'Global SEO & Metadata', Icon: Globe2 },
+          { id: 'pages', label: 'Per-Page Titles & Overrides', Icon: Layers },
+          { id: 'analytics', label: 'Webmaster & Analytics', Icon: ShieldCheck },
+        ].map(({ id, label, Icon }) => {
+          const isActive = activeTab === id;
+          return (
+            <button
+              key={id}
+              onClick={() => setActiveTab(id as any)}
+              className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+                isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId="seo-tab-pill"
+                  transition={EASINGS.spring}
+                  className="absolute inset-0 rounded-xl bg-slate-800 shadow-sm"
+                />
+              )}
+              <Icon className="w-4 h-4 relative z-10" />
+              <span className="relative z-10">{label}</span>
+            </button>
+          );
+        })}
       </div>
 
+      <AnimatePresence mode="wait">
       {/* Tab 1: Global SEO */}
       {activeTab === 'global' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <motion.div
+          key="seo-tab-global"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: DURATIONS.fast, ease: EASINGS.decelerate }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8"
+        >
           <div className="lg:col-span-7 space-y-6">
             <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
               <h2 className="text-sm font-bold text-white uppercase tracking-wider">
@@ -284,12 +235,19 @@ export const AdminSEO: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Tab 2: Per Page Titles */}
       {activeTab === 'pages' && (
-        <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6">
+        <motion.div
+          key="seo-tab-pages"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: DURATIONS.fast, ease: EASINGS.decelerate }}
+          className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6"
+        >
           <h2 className="text-sm font-bold text-white uppercase tracking-wider">
             Custom Page Titles & Descriptions
           </h2>
@@ -395,12 +353,19 @@ export const AdminSEO: React.FC = () => {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Tab 3: Webmaster & Analytics */}
       {activeTab === 'analytics' && (
-        <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6">
+        <motion.div
+          key="seo-tab-analytics"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: DURATIONS.fast, ease: EASINGS.decelerate }}
+          className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6"
+        >
           <div className="flex items-center gap-2">
             <FileCode className="w-5 h-5 text-indigo-400" />
             <h2 className="text-sm font-bold text-white uppercase tracking-wider">
@@ -441,8 +406,9 @@ export const AdminSEO: React.FC = () => {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 };

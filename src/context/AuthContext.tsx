@@ -22,11 +22,17 @@ function profileFromUser(user: SupabaseUser): Profile | null {
   const role = user.app_metadata?.role;
   if (role !== 'admin' && role !== 'member') return null;
 
+  const fullNameMeta = user.user_metadata?.full_name;
+  const fullName =
+    typeof fullNameMeta === 'string' && fullNameMeta.trim()
+      ? fullNameMeta
+      : (user.email ?? 'Inspire Team User');
+
   const now = new Date().toISOString();
   return {
     id: user.id,
     email: user.email ?? '',
-    full_name: user.user_metadata?.full_name ?? user.email ?? 'Inspire Team User',
+    full_name: fullName,
     role,
     status: 'active',
     must_change_password: false,
@@ -49,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     let mounted = true;
 
-    const applyUser = (user: User | null) => {
+    const applyUser = (user: SupabaseUser | null) => {
       if (!mounted) return;
       const profile = user ? profileFromUser(user) : null;
       setCurrentUser(profile);

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import {
   Globe,
   Save,
-  CheckCircle2,
   Layers,
   FileText,
   Phone,
@@ -12,11 +12,16 @@ import {
   Trash2,
   Sparkles,
 } from 'lucide-react';
+import {
+  AnimatedButton,
+  RevealSection,
+  showAnimatedToast,
+} from '../../components/ui/MotionPrimitives';
+import { DURATIONS, EASINGS } from '../../frontend/lib/animations';
 
 export const AdminWebsiteEditor: React.FC = () => {
   const { config, updateConfig } = useApp();
   const [activeTab, setActiveTab] = useState<'home' | 'about' | 'contact' | 'footer' | 'nav'>('home');
-  const [saveToast, setSaveToast] = useState(false);
 
   // Form states initialized with live config
   const [heroHeading, setHeroHeading] = useState(config.hero_heading);
@@ -106,8 +111,10 @@ export const AdminWebsiteEditor: React.FC = () => {
       navigation_items: navItems,
     });
 
-    setSaveToast(true);
-    setTimeout(() => setSaveToast(false), 3000);
+    showAnimatedToast(
+      'Website content updated successfully! Live website now reflects your changes.',
+      'success'
+    );
   };
 
   const handleAddService = () => {
@@ -143,24 +150,17 @@ export const AdminWebsiteEditor: React.FC = () => {
             Edit text, headings, buttons, and section visibility across the public website. Zero code required.
           </p>
         </div>
-        <button
+        <AnimatedButton
           onClick={handleSave}
-          className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-lg shadow-indigo-600/30 transition cursor-pointer"
+          className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-lg shadow-indigo-600/30 transition"
         >
           <Save className="w-4 h-4" />
           <span>Save All Changes</span>
-        </button>
+        </AnimatedButton>
       </div>
 
-      {saveToast && (
-        <div className="p-3.5 rounded-xl bg-emerald-950/80 border border-emerald-700 text-emerald-200 text-xs font-semibold flex items-center gap-2 shadow-lg animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>Website content updated successfully! Live website will instantly reflect your changes.</span>
-        </div>
-      )}
-
       {/* Tabs */}
-      <div className="flex border-b border-slate-800 text-xs font-semibold gap-1">
+      <div className="flex flex-wrap border-b border-slate-800 text-xs font-semibold gap-1">
         {[
           { id: 'home', label: '1A. Homepage Editor' },
           { id: 'about', label: '1B. About Page' },
@@ -171,20 +171,35 @@ export const AdminWebsiteEditor: React.FC = () => {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`py-2.5 px-4 rounded-t-xl transition ${
+            className={`relative py-2.5 px-4 rounded-t-xl transition cursor-pointer ${
               activeTab === tab.id
-                ? 'bg-slate-900 text-indigo-400 border-t-2 border-indigo-500 font-bold'
+                ? 'bg-slate-900 text-indigo-400 font-bold'
                 : 'text-slate-400 hover:text-white hover:bg-slate-900/40'
             }`}
           >
+            {activeTab === tab.id && (
+              <motion.span
+                layoutId="cms-editor-tab-indicator"
+                transition={EASINGS.spring}
+                className="absolute inset-x-0 top-0 h-0.5 bg-indigo-500 rounded-full"
+              />
+            )}
             {tab.label}
           </button>
         ))}
       </div>
 
+      <AnimatePresence mode="wait">
       {/* TAB 1A: HOMEPAGE */}
       {activeTab === 'home' && (
-        <div className="space-y-6">
+        <motion.div
+          key="cms-tab-home"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: DURATIONS.fast, ease: EASINGS.decelerate }}
+          className="space-y-6"
+        >
           {/* Hero Section */}
           <div className="p-6 rounded-2xl border border-slate-800 bg-slate-900 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
@@ -404,12 +419,19 @@ export const AdminWebsiteEditor: React.FC = () => {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* TAB 1B: ABOUT PAGE */}
       {activeTab === 'about' && (
-        <div className="space-y-6">
+        <motion.div
+          key="cms-tab-about"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: DURATIONS.fast, ease: EASINGS.decelerate }}
+          className="space-y-6"
+        >
           <div className="p-6 rounded-2xl border border-slate-800 bg-slate-900 space-y-4">
             <h3 className="text-sm font-bold text-white flex items-center gap-2 pb-3 border-b border-slate-800">
               <FileText className="w-4 h-4 text-indigo-400" />
@@ -458,12 +480,19 @@ export const AdminWebsiteEditor: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* TAB 1C: CONTACT PAGE */}
       {activeTab === 'contact' && (
-        <div className="space-y-6">
+        <motion.div
+          key="cms-tab-contact"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: DURATIONS.fast, ease: EASINGS.decelerate }}
+          className="space-y-6"
+        >
           <div className="p-6 rounded-2xl border border-slate-800 bg-slate-900 space-y-4">
             <h3 className="text-sm font-bold text-white flex items-center gap-2 pb-3 border-b border-slate-800">
               <Phone className="w-4 h-4 text-emerald-400" />
@@ -537,12 +566,19 @@ export const AdminWebsiteEditor: React.FC = () => {
               </label>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* TAB 1D: FOOTER */}
       {activeTab === 'footer' && (
-        <div className="space-y-6">
+        <motion.div
+          key="cms-tab-footer"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: DURATIONS.fast, ease: EASINGS.decelerate }}
+          className="space-y-6"
+        >
           <div className="p-6 rounded-2xl border border-slate-800 bg-slate-900 space-y-4">
             <h3 className="text-sm font-bold text-white pb-3 border-b border-slate-800">
               Footer Text & Copyright
@@ -568,12 +604,19 @@ export const AdminWebsiteEditor: React.FC = () => {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* TAB 1E: NAVIGATION */}
       {activeTab === 'nav' && (
-        <div className="p-6 rounded-2xl border border-slate-800 bg-slate-900 space-y-4">
+        <motion.div
+          key="cms-tab-nav"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: DURATIONS.fast, ease: EASINGS.decelerate }}
+          className="p-6 rounded-2xl border border-slate-800 bg-slate-900 space-y-4"
+        >
           <h3 className="text-sm font-bold text-white pb-3 border-b border-slate-800">
             Navigation Menu Editor
           </h3>
@@ -605,8 +648,9 @@ export const AdminWebsiteEditor: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 };

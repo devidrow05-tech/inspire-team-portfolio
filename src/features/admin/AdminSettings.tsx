@@ -9,18 +9,19 @@ import {
 import {
   Settings,
   Save,
-  CheckCircle2,
   Download,
   ShieldAlert,
-  Clock,
   Mail,
   FileText,
 } from 'lucide-react';
+import {
+  AnimatedButton,
+  RevealSection,
+  showAnimatedToast,
+} from '../../components/ui/MotionPrimitives';
 
 export const AdminSettings: React.FC = () => {
   const { config, updateConfig } = useApp();
-  const [saveToast, setSaveToast] = useState(false);
-  const [exportToast, setExportToast] = useState(false);
 
   // Settings states matching SiteConfig
   const [maintenanceMode, setMaintenanceMode] = useState(config.maintenance_mode || false);
@@ -51,8 +52,7 @@ export const AdminSettings: React.FC = () => {
       custom_404_heading: custom404Heading,
       custom_404_message: custom404Message,
     });
-    setSaveToast(true);
-    setTimeout(() => setSaveToast(false), 3000);
+    showAnimatedToast('System settings updated!', 'success');
   };
 
   const handleExportDatabase = () => {
@@ -76,8 +76,7 @@ export const AdminSettings: React.FC = () => {
     a.click();
     URL.revokeObjectURL(url);
 
-    setExportToast(true);
-    setTimeout(() => setExportToast(false), 3000);
+    showAnimatedToast('Database JSON snapshot downloaded successfully!', 'info');
   };
 
   return (
@@ -97,39 +96,25 @@ export const AdminSettings: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          <AnimatedButton
             onClick={handleExportDatabase}
             className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold transition"
           >
             <Download className="w-4 h-4 text-emerald-400" />
             <span>Export Database JSON</span>
-          </button>
-          <button
+          </AnimatedButton>
+          <AnimatedButton
             onClick={handleSave}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-lg shadow-indigo-600/30"
           >
             <Save className="w-4 h-4" />
             <span>Save System Settings</span>
-          </button>
+          </AnimatedButton>
         </div>
       </div>
 
-      {/* Notifications */}
-      {saveToast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-emerald-600 text-white px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold animate-bounce">
-          <CheckCircle2 className="w-5 h-5" />
-          <span>System settings updated!</span>
-        </div>
-      )}
-      {exportToast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-teal-600 text-white px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold animate-bounce">
-          <Download className="w-5 h-5" />
-          <span>Database JSON snapshot downloaded successfully!</span>
-        </div>
-      )}
-
       {/* Section 1: Maintenance Mode */}
-      <div className={`p-6 rounded-2xl border transition-all ${maintenanceMode ? 'bg-amber-950/20 border-amber-600/50' : 'bg-slate-900 border-slate-800'}`}>
+      <RevealSection className={`p-6 rounded-2xl border transition-all ${maintenanceMode ? 'bg-amber-950/20 border-amber-600/50' : 'bg-slate-900 border-slate-800'}`}>
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
@@ -172,7 +157,7 @@ export const AdminSettings: React.FC = () => {
             />
           </div>
         )}
-      </div>
+      </RevealSection>
 
       {/* Section 2: Contact Form Destination */}
       <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-5">

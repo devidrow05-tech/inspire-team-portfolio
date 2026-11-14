@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
+import { AnimatedButton } from '../../components/ui/MotionPrimitives';
+import { scaleIn, EASINGS } from '../../frontend/lib/animations';
 import { AlertCircle, Lock } from 'lucide-react';
 
 export const AdminLoginPage: React.FC = () => {
@@ -34,26 +37,47 @@ export const AdminLoginPage: React.FC = () => {
   const isLocked = lockoutUntil !== null && Date.now() < lockoutUntil;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100 p-4 selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100 p-4 selection:bg-indigo-500 selection:text-white relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-teal-600/10 rounded-full blur-3xl" />
+        <motion.div
+          animate={{ scale: [1, 1.08, 1], opacity: [0.35, 0.55, 0.35] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -bottom-40 -right-40 w-96 h-96 bg-teal-600/15 rounded-full blur-3xl"
+        />
       </div>
-      <div className="relative w-full max-w-sm rounded-3xl border border-slate-800 bg-slate-900/90 backdrop-blur-xl p-8 shadow-2xl space-y-6">
+      <motion.div
+        variants={scaleIn}
+        initial="hidden"
+        animate="show"
+        className="relative w-full max-w-sm rounded-3xl border border-slate-800 bg-slate-900/90 backdrop-blur-xl p-8 shadow-2xl space-y-6"
+      >
         <div className="text-center space-y-3">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-500 flex items-center justify-center mx-auto text-white shadow-lg shadow-indigo-500/20">
+          <motion.div
+            whileHover={{ scale: 1.06, rotate: -4 }}
+            transition={EASINGS.spring}
+            className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-500 flex items-center justify-center mx-auto text-white shadow-lg shadow-indigo-500/20"
+          >
             <Lock className="w-6 h-6" />
-          </div>
+          </motion.div>
           <div>
             <h1 className="text-xl font-bold tracking-tight text-white">{config.site_name}</h1>
             <p className="text-xs text-slate-400 mt-1 font-mono tracking-wider">AUTHORIZED ACCESS ONLY</p>
           </div>
         </div>
         {errorMsg && (
-          <div className="p-3.5 rounded-xl bg-rose-950/60 border border-rose-800 text-rose-300 text-xs font-semibold flex items-start gap-2.5">
+          <motion.div
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="p-3.5 rounded-xl bg-rose-950/60 border border-rose-800 text-rose-300 text-xs font-semibold flex items-start gap-2.5"
+          >
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <div className="leading-relaxed">{errorMsg}</div>
-          </div>
+          </motion.div>
         )}
         {isLocked ? (
           <div className="p-4 rounded-xl bg-amber-950/60 border border-amber-800 text-amber-300 text-xs text-center space-y-1">
@@ -63,30 +87,57 @@ export const AdminLoginPage: React.FC = () => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Email Address</label>
-              <input type="email" required autoComplete="username" value={email}
-                onChange={(e) => setEmail(e.target.value)} placeholder="admin@example.com"
-                className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-white placeholder-slate-600 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" />
+              <label htmlFor="admin-email" className="text-xs font-medium text-slate-300">
+                Email Address
+              </label>
+              <input
+                id="admin-email"
+                type="email"
+                required
+                autoComplete="username"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@example.com"
+                className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-white placeholder-slate-600 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
+              />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Password</label>
-              <input type="password" required autoComplete="current-password" value={password}
-                onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••••"
-                className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-white placeholder-slate-600 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" />
+              <label htmlFor="admin-password" className="text-xs font-medium text-slate-300">
+                Password
+              </label>
+              <input
+                id="admin-password"
+                type="password"
+                required
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-white placeholder-slate-600 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
+              />
             </div>
-            <button type="submit" disabled={loading || authLoading}
-              className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs tracking-wide shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50">
-              {loading || authLoading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <span>Sign in securely</span>}
-            </button>
+            <AnimatedButton
+              type="submit"
+              disabled={loading || authLoading}
+              className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs tracking-wide shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2 disabled:opacity-50"
+            >
+              {loading || authLoading ? (
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <span>Sign in securely</span>
+              )}
+            </AnimatedButton>
             {failedAttempts > 0 && failedAttempts < 5 && (
-              <p className="text-[10px] text-slate-500 text-center">Failed attempts: {failedAttempts} of 5</p>
+              <p className="text-[10px] text-slate-500 text-center">
+                Failed attempts: {failedAttempts} of 5
+              </p>
             )}
           </form>
         )}
         <div className="text-[11px] text-center text-slate-600 pt-2 border-t border-slate-800/80">
           Supabase Auth · Role-protected admin access
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

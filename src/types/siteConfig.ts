@@ -156,8 +156,8 @@ export const defaultSiteConfig: SiteConfig = {
   hero_badge: 'Official Academy Digital Team',
   hero_heading: 'Digital Excellence, Delivered.',
   hero_subheading: 'A private-plus-public operations and showcase platform. Every project is assigned, rigorously reviewed, and curated by Inspire Academy leadership before public showcase.',
-  hero_btn1_text: 'Explore Approved Work',
-  hero_btn1_link: '/projects',
+  hero_btn1_text: 'Explore Our Team',
+  hero_btn1_link: '/team',
   hero_btn2_text: 'Get in Touch',
   hero_btn2_link: '/contact',
   hero_bg_image: '',
@@ -249,7 +249,6 @@ export const defaultSiteConfig: SiteConfig = {
   footer_tagline: 'The premier digital showcase and project operations platform of Inspire Academy. Curated, reviewed, and published by faculty leadership.',
   footer_copyright: '© 2026 Inspire Academy Team Hub. All Rights Reserved.',
   footer_nav_links: [
-    { label: 'All Approved Projects', url: '/projects' },
     { label: 'Academy Specialists', url: '/team' },
     { label: 'Disciplines & Domains', url: '/categories' },
     { label: 'About Inspire Academy', url: '/about' },
@@ -265,7 +264,6 @@ export const defaultSiteConfig: SiteConfig = {
 
   navigation_items: [
     { id: 'nav-1', label: 'Home', path: '/', enabled: true },
-    { id: 'nav-2', label: 'Portfolio Projects', path: '/projects', enabled: true },
     { id: 'nav-3', label: 'Meet Our Team', path: '/team', enabled: true },
     { id: 'nav-4', label: 'Categories', path: '/categories', enabled: true },
     { id: 'nav-5', label: 'About Us', path: '/about', enabled: true },

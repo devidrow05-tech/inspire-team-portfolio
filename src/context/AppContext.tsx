@@ -60,6 +60,23 @@ const enDict: Record<string, string> = {
   'action.contactWhatsapp': 'Chat on WhatsApp',
   'action.sendMessage': 'Send Message',
 
+  // Hero & Sections
+  'hero.badge': 'Official Academy Digital Team',
+  'hero.title': 'Digital Excellence, Delivered.',
+  'hero.subtitle': 'A private-plus-public operations and showcase platform. Every project is assigned, rigorously reviewed, and curated by Inspire Academy leadership before public showcase.',
+  'hero.ctaProjects': 'Explore Approved Work',
+  'hero.ctaContact': 'Get in Touch',
+  'sec.featuredProjects': 'Featured Projects',
+  'sec.featuredSubtitle': 'Faculty-approved deliverables and real-world builds ready for inspection.',
+  'sec.viewAllProjects': 'View All Projects',
+  'sec.categoriesTitle': 'Categories & Technical Domains',
+  'sec.categoriesSubtitle': 'Specialized disciplines mentored and delivered inside Inspire Academy.',
+  'sec.teamTitle': 'Meet Our Team',
+  'sec.teamSubtitle': 'Verified academy engineers, designers, and project leads.',
+  'sec.viewAllTeam': 'View All Team Members',
+  'sec.ctaTitle': 'Ready to collaborate or join our academy?',
+  'sec.ctaDesc': 'Reach out to discuss customized digital builds, training partnerships, or team capabilities.',
+
   // Common UI
   'common.loading': 'Loading data...',
   'common.demoBanner': '',
@@ -113,6 +130,23 @@ const urDict: Record<string, string> = {
   'action.contactWhatsapp': 'واٹس ایپ پر رابطہ کریں',
   'action.sendMessage': 'پیغام بھیجیں',
 
+  // Hero & Sections
+  'hero.badge': 'آفیشل اکیڈمی ڈیجیٹل ٹیم',
+  'hero.title': 'معیاری ڈیجیٹل خدمات، بروقت تکمیل۔',
+  'hero.subtitle': 'انسپائر اکیڈمی کا پرائیویٹ اور پبلک پراجیکٹ شو کیس پلیٹ فارم۔ ہر پراجیکٹ کی باقاعدہ جانچ اور منظوری کے بعد اشاعت کی جاتی ہے۔',
+  'hero.ctaProjects': 'منظور شدہ پراجیکٹس دیکھیں',
+  'hero.ctaContact': 'رابطہ کریں',
+  'sec.featuredProjects': 'نمایاں پراجیکٹس',
+  'sec.featuredSubtitle': 'فیکلٹی کی جانب سے منظور شدہ اور معیار کے مطابق تیار کردہ پراجیکٹس۔',
+  'sec.viewAllProjects': 'تمام پراجیکٹس دیکھیں',
+  'sec.categoriesTitle': 'شعبہ جات اور تکنیکی مہارتیں',
+  'sec.categoriesSubtitle': 'انسپائر اکیڈمی میں تربیت اور پراجیکٹ ڈیلیوری کے بنیادی شعبے۔',
+  'sec.teamTitle': 'ہماری ٹیم سے ملیں',
+  'sec.teamSubtitle': 'تربیت یافتہ انجینئرز، ڈیزائنرز اور پراجیکٹ لیڈز۔',
+  'sec.viewAllTeam': 'پوری ٹیم دیکھیں',
+  'sec.ctaTitle': 'کیا آپ ہمارے ساتھ کام کرنا یا اکیڈمی میں شامل ہونا چاہتے ہیں؟',
+  'sec.ctaDesc': 'ڈیجیٹل پراجیکٹس، تربیتی شراکت داری یا ٹیم کی خدمات کے لیے رابطہ کریں۔',
+
   // Common UI
   'common.loading': 'لوڈ ہو رہا ہے...',
   'common.demoBanner': '',
@@ -138,7 +172,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     try {
       const saved = localStorage.getItem('inspire_site_config');
       if (saved) {
-        return { ...defaultSiteConfig, ...JSON.parse(saved) };
+        const parsed = { ...defaultSiteConfig, ...JSON.parse(saved) } as SiteConfig;
+        return {
+          ...parsed,
+          hero_btn1_link:
+            parsed.hero_btn1_link === '/projects' ? '/team' : parsed.hero_btn1_link,
+          navigation_items: (parsed.navigation_items || defaultSiteConfig.navigation_items).filter(
+            (item) => item.path !== '/projects'
+          ),
+          footer_nav_links: (parsed.footer_nav_links || defaultSiteConfig.footer_nav_links).filter(
+            (lnk) => lnk.url !== '/projects'
+          ),
+        };
       }
     } catch {
       // fallback
@@ -149,6 +194,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const updateConfig = (newConfig: Partial<SiteConfig>) => {
     setConfig((prev) => {
       const updated = { ...prev, ...newConfig };
+      updated.navigation_items = (updated.navigation_items || []).filter(
+        (item) => item.path !== '/projects'
+      );
+      updated.footer_nav_links = (updated.footer_nav_links || []).filter(
+        (lnk) => lnk.url !== '/projects'
+      );
       localStorage.setItem('inspire_site_config', JSON.stringify(updated));
       return updated;
     });

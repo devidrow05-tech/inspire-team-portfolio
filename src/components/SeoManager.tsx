@@ -20,7 +20,6 @@ export const SeoManager: React.FC = () => {
 
   useEffect(() => {
     const pageKey = pathname === '/' ? 'home'
-      : pathname.startsWith('/projects') ? 'projects'
       : pathname.startsWith('/team') ? 'team'
       : pathname.startsWith('/about') ? 'about'
       : pathname.startsWith('/contact') ? 'contact'

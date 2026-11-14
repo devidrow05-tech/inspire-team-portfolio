@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import {
   ScrollText,
   Search,
-  Filter,
   Download,
-  ShieldCheck,
-  UserCheck,
-  AlertCircle,
-  Clock,
 } from 'lucide-react';
+import {
+  AnimatedButton,
+  RevealSection,
+  showAnimatedToast,
+} from '../../components/ui/MotionPrimitives';
 
 interface AuditItem {
   id: string;
@@ -24,7 +24,7 @@ interface AuditItem {
 const INITIAL_LOGS: AuditItem[] = [];
 
 export const AdminLogsPage: React.FC = () => {
-  const [logs, setLogs] = useState<AuditItem[]>(INITIAL_LOGS);
+  const [logs] = useState<AuditItem[]>(INITIAL_LOGS);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('ALL');
 
@@ -52,6 +52,7 @@ export const AdminLogsPage: React.FC = () => {
     a.download = `inspire-audit-logs-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
+    showAnimatedToast('Audit logs CSV exported.', 'info');
   };
 
   return (
@@ -70,13 +71,13 @@ export const AdminLogsPage: React.FC = () => {
           </p>
         </div>
 
-        <button
+        <AnimatedButton
           onClick={exportLogsAsCSV}
           className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition border border-slate-700"
         >
           <Download className="w-4 h-4 text-teal-400" />
           <span>Export Logs CSV</span>
-        </button>
+        </AnimatedButton>
       </div>
 
       {/* Filters */}
@@ -105,7 +106,7 @@ export const AdminLogsPage: React.FC = () => {
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden shadow-xl">
+      <RevealSection className="rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-950/80 text-slate-400 font-semibold border-b border-slate-800 uppercase tracking-wider text-[10px]">
@@ -157,7 +158,7 @@ export const AdminLogsPage: React.FC = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </RevealSection>
     </div>
   );
 };

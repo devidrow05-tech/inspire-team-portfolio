@@ -1,8 +1,8 @@
-import { supabase } from './supabase';
+import { isSupabaseConfigured, supabase } from './supabase';
 import type { SiteConfig } from '../types/siteConfig';
 
-const baseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
+const baseUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined) || '';
+const publishableKey = (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) || '';
 
 const seoKeys = [
   'seo_default_title',
@@ -25,6 +25,7 @@ async function requestHeaders(extra: Record<string, string> = {}) {
 }
 
 export async function loadSeoSettings(): Promise<Partial<SeoSettings>> {
+  if (!isSupabaseConfigured) return {};
   const response = await fetch(`${baseUrl}/rest/v1/site_settings?id=eq.global&select=settings&limit=1`, {
     headers: await requestHeaders(),
   });
@@ -34,6 +35,7 @@ export async function loadSeoSettings(): Promise<Partial<SeoSettings>> {
 }
 
 export async function saveSeoSettings(settings: SeoSettings): Promise<void> {
+  if (!isSupabaseConfigured) throw new Error('Supabase configuration is missing.');
   const { data } = await supabase.auth.getSession();
   if (!data.session?.user) throw new Error('Please sign in as the administrator to save SEO settings.');
   const response = await fetch(`${baseUrl}/rest/v1/site_settings?on_conflict=id`, {

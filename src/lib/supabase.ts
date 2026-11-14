@@ -173,3 +173,53 @@ export const supabase = {
     },
   },
 };
+
+
+export interface ContactMessageRecord {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: 'new' | 'read';
+  created_at: string;
+}
+
+async function contactMessagesRequest<T>(method: string, query = '', body?: unknown): Promise<T> {
+  if (!isSupabaseConfigured) throw new Error('Contact service is not configured. Please contact us on WhatsApp.');
+  const current = await supabase.auth.getSession();
+  const token = current.data.session?.access_token || supabasePublishableKey;
+  const response = await fetch(`${supabaseUrl}/rest/v1/contact_messages${query}`, {
+    method,
+    headers: {
+      apikey: supabasePublishableKey,
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      ...(method === 'POST' ? { Prefer: 'return=minimal' } : {}),
+    },
+    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+  });
+  if (!response.ok) {
+    const detail = await response.json().catch(() => ({}));
+    throw new Error(detail.message || detail.details || 'Unable to process your message. Please try WhatsApp instead.');
+  }
+  if (response.status === 204 || method === 'POST' || method === 'PATCH') return undefined as T;
+  return response.json() as Promise<T>;
+}
+
+export function submitContactMessage(input: { name: string; email: string; subject: string; message: string }) {
+  return contactMessagesRequest<void>('POST', '', {
+    name: input.name.trim(),
+    email: input.email.trim(),
+    subject: input.subject.trim(),
+    message: input.message.trim(),
+  });
+}
+
+export function getContactMessages() {
+  return contactMessagesRequest<ContactMessageRecord[]>('GET', '?select=*&order=created_at.desc');
+}
+
+export function markContactMessageRead(id: string) {
+  return contactMessagesRequest<void>('PATCH', `?id=eq.${encodeURIComponent(id)}`, { status: 'read' });
+}

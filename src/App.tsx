@@ -33,14 +33,13 @@ import { MemberLoginPage } from './features/auth/MemberLoginPage';
 
 // Admin Pages
 import { AdminDashboard } from './features/admin/AdminDashboard';
+import { AdminMessagesPage } from './features/admin/AdminMessagesPage';
 import { AdminWebsiteEditor } from './features/admin/AdminWebsiteEditor';
 import { AdminBranding } from './features/admin/AdminBranding';
 import { AdminSEO } from './features/admin/AdminSEO';
 import { AdminSettings } from './features/admin/AdminSettings';
-import { AdminLogsPage } from './features/admin/AdminLogsPage';
 import { AdminMembersPage } from './features/admin/AdminMembersPage';
 import { AdminPortfolioProjectsPage } from './features/admin/AdminPortfolioProjectsPage';
-import { AdminAssignmentsPage } from './features/admin/AdminAssignmentsPage';
 
 // Member Pages
 import { MemberDashboard } from './features/member/MemberDashboard';
@@ -247,152 +246,28 @@ function AnimatedRoutes() {
           }
         />
         <Route
-          path="/admin/logs"
-          element={
-            <AdminGuard>
-              <AdminLogsPage />
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/admin/activity"
-          element={<Navigate to="/admin/logs" replace />}
+          path="/admin/messages"
+          element={<AdminGuard><AdminMessagesPage /></AdminGuard>}
         />
         <Route
           path="/admin/members"
-          element={
-            <AdminGuard>
-              <AdminMembersPage />
-            </AdminGuard>
-          }
+          element={<AdminGuard><AdminMembersPage /></AdminGuard>}
         />
         <Route
           path="/admin/projects"
-          element={
-            <AdminGuard>
-              <AdminPortfolioProjectsPage />
-            </AdminGuard>
-          }
+          element={<AdminGuard><AdminPortfolioProjectsPage /></AdminGuard>}
         />
-        <Route
-          path="/admin/assignments"
-          element={
-            <AdminGuard>
-              <AdminAssignmentsPage />
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/admin/projects/published"
-          element={
-            <AdminGuard>
-              <AdminPortfolioProjectsPage />
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/admin/files"
-          element={
-            <AdminGuard>
-              <div className="space-y-4">
-                <h1 className="text-2xl font-bold text-white">Storage File Manager</h1>
-                <p className="text-xs text-slate-400">Storage quota and file audit log (PRD FILE-001).</p>
-                <div className="p-8 rounded-2xl border border-slate-800 bg-slate-900 text-center text-xs text-slate-400">
-                  Private Bucket: 14 MB used / 1024 MB quota · Public Media: 38 MB
-                </div>
-              </div>
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/admin/categories"
-          element={
-            <AdminGuard>
-              <CategoriesPage />
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/admin/tags"
-          element={
-            <AdminGuard>
-              <div className="space-y-4">
-                <h1 className="text-2xl font-bold text-white">Taxonomy & Technology Tags</h1>
-                <div className="p-6 rounded-2xl border border-slate-800 bg-slate-900">
-                  <div className="flex flex-wrap gap-2">
-                    {['React', 'TypeScript', 'Tailwind CSS', 'Kotlin', 'Jetpack Compose', 'Figma', 'Node.js', 'PostgreSQL'].map((t) => (
-                      <span key={t} className="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-800/80 text-xs font-semibold text-slate-300">
-                        {t} (Approved)
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/admin/notifications"
-          element={
-            <AdminGuard>
-              <div className="space-y-4">
-                <h1 className="text-2xl font-bold text-white">Notifications Center</h1>
-                <div className="p-6 rounded-2xl border border-slate-800 bg-slate-900 text-xs space-y-2">
-                  <div className="p-3 rounded-xl bg-slate-800 text-slate-200 font-medium">
-                    New submission received from Hamza Farooq for "Nova AI Support"
-                  </div>
-                </div>
-              </div>
-            </AdminGuard>
-          }
-        />
-        <Route
-          path="/admin/analytics"
-          element={
-            <AdminGuard>
-              <div className="space-y-6">
-                <h1 className="text-2xl font-bold text-white">Academy Analytics & Reports</h1>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="p-5 rounded-2xl border border-slate-800 bg-slate-900">
-                    <div className="text-xs text-slate-400">Approval Velocity</div>
-                    <div className="text-2xl font-bold text-emerald-400 mt-1">1.2 Days Avg</div>
-                  </div>
-                  <div className="p-5 rounded-2xl border border-slate-800 bg-slate-900">
-                    <div className="text-xs text-slate-400">Assignment On-Time %</div>
-                    <div className="text-2xl font-bold text-indigo-400 mt-1">94.8%</div>
-                  </div>
-                  <div className="p-5 rounded-2xl border border-slate-800 bg-slate-900">
-                    <div className="text-xs text-slate-400">Storage Utilized</div>
-                    <div className="text-2xl font-bold text-teal-400 mt-1">52 MB / 1024 MB</div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <AnimatedBarChart
-                    label="Monthly Submissions Reviewed"
-                    data={[
-                      { label: 'Jan', value: 12 },
-                      { label: 'Feb', value: 19 },
-                      { label: 'Mar', value: 24 },
-                      { label: 'Apr', value: 18 },
-                      { label: 'May', value: 29 },
-                      { label: 'Jun', value: 34 },
-                    ]}
-                  />
-                  <AnimatedBarChart
-                    label="Deliverables by Discipline"
-                    data={[
-                      { label: 'Web', value: 42 },
-                      { label: 'Android', value: 28 },
-                      { label: 'UI/UX', value: 31 },
-                      { label: 'Backend', value: 22 },
-                      { label: 'AI/ML', value: 16 },
-                    ]}
-                  />
-                </div>
-              </div>
-            </AdminGuard>
-          }
-        />
+        <Route path="/admin/projects/published" element={<Navigate to="/admin/projects" replace />} />
+        <Route path="/admin/content" element={<Navigate to="/admin/website" replace />} />
+        {/* Removed unfinished demo-only admin sections */}
+        <Route path="/admin/assignments" element={<Navigate to="/admin" replace />} />
+        <Route path="/admin/activity" element={<Navigate to="/admin" replace />} />
+        <Route path="/admin/logs" element={<Navigate to="/admin" replace />} />
+        <Route path="/admin/files" element={<Navigate to="/admin" replace />} />
+        <Route path="/admin/categories" element={<Navigate to="/admin" replace />} />
+        <Route path="/admin/tags" element={<Navigate to="/admin" replace />} />
+        <Route path="/admin/notifications" element={<Navigate to="/admin/messages" replace />} />
+        <Route path="/admin/analytics" element={<Navigate to="/admin" replace />} />
 
         {/* Member Portal Routes */}
         <Route

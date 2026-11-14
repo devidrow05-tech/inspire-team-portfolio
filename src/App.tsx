@@ -99,7 +99,10 @@ export default function App() {
           <Routes>
             {/* Public Showcase Routes */}
             <Route path="/" element={<Navigate to="/team" replace />} />
-            <Route path="/projects" element={<Navigate to="/team" replace />} />
+            <Route
+              path="/projects"
+              element={<PublicLayout><ProjectsPage /></PublicLayout>}
+            />
             <Route
               path="/projects/:slug"
               element={

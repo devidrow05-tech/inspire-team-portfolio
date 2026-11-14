@@ -35,7 +35,7 @@ export const ContactPage: React.FC = () => {
     setTimeout(() => {
       setSubmitState('sent');
       confetti({ particleCount: 70, spread: 58, origin: { y: 0.7 } });
-      showAnimatedToast('Message dispatched successfully to Inspire Academy!', 'success');
+      showAnimatedToast('Message dispatched successfully to Inspire!', 'success');
 
       setTimeout(() => {
         setIsSubmitted(true);

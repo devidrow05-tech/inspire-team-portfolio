@@ -413,17 +413,22 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
               <p className="text-xs leading-relaxed mb-3">
                 {config.contact_address}
               </p>
-              {config.whatsapp_number && (
-                <a
-                  href={`https://wa.me/${config.whatsapp_number.replace(/[^0-9]/g, '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition hover:-translate-y-0.5 shadow"
-                >
-                  <PhoneCall className="w-3.5 h-3.5" />
-                  WhatsApp Direct
-                </a>
-              )}
+              <a
+                href="tel:+923093534289"
+                className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--text)] hover:text-emerald-600 transition-colors mb-3"
+              >
+                <PhoneCall className="w-3.5 h-3.5" />
+                03093534289
+              </a>
+              <a
+                href="https://wa.me/923093534289"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition hover:-translate-y-0.5 shadow"
+              >
+                <PhoneCall className="w-3.5 h-3.5" />
+                WhatsApp Direct
+              </a>
             </div>
           </div>
 

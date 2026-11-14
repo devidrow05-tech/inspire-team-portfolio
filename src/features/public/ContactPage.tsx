@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { useApp } from '../../context/AppContext';
+import { submitContactMessage } from '../../lib/supabase';
 import {
   AnimatedButton,
   AnimatedCard,
@@ -27,21 +28,20 @@ export const ContactPage: React.FC = () => {
   const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || !message.trim() || submitState !== 'idle') return;
-
+    if (!name.trim() || !email.trim() || !subject.trim() || !message.trim() || submitState !== 'idle') return;
     setSubmitState('sending');
-    setTimeout(() => {
+    try {
+      await submitContactMessage({ name, email, subject, message });
       setSubmitState('sent');
       confetti({ particleCount: 70, spread: 58, origin: { y: 0.7 } });
-      showAnimatedToast('Message dispatched successfully to Inspire!', 'success');
-
-      setTimeout(() => {
-        setIsSubmitted(true);
-        setSubmitState('idle');
-      }, 550);
-    }, 550);
+      showAnimatedToast('Your message has been sent to Inspire.', 'success');
+      setIsSubmitted(true);
+    } catch (error) {
+      setSubmitState('idle');
+      showAnimatedToast(error instanceof Error ? error.message : 'Message could not be sent. Please try WhatsApp.', 'error');
+    }
   };
 
   const contactNumber = '03093534289';
@@ -152,9 +152,9 @@ export const ContactPage: React.FC = () => {
               <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-[var(--text)]">Message Dispatched Successfully</h3>
+              <h3 className="text-lg font-bold text-[var(--text)]">Message Sent Successfully</h3>
               <p className="text-xs text-[var(--text-muted)] max-w-sm mx-auto">
-                Thank you for contacting Inspire Team. Your message has been forwarded to{' '}
+                Thank you for contacting Inspire Team. Your message has been saved for the team. We'll reply to{' '}
                 {config.contact_email || 'the admissions committee'}.
               </p>
               <AnimatedButton

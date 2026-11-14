@@ -43,7 +43,7 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
     );
   }
 
-  const enabledNavItems = config.navigation_items.filter((item) => item.enabled);
+  // Portfolio projects are shown inside each member's Team profile, not as a separate public navigation page.\n  const enabledNavItems = config.navigation_items.filter((item) => item.enabled && item.path !== '/projects');
 
   return (
     <div

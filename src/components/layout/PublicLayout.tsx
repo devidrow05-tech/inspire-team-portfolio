@@ -20,7 +20,7 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
   const handleBack = () => {
     const historyIndex = window.history.state?.idx;
     if (typeof historyIndex === 'number' && historyIndex > 0) navigate(-1);
-    else navigate('/team');
+    else navigate('/');
   };
 
   // If maintenance mode is enabled by admin in Section 12, display friendly maintenance banner/screen

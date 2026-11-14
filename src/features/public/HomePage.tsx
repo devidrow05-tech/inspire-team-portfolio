@@ -258,7 +258,7 @@ export const HomePage: React.FC = () => {
                 />
                 <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
                   {config.about_preview_text ||
-                    'Inspire Academy provides an uncompromising environment where students evolve into production-ready software engineers and digital craftsmen.'}
+                    'Inspire provides an uncompromising environment where students evolve into production-ready software engineers and digital craftsmen.'}
                 </p>
                 <div>
                   <Link

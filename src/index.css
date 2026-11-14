@@ -80,3 +80,24 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+
+/* Inspire home hero: subtle motion, responsive poster collage */
+.inspire-hero {
+  background: radial-gradient(ellipse at 78% 30%, rgba(99,102,241,.12), transparent 38%), radial-gradient(ellipse at 12% 82%, rgba(20,184,166,.09), transparent 34%), linear-gradient(180deg, rgba(238,242,255,.72), var(--bg) 82%);
+}
+.dark .inspire-hero { background: radial-gradient(ellipse at 78% 30%, rgba(99,102,241,.19), transparent 38%), radial-gradient(ellipse at 12% 82%, rgba(20,184,166,.12), transparent 34%), linear-gradient(180deg, #111a35, var(--bg) 82%); }
+.inspire-hero-glow { position:absolute; width:18rem; height:18rem; border-radius:9999px; filter:blur(70px); opacity:.2; pointer-events:none; }
+.inspire-hero-glow-one { top:2rem; right:8%; background:#6366f1; }
+.inspire-hero-glow-two { bottom:0; left:8%; background:#14b8a6; }
+.inspire-poster-main { animation: inspire-poster-enter .9s cubic-bezier(.2,.8,.2,1) both; }
+.inspire-float { animation: inspire-float 6s ease-in-out infinite; }
+.inspire-float-right { animation-delay: -2.5s; }
+.inspire-float-badge { animation: inspire-float 7s ease-in-out infinite; animation-delay: -1.5s; }
+.inspire-orbit { animation: inspire-spin 36s linear infinite; }
+.inspire-orbit-two { animation-direction: reverse; animation-duration: 48s; }
+@keyframes inspire-float { 0%,100% { transform: translate3d(0,0,0) rotate(var(--poster-rotation, 0deg)); } 50% { transform: translate3d(0,-11px,0) rotate(var(--poster-rotation, 0deg)); } }
+@keyframes inspire-spin { to { transform: rotate(360deg); } }
+@keyframes inspire-poster-enter { from { opacity:0; transform: translateY(24px) rotate(2deg) scale(.97); } to { opacity:1; transform: translateY(0) rotate(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .inspire-poster-main,.inspire-float,.inspire-float-badge,.inspire-orbit,.inspire-orbit-two { animation:none !important; } }
+@media (max-width: 420px) { .inspire-hero-art { height:300px; } }

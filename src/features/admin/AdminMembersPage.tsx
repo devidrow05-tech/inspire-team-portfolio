@@ -1,222 +1,99 @@
-import React, { useState } from 'react';
-import { mockMemberProfiles } from '../../services/demo/data';
-import {
-  AnimatedButton,
-  AnimatedModal,
-  RevealSection,
-  showAnimatedToast,
-} from '../../components/ui/MotionPrimitives';
-import { UserPlus, CheckCircle2 } from 'lucide-react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Loader2, Plus, RefreshCw, Users, Eye, EyeOff } from 'lucide-react';
+import { portfolioApi, type TeamMember } from '../../lib/portfolio';
+
+const slugify = (value: string) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 export const AdminMembersPage: React.FC = () => {
-  const [members, setMembers] = useState(mockMemberProfiles);
-  const [showNewModal, setShowNewModal] = useState(false);
-  const [newFullName, setNewFullName] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [newTitle, setNewTitle] = useState('');
-  const [tempPasswordGenerated, setTempPasswordGenerated] = useState<string | null>(null);
+  const [members, setMembers] = useState<TeamMember[]>([]);
+  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
+  const [bio, setBio] = useState('');
+  const [skills, setSkills] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const handleCreateMember = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newFullName || !newEmail) return;
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try { setMembers(await portfolioApi.listMembers()); }
+    catch (err) { setError(err instanceof Error ? err.message : 'Unable to load team members.'); }
+    finally { setLoading(false); }
+  }, []);
 
-    const tempPass = `Temp${Math.random().toString(36).slice(-6)}!9`;
-    setTempPasswordGenerated(tempPass);
+  useEffect(() => { void load(); }, [load]);
 
-    const newSlug = newFullName.toLowerCase().replace(/\s+/g, '-');
-    setMembers((prev) => [
-      ...prev,
-      {
-        id: `mp-${Date.now()}`,
-        profile_id: `usr-${Date.now()}`,
-        slug: newSlug,
-        display_name: newFullName,
-        title: newTitle || 'Digital Engineer',
-        skills: ['Web', 'Design'],
-        specializations: ['Full-Stack'],
+  const addMember = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!name.trim() || !title.trim()) return;
+    setSaving(true); setError(''); setSuccess('');
+    try {
+      const baseSlug = slugify(name);
+      const slug = members.some((member) => member.slug === baseSlug) ? `${baseSlug}-${Date.now().toString().slice(-5)}` : baseSlug;
+      await portfolioApi.createMember({
+        display_name: name.trim(),
+        slug,
+        title: title.trim(),
+        bio: bio.trim(),
+        skills: skills.split(',').map((skill) => skill.trim()).filter(Boolean),
         is_published: false,
-        sort_order: prev.length + 1,
-        other_links: [],
-        contact_enabled: false,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-    ]);
-    showAnimatedToast(`Provisioned account for ${newFullName}`, 'success');
+        sort_order: members.length,
+      });
+      setName(''); setTitle(''); setBio(''); setSkills('');
+      setSuccess('Team member profile saved to the database.');
+      await load();
+    } catch (err) { setError(err instanceof Error ? err.message : 'Unable to save team member.'); }
+    finally { setSaving(false); }
+  };
+
+  const togglePublished = async (member: TeamMember) => {
+    setError(''); setSuccess('');
+    try {
+      await portfolioApi.updateMember(member.id, { is_published: !member.is_published });
+      setMembers((current) => current.map((item) => item.id === member.id ? { ...item, is_published: !item.is_published } : item));
+    } catch (err) { setError(err instanceof Error ? err.message : 'Unable to update profile.'); }
   };
 
   return (
     <div className="space-y-6">
-      <RevealSection className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--text)]">
-            Team Members Directory
-          </h1>
-          <p className="text-xs text-[var(--text-muted)] mt-1">
-            Invite-only member governance. Admin provisions accounts with one-time temporary passwords.
-          </p>
-        </div>
-        <AnimatedButton
-          type="button"
-          onClick={() => {
-            setShowNewModal(true);
-            setTempPasswordGenerated(null);
-          }}
-          className="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow-sm transition"
-        >
-          <UserPlus className="w-4 h-4" />
-          <span>Provision New Member</span>
-        </AnimatedButton>
-      </RevealSection>
+      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div><h1 className="text-2xl font-extrabold text-white">Team Members</h1><p className="mt-1 text-sm text-slate-400">Create real team profiles and control whether they appear on the public website.</p></div>
+        <button type="button" onClick={() => void load()} disabled={loading} className="inline-flex items-center gap-2 rounded-xl border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-800"><RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`}/> Refresh</button>
+      </header>
 
-      {/* Member Table */}
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-start text-xs">
-            <thead className="bg-[var(--surface-2)] text-[var(--text-muted)] border-b border-[var(--border)] uppercase font-semibold">
-              <tr>
-                <th className="px-5 py-3.5 text-start">Member Name</th>
-                <th className="px-5 py-3.5 text-start">Slug</th>
-                <th className="px-5 py-3.5 text-start">Specialist Role</th>
-                <th className="px-5 py-3.5 text-start">Public Profile Status</th>
-                <th className="px-5 py-3.5 text-end">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[var(--border)]">
-              {members.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="px-5 py-10 text-center text-xs text-[var(--text-muted)]">
-                    No members provisioned yet. Click "Provision New Member" to add one.
-                  </td>
-                </tr>
-              )}
-              {members.map((m) => (
-                <tr key={m.id} className="hover:bg-[var(--surface-2)]/50 transition">
-                  <td className="px-5 py-4 font-bold text-[var(--text)]">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-teal-500 text-white font-bold flex items-center justify-center text-xs">
-                        {m.display_name.slice(0, 2).toUpperCase()}
-                      </div>
-                      <span>{m.display_name}</span>
-                    </div>
-                  </td>
-                  <td className="px-5 py-4 font-mono text-[var(--text-muted)]">
-                    /team/{m.slug}
-                  </td>
-                  <td className="px-5 py-4 text-[var(--text)]">{m.title}</td>
-                  <td className="px-5 py-4">
-                    {m.is_published ? (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Published
-                      </span>
-                    ) : (
-                      <span className="text-[11px] font-medium text-slate-500">Unpublished</span>
-                    )}
-                  </td>
-                  <td className="px-5 py-4 text-end">
-                    <AnimatedButton
-                      type="button"
-                      onClick={() =>
-                        showAnimatedToast(
-                          `Generated temporary password for ${m.display_name}: Pass${Math.random().toString(36).slice(-5)}!`,
-                          'info'
-                        )
-                      }
-                      className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
-                    >
-                      Reset Password
-                    </AnimatedButton>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {error && <p role="alert" className="rounded-xl border border-rose-800 bg-rose-950/30 p-3 text-xs text-rose-300">{error}</p>}
+      {success && <p className="rounded-xl border border-emerald-800 bg-emerald-950/30 p-3 text-xs text-emerald-300">{success}</p>}
 
-      {/* Animated Modal */}
-      <AnimatedModal
-        isOpen={showNewModal}
-        onClose={() => setShowNewModal(false)}
-        title="Provision New Academy Member"
-      >
-        {tempPasswordGenerated ? (
-          <div className="space-y-4">
-            <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs space-y-2">
-              <div className="font-bold text-emerald-900 dark:text-emerald-200">
-                Account Created! Share Temporary Credentials:
+      <form onSubmit={addMember} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 space-y-4">
+        <div className="flex items-center gap-2 text-white"><Plus className="h-4 w-4 text-indigo-300"/><h2 className="text-sm font-bold">Add Team Profile</h2></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <label className="text-xs text-slate-300">Full name<input required value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white" placeholder="Member name"/></label>
+          <label className="text-xs text-slate-300">Professional title<input required value={title} onChange={(e) => setTitle(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white" placeholder="Frontend Developer"/></label>
+          <label className="text-xs text-slate-300 md:col-span-2">Short bio<textarea rows={3} value={bio} onChange={(e) => setBio(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white" placeholder="A short introduction…"/></label>
+          <label className="text-xs text-slate-300 md:col-span-2">Skills (comma separated)<input value={skills} onChange={(e) => setSkills(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white" placeholder="React, UI Design, TypeScript"/></label>
+        </div>
+        <button disabled={saving} className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-indigo-500 disabled:opacity-50">{saving ? <Loader2 className="h-4 w-4 animate-spin"/> : <Plus className="h-4 w-4"/>} Save Member Profile</button>
+        <p className="text-[11px] text-slate-500">This creates a public portfolio profile record, not a login account. Member sign-in access is managed separately.</p>
+      </form>
+
+      <section className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+        <div className="flex items-center justify-between border-b border-slate-800 p-4"><h2 className="text-sm font-bold text-white">Saved Profiles ({members.length})</h2><Users className="h-4 w-4 text-slate-500"/></div>
+        {loading ? <p className="p-8 text-center text-xs text-slate-400">Loading profiles…</p> : members.length === 0 ? <p className="p-8 text-center text-xs text-slate-400">No team profiles have been created yet.</p> : (
+          <div className="divide-y divide-slate-800">
+            {members.map((member) => (
+              <div key={member.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-500/15 font-bold text-indigo-200">{member.display_name.slice(0, 2).toUpperCase()}</div>
+                <div className="min-w-0 flex-1"><div className="text-sm font-semibold text-white">{member.display_name}</div><div className="mt-0.5 text-xs text-slate-400">{member.title} · /team/{member.slug}</div></div>
+                <button type="button" onClick={() => void togglePublished(member)} className={`inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-bold ${member.is_published ? 'bg-emerald-500/10 text-emerald-300' : 'bg-slate-800 text-slate-300'}`}>
+                  {member.is_published ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}{member.is_published ? 'Published' : 'Draft'}
+                </button>
               </div>
-              <div className="font-mono text-sm bg-white dark:bg-slate-900 p-2 rounded border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 select-all">
-                {tempPasswordGenerated}
-              </div>
-              <div className="text-[11px] text-emerald-700 dark:text-emerald-400">
-                Warning: This password is shown once. The member will be required to change it on first login.
-              </div>
-            </div>
-            <AnimatedButton
-              type="button"
-              onClick={() => setShowNewModal(false)}
-              className="w-full py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs"
-            >
-              Done
-            </AnimatedButton>
+            ))}
           </div>
-        ) : (
-          <form onSubmit={handleCreateMember} className="space-y-3.5">
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-[var(--text)]">Full Name</label>
-              <input
-                type="text"
-                required
-                value={newFullName}
-                onChange={(e) => setNewFullName(e.target.value)}
-                placeholder="e.g. Zainab Qureshi"
-                className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-[var(--text)]">Email</label>
-              <input
-                type="email"
-                required
-                value={newEmail}
-                onChange={(e) => setNewEmail(e.target.value)}
-                placeholder="name@inspireacademy.edu"
-                className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-[var(--text)]">Specialist Title</label>
-              <input
-                type="text"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-                placeholder="e.g. Lead WordPress Engineer"
-                className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-
-            <div className="flex gap-2 pt-2">
-              <AnimatedButton
-                type="button"
-                onClick={() => setShowNewModal(false)}
-                className="w-1/2 py-2.5 rounded-xl border border-[var(--border)] text-xs font-semibold hover:bg-[var(--surface-2)]"
-              >
-                Cancel
-              </AnimatedButton>
-              <AnimatedButton
-                type="submit"
-                className="w-1/2 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs"
-              >
-                Generate Account
-              </AnimatedButton>
-            </div>
-          </form>
         )}
-      </AnimatedModal>
+      </section>
     </div>
   );
 };

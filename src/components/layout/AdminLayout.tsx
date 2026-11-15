@@ -113,7 +113,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         {/* Brand header */}
         <div className="h-16 px-4 border-b border-slate-800 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2.5 min-w-0">
-            <img src="/inspire-original.png?v=4" alt="Inspire Academy" className="w-10 h-10 object-contain shrink-0 rounded-lg bg-white" />
+            <img src="/inspire-original.png?v=5" alt="Inspire Academy" className="w-10 h-10 object-contain shrink-0 rounded-lg bg-white" />
             <AnimatePresence initial={false}>
               {!sidebarCollapsed && (
                 <motion.div
@@ -329,7 +329,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             >
               <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-2 min-w-0">
-                  <img src="/inspire-original.png?v=4" alt="Inspire Academy" className="w-9 h-9 object-contain rounded-lg bg-white shrink-0" />
+                  <img src="/inspire-original.png?v=5" alt="Inspire Academy" className="w-9 h-9 object-contain rounded-lg bg-white shrink-0" />
                   <span className="font-extrabold text-xs text-white tracking-wider">INSPIRE ADMIN</span>
                 </div>
                 <button

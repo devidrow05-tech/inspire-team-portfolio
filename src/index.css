@@ -12,131 +12,46 @@
   --animate-ping-slow: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
   --animate-text-glow: textGlow 2s ease-in-out infinite;
 
-  @keyframes gradientFlow {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-  @keyframes glowPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(108, 71, 255, 0.3); }
-    50% { box-shadow: 0 0 40px rgba(108, 71, 255, 0.7), 0 0 80px rgba(108, 71, 255, 0.3); }
-  }
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-  @keyframes rotateSlow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  @keyframes bounceSubtle {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-  }
-  @keyframes textGlow {
-    0%, 100% { text-shadow: 0 0 10px rgba(108, 71, 255, 0.45); }
-    50% { text-shadow: 0 0 20px rgba(108, 71, 255, 0.85), 0 0 40px rgba(108, 71, 255, 0.45); }
-  }
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  @keyframes gradientFlow { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+  @keyframes glowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(108, 71, 255, 0.3); } 50% { box-shadow: 0 0 40px rgba(108, 71, 255, 0.7), 0 0 80px rgba(108, 71, 255, 0.3); } }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  @keyframes rotateSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes bounceSubtle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes textGlow { 0%, 100% { text-shadow: 0 0 10px rgba(108, 71, 255, 0.45); } 50% { text-shadow: 0 0 20px rgba(108, 71, 255, 0.85), 0 0 40px rgba(108, 71, 255, 0.45); } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 }
 
 @layer base {
   :root {
-    --bg: #F8FAFC;
-    --surface: #FFFFFF;
-    --surface-2: #F1F5F9;
-    --border: #E2E8F0;
-    --text: #0F172A;
-    --text-muted: #475569;
-    --primary: #4338CA;
-    --primary-contrast: #FFFFFF;
-    --secondary: #0F766E;
-    --accent: #14B8A6;
-    --success: #15803D;
-    --warning: #B45309;
-    --danger: #B91C1C;
-    --info: #1D4ED8;
-    --focus-ring: #4338CA;
-    --radius: 0.75rem;
+    --bg: #F8FAFC; --surface: #FFFFFF; --surface-2: #F1F5F9; --border: #E2E8F0;
+    --text: #0F172A; --text-muted: #475569; --primary: #4338CA; --primary-contrast: #FFFFFF;
+    --secondary: #0F766E; --accent: #14B8A6; --success: #15803D; --warning: #B45309;
+    --danger: #B91C1C; --info: #1D4ED8; --focus-ring: #4338CA; --radius: 0.75rem;
   }
-
   .dark {
-    --bg: #0B1020;
-    --surface: #121A2E;
-    --surface-2: #18223B;
-    --border: #26314D;
-    --text: #E8ECF6;
-    --text-muted: #9AA7C2;
-    --primary: #818CF8;
-    --primary-contrast: #0B1020;
-    --secondary: #2DD4BF;
-    --accent: #5EEAD4;
-    --success: #4ADE80;
-    --warning: #FBBF24;
-    --danger: #F87171;
-    --info: #60A5FA;
-    --focus-ring: #A5B4FC;
+    --bg: #0B1020; --surface: #121A2E; --surface-2: #18223B; --border: #26314D;
+    --text: #E8ECF6; --text-muted: #9AA7C2; --primary: #818CF8; --primary-contrast: #0B1020;
+    --secondary: #2DD4BF; --accent: #5EEAD4; --success: #4ADE80; --warning: #FBBF24;
+    --danger: #F87171; --info: #60A5FA; --focus-ring: #A5B4FC;
   }
-
-  html {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-
-  html[dir="rtl"] {
-    font-family: 'Noto Naskh Arabic', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    line-height: 1.65;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', 'Noto Naskh Arabic', sans-serif;
-  }
-
-  html[dir="rtl"] h1, 
-  html[dir="rtl"] h2, 
-  html[dir="rtl"] h3, 
-  html[dir="rtl"] h4, 
-  html[dir="rtl"] h5, 
-  html[dir="rtl"] h6 {
-    font-family: 'Noto Naskh Arabic', 'Plus Jakarta Sans', sans-serif;
-  }
-
-  code, pre {
-    font-family: 'JetBrains Mono', monospace;
-  }
+  html { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  html[dir="rtl"] { font-family: 'Noto Naskh Arabic', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.65; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Plus Jakarta Sans', 'Noto Naskh Arabic', sans-serif; }
+  html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3, html[dir="rtl"] h4, html[dir="rtl"] h5, html[dir="rtl"] h6 { font-family: 'Noto Naskh Arabic', 'Plus Jakarta Sans', sans-serif; }
+  code, pre { font-family: 'JetBrains Mono', monospace; }
 }
 
 /* Custom scrollbars */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
-}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
 /* Desktop-only custom cursor mode */
 @media (hover: hover) and (pointer: fine) {
-  body.inspire-custom-cursor,
-  body.inspire-custom-cursor * {
-    cursor: none !important;
-  }
+  body.inspire-custom-cursor, body.inspire-custom-cursor * { cursor: none !important; }
 }
 
 /* 3D card flip utilities for TeamPage and shimmer bar for MotionPrimitives */
@@ -144,55 +59,37 @@
 .preserve-3d { transform-style: preserve-3d; }
 .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .rotate-y-180 { transform: rotateY(180deg); }
-
-@keyframes inspire-shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(350%); }
-}
+@keyframes inspire-shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
 .inspire-shimmer-bar { animation: inspire-shimmer 2.2s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) {
-  .inspire-shimmer-bar,
-  .animate-gradient-flow,
-  .animate-float,
-  .animate-glow-pulse,
-  .animate-shimmer,
-  .animate-rotate-slow,
-  .animate-bounce-subtle,
-  .animate-ping-slow,
-  .animate-text-glow {
-    animation: none !important;
-  }
+  .inspire-shimmer-bar, .animate-gradient-flow, .animate-float, .animate-glow-pulse,
+  .animate-shimmer, .animate-rotate-slow, .animate-bounce-subtle, .animate-ping-slow,
+  .animate-text-glow { animation: none !important; }
 }
 
-/* Responsive safety net: prevent page-level horizontal dragging on every route. */
+/* Responsive safety net and full-height app root. */
 *, *::before, *::after { box-sizing: border-box; }
-html, body, #root {
+html, body {
   width: 100%;
-  max-width: 100%;
+  height: 100%;
   min-height: 100%;
-}
-html, body { overflow-x: clip; }
-body { margin: 0; }
-#root { overflow-x: clip; }
-img, video, canvas, iframe, svg {
   max-width: 100%;
+  overflow-x: clip;
 }
+body { margin: 0; }
+#root {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+}
+img, video, canvas, iframe, svg { max-width: 100%; }
 img, video { height: auto; }
 pre, code, table { max-width: 100%; }
-pre, .overflow-code {
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-}
-main, section, article, aside, header, footer,
-[class*="min-w-"] {
-  min-width: 0;
-}
-input, textarea, select {
-  max-width: 100%;
-}
-button, a {
-  overflow-wrap: anywhere;
-}
+pre, .overflow-code { overflow-x: auto; overscroll-behavior-x: contain; }
+main, section, article, aside, header, footer, [class*="min-w-"] { min-width: 0; }
+input, textarea, select { max-width: 100%; }
+button, a { overflow-wrap: anywhere; }
 @media (max-width: 767px) {
   html { -webkit-text-size-adjust: 100%; }
   body { width: 100%; }
@@ -201,7 +98,5 @@ button, a {
   .container, [class*="max-w-"] { max-width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-  }
+  *, *::before, *::after { scroll-behavior: auto !important; }
 }

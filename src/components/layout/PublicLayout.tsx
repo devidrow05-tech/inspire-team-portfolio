@@ -110,27 +110,13 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
           {/* Logo & Brand */}
           <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0 flex-1 md:flex-initial">
-            {(config.logo_url || '/logo.svg') ? (
-              <motion.img
-                whileHover={{ scale: 1.06 }}
-                transition={EASINGS.spring}
-                src={config.logo_url || '/logo.svg'}
-                alt={config.site_name}
-                className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 object-contain rounded-xl"
-              />
-            ) : (
-              <motion.div
-                whileHover={{ scale: 1.08, rotate: -6 }}
-                whileTap={{ scale: 0.95 }}
-                transition={EASINGS.spring}
-                className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl flex items-center justify-center text-white shadow-md"
-                style={{
-                  background: `linear-gradient(135deg, ${config.color_primary || '#4338CA'}, ${config.color_secondary || '#0F766E'})`,
-                }}
-              >
-                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
-              </motion.div>
-            )}
+            <motion.img
+              whileHover={{ scale: 1.06 }}
+              transition={EASINGS.spring}
+              src="/inspire-logo.webp"
+              alt="Inspire Academy"
+              className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 object-contain"
+            />
             <div className="min-w-0">
               <div className="font-extrabold text-base sm:text-lg tracking-tight truncate">
                 <GradientText>{config.site_name || 'INSPIRE'}</GradientText>
@@ -287,7 +273,7 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
             <div className="space-y-4 md:col-span-1">
               <div className="flex items-center gap-2">
                 <img
-                  src="/logo.svg"
+                  src="/inspire-logo.webp"
                   alt="Inspire Academy"
                   className="w-10 h-10 object-contain shrink-0"
                 />

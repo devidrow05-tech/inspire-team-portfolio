@@ -163,3 +163,45 @@
     animation: none !important;
   }
 }
+
+/* Responsive safety net: prevent page-level horizontal dragging on every route. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+}
+html, body { overflow-x: clip; }
+body { margin: 0; }
+#root { overflow-x: clip; }
+img, video, canvas, iframe, svg {
+  max-width: 100%;
+}
+img, video { height: auto; }
+pre, code, table { max-width: 100%; }
+pre, .overflow-code {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+main, section, article, aside, header, footer,
+[class*="min-w-"] {
+  min-width: 0;
+}
+input, textarea, select {
+  max-width: 100%;
+}
+button, a {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 767px) {
+  html { -webkit-text-size-adjust: 100%; }
+  body { width: 100%; }
+  main { max-width: 100vw; }
+  h1 { overflow-wrap: anywhere; }
+  .container, [class*="max-w-"] { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+}

@@ -55,7 +55,7 @@ export const TeamPage: React.FC = () => {
             return <motion.div key={member.id} variants={fadeUp} className="h-full">
               <Link to={`/team/${member.slug}`} className="group flex h-full flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:border-teal-400/60 hover:shadow-lg">
                 <div className="flex items-center gap-3">
-                  {member.avatar_url ? <img src={member.avatar_url} alt={member.display_name} className="h-14 w-14 rounded-2xl object-cover" /> : <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-500 text-white font-bold text-lg flex items-center justify-center shadow-md">{member.display_name.slice(0, 2).toUpperCase()}</div>}
+                  {member.avatar_url ? <img src={member.avatar_url} alt={member.display_name} referrerPolicy="no-referrer" loading="lazy" decoding="async" className="h-14 w-14 rounded-2xl object-cover" /> : <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-500 text-white font-bold text-lg flex items-center justify-center shadow-md">{member.display_name.slice(0, 2).toUpperCase()}</div>}
                   <div className="min-w-0"><h2 className="font-bold text-base text-[var(--text)]">{member.display_name}</h2><p className="text-xs text-[var(--text-muted)]">{member.title}</p></div>
                 </div>
                 <p className="mt-4 text-xs text-[var(--text-muted)] line-clamp-3 leading-relaxed">{member.bio || 'Explore this team member’s professional profile and published work.'}</p>

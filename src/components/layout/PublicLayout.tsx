@@ -113,7 +113,7 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
             <motion.img
               whileHover={{ scale: 1.06 }}
               transition={EASINGS.spring}
-              src="/inspire-original.png?v=3"
+              src="/inspire-original.png?v=4"
               alt="Inspire Academy"
               className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 object-contain"
             />
@@ -273,7 +273,7 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
             <div className="space-y-4 md:col-span-1">
               <div className="flex items-center gap-2">
                 <img
-                  src="/inspire-original.png?v=3"
+                  src="/inspire-original.png?v=4"
                   alt="Inspire Academy"
                   className="w-10 h-10 object-contain shrink-0"
                 />

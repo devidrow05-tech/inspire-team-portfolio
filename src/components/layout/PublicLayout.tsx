@@ -110,11 +110,11 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
           {/* Logo & Brand */}
           <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0 flex-1 md:flex-initial">
-            {config.logo_url ? (
+            {(config.logo_url || '/logo.svg') ? (
               <motion.img
                 whileHover={{ scale: 1.06 }}
                 transition={EASINGS.spring}
-                src={config.logo_url}
+                src={config.logo_url || '/logo.svg'}
                 alt={config.site_name}
                 className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 object-contain rounded-xl"
               />
@@ -286,12 +286,11 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
             <div className="space-y-4 md:col-span-1">
               <div className="flex items-center gap-2">
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-white"
-                  style={{ backgroundColor: config.color_primary || '#4338CA' }}
-                >
-                  <Sparkles className="w-4 h-4" />
-                </div>
+                <img
+                  src="/logo.svg"
+                  alt="Inspire Academy"
+                  className="w-10 h-10 object-contain shrink-0"
+                />
                 <span className="font-bold text-base text-[var(--text)] tracking-tight">
                   {config.site_name}
                 </span>

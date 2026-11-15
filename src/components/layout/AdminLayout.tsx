@@ -246,8 +246,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       {/* Main Content Area */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden bg-slate-950">
         {/* Topbar */}
-        <header className="h-16 border-b border-slate-800/80 bg-slate-900/50 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2 sm:gap-3">
+        <header className="min-h-16 border-b border-slate-800/80 bg-slate-900/50 backdrop-blur-md px-3 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
+          <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-3">
             <AnimatedButton
               type="button"
               onClick={handleBack}
@@ -278,13 +278,13 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             </AnimatedButton>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              <span className="text-xs font-bold text-white tracking-wide">
+              <span className="hidden sm:inline text-xs font-bold text-white tracking-wide">
                 SYSTEM CONTROL ACTIVE
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
             <a
               href="/"
               target="_blank"
@@ -306,7 +306,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         </header>
 
         {/* Inner Scrollable Viewport */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <main className="min-w-0 w-full flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-6 lg:p-8">
           {children}
         </main>
       </div>

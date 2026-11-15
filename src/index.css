@@ -85,13 +85,31 @@ body { margin: 0; }
   overflow-x: clip;
 }
 
-/* Keep the admin workspace stretched to the actual browser viewport. */
-.admin-app-shell {
-  width: 100%;
+/* Keep the admin workspace pinned to and filling the browser viewport. */
+body:has(.admin-app-shell) {
+  background: #020617 !important;
+  overflow: hidden;
+}
+body:has(.admin-app-shell) #root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
   height: 100vh;
   height: 100dvh;
   min-height: 100vh;
   min-height: 100dvh;
+  background: #020617;
+}
+.admin-app-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #020617;
 }
 img, video, canvas, iframe, svg { max-width: 100%; }
 img, video { height: auto; }

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Loader2, Plus, RefreshCw, Users, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Plus, RefreshCw, Users, Eye, EyeOff, ImagePlus, UserRound } from 'lucide-react';
 import { portfolioApi, type TeamMember } from '../../lib/portfolio';
 
 const slugify = (value: string) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -10,7 +10,10 @@ export const AdminMembersPage: React.FC = () => {
   const [title, setTitle] = useState('');
   const [bio, setBio] = useState('');
   const [skills, setSkills] = useState('');
+  const [avatar, setAvatar] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState('');
   const [saving, setSaving] = useState(false);
+  const [uploadingMemberId, setUploadingMemberId] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -25,6 +28,13 @@ export const AdminMembersPage: React.FC = () => {
 
   useEffect(() => { void load(); }, [load]);
 
+  useEffect(() => {
+    if (!avatar) { setAvatarPreview(''); return; }
+    const url = URL.createObjectURL(avatar);
+    setAvatarPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [avatar]);
+
   const addMember = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!name.trim() || !title.trim()) return;
@@ -32,20 +42,35 @@ export const AdminMembersPage: React.FC = () => {
     try {
       const baseSlug = slugify(name);
       const slug = members.some((member) => member.slug === baseSlug) ? `${baseSlug}-${Date.now().toString().slice(-5)}` : baseSlug;
+      const image = avatar ? await portfolioApi.uploadImage(avatar, 'members') : null;
       await portfolioApi.createMember({
         display_name: name.trim(),
         slug,
         title: title.trim(),
         bio: bio.trim(),
         skills: skills.split(',').map((skill) => skill.trim()).filter(Boolean),
+        avatar_url: image?.url || null,
+        avatar_path: image?.path || null,
         is_published: false,
         sort_order: members.length,
       });
-      setName(''); setTitle(''); setBio(''); setSkills('');
-      setSuccess('Team member profile saved to the database.');
+      setName(''); setTitle(''); setBio(''); setSkills(''); setAvatar(null);
+      setSuccess('Team member profile and photo saved. Publish the profile when it is ready.');
       await load();
     } catch (err) { setError(err instanceof Error ? err.message : 'Unable to save team member.'); }
     finally { setSaving(false); }
+  };
+
+  const uploadMemberAvatar = async (member: TeamMember, file?: File) => {
+    if (!file) return;
+    setUploadingMemberId(member.id); setError(''); setSuccess('');
+    try {
+      const image = await portfolioApi.uploadImage(file, 'members');
+      await portfolioApi.updateMember(member.id, { avatar_url: image.url, avatar_path: image.path });
+      setMembers((current) => current.map((item) => item.id === member.id ? { ...item, avatar_url: image.url, avatar_path: image.path } : item));
+      setSuccess(`Profile photo updated for ${member.display_name}.`);
+    } catch (err) { setError(err instanceof Error ? err.message : 'Unable to upload profile photo.'); }
+    finally { setUploadingMemberId(''); }
   };
 
   const togglePublished = async (member: TeamMember) => {
@@ -59,7 +84,7 @@ export const AdminMembersPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div><h1 className="text-2xl font-extrabold text-white">Team Members</h1><p className="mt-1 text-sm text-slate-400">Create real team profiles and control whether they appear on the public website.</p></div>
+        <div><h1 className="text-2xl font-extrabold text-white">Team Members</h1><p className="mt-1 text-sm text-slate-400">Create team profiles, upload profile photos, and control public visibility.</p></div>
         <button type="button" onClick={() => void load()} disabled={loading} className="inline-flex items-center gap-2 rounded-xl border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-800"><RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`}/> Refresh</button>
       </header>
 
@@ -73,9 +98,17 @@ export const AdminMembersPage: React.FC = () => {
           <label className="text-xs text-slate-300">Professional title<input required value={title} onChange={(e) => setTitle(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white" placeholder="Frontend Developer"/></label>
           <label className="text-xs text-slate-300 md:col-span-2">Short bio<textarea rows={3} value={bio} onChange={(e) => setBio(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white" placeholder="A short introduction…"/></label>
           <label className="text-xs text-slate-300 md:col-span-2">Skills (comma separated)<input value={skills} onChange={(e) => setSkills(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white" placeholder="React, UI Design, TypeScript"/></label>
+          <div className="md:col-span-2">
+            <label className="text-xs text-slate-300">Profile photo</label>
+            <div className="mt-1 flex flex-col sm:flex-row sm:items-center gap-3 rounded-xl border border-dashed border-slate-700 bg-slate-950 p-3">
+              {avatarPreview ? <img src={avatarPreview} alt="Profile photo preview" className="h-16 w-16 rounded-xl object-cover"/> : <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-slate-800 text-slate-500"><UserRound className="h-7 w-7"/></div>}
+              <div className="min-w-0 flex-1"><input type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => setAvatar(e.target.files?.[0] || null)} className="w-full text-xs text-slate-300 file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-600 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white"/><p className="mt-1 text-[10px] text-slate-500">JPG, PNG or WebP · maximum 5 MB</p></div>
+              {avatar && <button type="button" onClick={() => setAvatar(null)} className="text-xs text-slate-400 hover:text-white">Remove</button>}
+            </div>
+          </div>
         </div>
         <button disabled={saving} className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-indigo-500 disabled:opacity-50">{saving ? <Loader2 className="h-4 w-4 animate-spin"/> : <Plus className="h-4 w-4"/>} Save Member Profile</button>
-        <p className="text-[11px] text-slate-500">This creates a public portfolio profile record, not a login account. Member sign-in access is managed separately.</p>
+        <p className="text-[11px] text-slate-500">This creates a profile record, not a login account. You can also replace a member’s photo from the saved profiles below.</p>
       </form>
 
       <section className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
@@ -84,8 +117,13 @@ export const AdminMembersPage: React.FC = () => {
           <div className="divide-y divide-slate-800">
             {members.map((member) => (
               <div key={member.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-500/15 font-bold text-indigo-200">{member.display_name.slice(0, 2).toUpperCase()}</div>
+                {member.avatar_url ? <img src={member.avatar_url} alt={member.display_name} className="h-12 w-12 shrink-0 rounded-xl object-cover"/> : <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-500/15 font-bold text-indigo-200">{member.display_name.slice(0, 2).toUpperCase()}</div>}
                 <div className="min-w-0 flex-1"><div className="text-sm font-semibold text-white">{member.display_name}</div><div className="mt-0.5 text-xs text-slate-400">{member.title} · /team/{member.slug}</div></div>
+                <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-800">
+                  {uploadingMemberId === member.id ? <Loader2 className="h-4 w-4 animate-spin"/> : <ImagePlus className="h-4 w-4"/>}
+                  {member.avatar_url ? 'Change Photo' : 'Add Photo'}
+                  <input type="file" accept="image/png,image/jpeg,image/webp" disabled={!!uploadingMemberId} onChange={(e) => { void uploadMemberAvatar(member, e.target.files?.[0]); e.currentTarget.value = ''; }} className="sr-only"/>
+                </label>
                 <button type="button" onClick={() => void togglePublished(member)} className={`inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-bold ${member.is_published ? 'bg-emerald-500/10 text-emerald-300' : 'bg-slate-800 text-slate-300'}`}>
                   {member.is_published ? <Eye className="h-4 w-4"/> : <EyeOff className="h-4 w-4"/>}{member.is_published ? 'Published' : 'Draft'}
                 </button>

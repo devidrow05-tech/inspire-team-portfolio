@@ -518,7 +518,7 @@ export const AdminBranding: React.FC = () => {
                 }}
               >
                 <div className="flex items-center gap-2">
-                  <img src={'/inspire-logo.webp'} alt="Inspire Academy" className="w-9 h-9 object-contain rounded-md bg-white shrink-0" />
+                  <img src={'/logo.svg'} alt="Inspire Academy" className="w-9 h-9 object-contain rounded-md bg-white shrink-0" />
                   <span className="text-xs font-bold truncate" style={{ color: colorText, fontFamily: fontHeading }}>
                     {siteName || 'Inspire'}
                   </span>

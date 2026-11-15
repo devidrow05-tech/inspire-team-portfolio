@@ -113,9 +113,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         {/* Brand header */}
         <div className="h-16 px-4 border-b border-slate-800 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-teal-400 flex items-center justify-center text-white shadow-md shrink-0">
-              <Sparkles className="w-4 h-4" />
-            </div>
+            <img src="/logo.svg" alt="Inspire Academy" className="w-10 h-10 object-contain shrink-0 rounded-lg bg-white" />
             <AnimatePresence initial={false}>
               {!sidebarCollapsed && (
                 <motion.div
@@ -330,9 +328,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               className="relative w-64 bg-slate-900 h-full flex flex-col z-10 shadow-2xl border-e border-slate-800"
             >
               <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                <span className="font-extrabold text-xs text-white tracking-wider">
-                  INSPIRE ADMIN
-                </span>
+                <div className="flex items-center gap-2 min-w-0">
+                  <img src="/logo.svg" alt="Inspire Academy" className="w-9 h-9 object-contain rounded-lg bg-white shrink-0" />
+                  <span className="font-extrabold text-xs text-white tracking-wider">INSPIRE ADMIN</span>
+                </div>
                 <button
                   type="button"
                   onClick={() => setMobileSidebarOpen(false)}

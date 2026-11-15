@@ -125,7 +125,7 @@ export const AdminMembersPage: React.FC = () => {
           <div className="md:col-span-2 space-y-3">
             <label className="block text-xs text-slate-300">Profile photo — upload image or paste image URL</label>
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 rounded-xl border border-dashed border-slate-700 bg-slate-950 p-3">
-              {avatarPreview || avatarUrl.trim() ? <img src={avatarPreview || avatarUrl.trim()} alt="Profile photo preview" onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }} className="h-16 w-16 rounded-xl object-cover"/> : <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-slate-800 text-slate-500"><UserRound className="h-7 w-7"/></div>}
+              {avatarPreview || avatarUrl.trim() ? <img src={avatarPreview || avatarUrl.trim()} alt="Profile photo preview" referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }} className="h-16 w-16 rounded-xl object-cover"/> : <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-slate-800 text-slate-500"><UserRound className="h-7 w-7"/></div>}
               <div className="min-w-0 flex-1"><input type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => setAvatar(e.target.files?.[0] || null)} className="w-full text-xs text-slate-300 file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-600 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white"/><p className="mt-1 text-[10px] text-slate-500">JPG, PNG or WebP upload · max 5 MB</p></div>
             </div>
             <label className="block text-xs text-slate-300">Or image URL<input type="url" value={avatarUrl} onChange={(e) => { setAvatarUrl(e.target.value); if (e.target.value) setAvatar(null); }} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-white" placeholder="https://example.com/profile-photo.jpg"/></label>
@@ -143,7 +143,7 @@ export const AdminMembersPage: React.FC = () => {
             {members.map((member) => (
               <div key={member.id} className="flex flex-col gap-3 p-4">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                  {member.avatar_url ? <img src={member.avatar_url} alt={member.display_name} className="h-12 w-12 shrink-0 rounded-xl object-cover"/> : <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-500/15 font-bold text-indigo-200">{member.display_name.slice(0, 2).toUpperCase()}</div>}
+                  {member.avatar_url ? <img src={member.avatar_url} alt={member.display_name} referrerPolicy="no-referrer" loading="lazy" decoding="async" className="h-12 w-12 shrink-0 rounded-xl object-cover"/> : <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-500/15 font-bold text-indigo-200">{member.display_name.slice(0, 2).toUpperCase()}</div>}
                   <div className="min-w-0 flex-1"><div className="text-sm font-semibold text-white">{member.display_name}</div><div className="mt-0.5 text-xs text-slate-400">{member.title} · /team/{member.slug}</div></div>
                   <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-800">
                     {uploadingMemberId === member.id ? <Loader2 className="h-4 w-4 animate-spin"/> : <ImagePlus className="h-4 w-4"/>}

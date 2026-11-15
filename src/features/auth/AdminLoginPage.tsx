@@ -58,7 +58,7 @@ export const AdminLoginPage: React.FC = () => {
       >
         <div className="text-center space-y-3">
           <motion.img
-            src="/inspire-original.png?v=3"
+            src="/inspire-original.png?v=4"
             alt="Inspire Academy"
             whileHover={{ scale: 1.04 }}
             transition={EASINGS.spring}

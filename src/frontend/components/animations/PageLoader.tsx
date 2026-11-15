@@ -29,7 +29,7 @@ export const PageLoader: React.FC<PageLoaderProps> = ({ onComplete }) => {
         transition={{ duration: 0.55, ease: [0.215, 0.61, 0.355, 1] }}
         className="mb-7 text-center"
       >
-        <img src="/logo.svg" alt="Inspire Academy" className="w-40 h-36 object-contain mx-auto" />
+        <img src="/inspire-original.png?v=3" alt="Inspire Academy" className="w-40 h-36 object-contain mx-auto" />
       </motion.div>
 
       <div className="w-52 h-1 bg-white/10 rounded-full overflow-hidden">

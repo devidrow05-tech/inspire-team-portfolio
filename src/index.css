@@ -79,9 +79,19 @@ html, body {
 body { margin: 0; }
 #root {
   width: 100%;
+  height: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: clip;
+}
+
+/* Keep the admin workspace stretched to the actual browser viewport. */
+.admin-app-shell {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 img, video, canvas, iframe, svg { max-width: 100%; }
 img, video { height: auto; }

@@ -252,7 +252,7 @@ export const AdminBranding: React.FC = () => {
                     type="text"
                     value={logoUrl}
                     onChange={(e) => setLogoUrl(e.target.value)}
-                    placeholder="e.g. /logo.svg or https://..."
+                    placeholder="Official logo is used automatically"
                     className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono"
                   />
                   {logoUrl && (
@@ -518,7 +518,7 @@ export const AdminBranding: React.FC = () => {
                 }}
               >
                 <div className="flex items-center gap-2">
-                  <img src={logoUrl || '/logo.svg'} alt="Inspire Academy" className="w-9 h-9 object-contain rounded-md bg-white shrink-0" />
+                  <img src={'/inspire-logo.webp'} alt="Inspire Academy" className="w-9 h-9 object-contain rounded-md bg-white shrink-0" />
                   <span className="text-xs font-bold truncate" style={{ color: colorText, fontFamily: fontHeading }}>
                     {siteName || 'Inspire'}
                   </span>

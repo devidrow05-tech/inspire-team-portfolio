@@ -103,7 +103,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   ];
 
   return (
-    <div className="flex h-screen bg-slate-950 text-slate-100 font-sans overflow-hidden antialiased selection:bg-indigo-500 selection:text-white">
+    <div className="admin-app-shell flex h-[100dvh] min-h-[100dvh] w-full bg-slate-950 text-slate-100 font-sans overflow-hidden antialiased selection:bg-indigo-500 selection:text-white">
       {/* Collapsible Desktop Sidebar - Dedicated Dark Theme */}
       <motion.aside
         animate={{ width: sidebarCollapsed ? 76 : 256 }}

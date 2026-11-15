@@ -57,13 +57,13 @@ export const AdminLoginPage: React.FC = () => {
         className="relative w-full max-w-sm rounded-3xl border border-slate-800 bg-slate-900/90 backdrop-blur-xl p-8 shadow-2xl space-y-6"
       >
         <div className="text-center space-y-3">
-          <motion.div
-            whileHover={{ scale: 1.06, rotate: -4 }}
+          <motion.img
+            src="/logo.svg"
+            alt="Inspire Academy"
+            whileHover={{ scale: 1.04 }}
             transition={EASINGS.spring}
-            className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-500 flex items-center justify-center mx-auto text-white shadow-lg shadow-indigo-500/20"
-          >
-            <Lock className="w-6 h-6" />
-          </motion.div>
+            className="w-28 h-24 object-contain mx-auto"
+          />
           <div>
             <h1 className="text-xl font-bold tracking-tight text-white">{config.site_name}</h1>
             <p className="text-xs text-slate-400 mt-1 font-mono tracking-wider">AUTHORIZED ACCESS ONLY</p>

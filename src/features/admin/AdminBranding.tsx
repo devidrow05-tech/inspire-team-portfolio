@@ -245,7 +245,7 @@ export const AdminBranding: React.FC = () => {
 
               <div className="sm:col-span-2">
                 <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Logo URL or SVG path (Leave empty to use default icon)
+                  Logo URL or SVG path (Leave empty to use official Inspire logo)
                 </label>
                 <div className="flex gap-2">
                   <input
@@ -518,12 +518,7 @@ export const AdminBranding: React.FC = () => {
                 }}
               >
                 <div className="flex items-center gap-2">
-                  <div
-                    className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-[10px] font-black"
-                    style={{ backgroundColor: colorPrimary }}
-                  >
-                    IA
-                  </div>
+                  <img src={logoUrl || '/logo.svg'} alt="Inspire Academy" className="w-9 h-9 object-contain rounded-md bg-white shrink-0" />
                   <span className="text-xs font-bold truncate" style={{ color: colorText, fontFamily: fontHeading }}>
                     {siteName || 'Inspire'}
                   </span>

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { useApp } from '../../context/AppContext';
-import { HeroParticles } from '../../components/ui/HeroParticles';
 import { Hero3DBackground } from '../../components/ui/Hero3DBackground';
 import {
   AnimatedButton,
@@ -12,8 +11,6 @@ import {
   RevealSection,
 } from '../../components/ui/MotionPrimitives';
 import {
-  FloatingTechIcons,
-  FloatingGeometry,
   ParallaxSection,
   SplitHeading,
   ScrambleText,
@@ -62,10 +59,7 @@ export const HomePage: React.FC = () => {
           <div aria-hidden="true" className="absolute -left-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-indigo-500/20 blur-[100px]" />
           <div aria-hidden="true" className="absolute -bottom-48 right-0 h-[32rem] w-[32rem] rounded-full bg-teal-400/15 blur-[110px]" />
           <ParallaxSection speed={0.25} className="pointer-events-none absolute inset-0">
-            <FloatingTechIcons />
-            <HeroParticles />
             <Hero3DBackground />
-            <FloatingGeometry />
           </ParallaxSection>
 
           <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.08fr_.92fr] lg:gap-14 lg:px-8 lg:py-24">

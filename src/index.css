@@ -152,3 +152,26 @@ button, a { overflow-wrap: anywhere; }
   .inspire-premium-banner { padding-top: 1.1rem; padding-bottom: 1.1rem; }
   .inspire-marquee-track { animation-duration: 42s; }
 }
+
+/* Premium split hero */
+.inspire-hero {
+  background:
+    radial-gradient(ellipse at 12% 20%, rgba(99,102,241,.10), transparent 42%),
+    radial-gradient(ellipse at 88% 78%, rgba(20,184,166,.10), transparent 42%),
+    var(--bg);
+}
+.inspire-hero-grid {
+  background-image: linear-gradient(rgba(100,116,139,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(100,116,139,.055) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black, transparent 92%);
+}
+.inspire-hero-showcase {
+  background: linear-gradient(145deg, #111b36 0%, #101b31 52%, #0a3435 100%);
+}
+@media (max-width: 640px) {
+  .inspire-hero-grid { background-size: 32px 32px; }
+  .inspire-hero-showcase { border-radius: 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .inspire-hero * { scroll-behavior: auto; }
+}

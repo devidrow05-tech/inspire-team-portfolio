@@ -13,7 +13,6 @@ import { PageWrapper, CursorGlow } from './components/ui/MotionPrimitives';
 import { SeoManager } from './components/SeoManager';
 import { useSmoothScroll } from './frontend/lib/smoothScroll';
 import {
-  ScrollProgressBar,
   MagneticCursor,
   PageLoader,
 } from './frontend/components/animations';
@@ -411,7 +410,6 @@ export default function App() {
       <AppProvider>
         <AuthProvider>
           <BrowserRouter>
-            <ScrollProgressBar />
             <CursorGlow />
             <MagneticCursor />
             <AnimatePresence>

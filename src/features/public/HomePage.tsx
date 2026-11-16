@@ -55,57 +55,37 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="space-y-20 pb-20">
-      {/* 1A Hero Section - Interactive Particles + 3D Gyroscopic Emblem + Framer Motion */}
+      {/* Premium split-layout INSPIRE hero */}
       {config.hero_visible !== false && (
-        <section className="relative isolate flex min-h-[620px] items-center overflow-hidden border-b border-[var(--border)] bg-gradient-to-br from-indigo-50/80 via-[var(--bg)] to-teal-50/70 dark:from-[#0f172a] dark:via-[#0b1020] dark:to-[#0d2226]">
-          {/* Parallax Ambient Mesh Orbs + Floating Tech Icons */}
-          <ParallaxSection speed={0.35} className="pointer-events-none absolute inset-0">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-indigo-500/15 dark:bg-indigo-500/20 blur-3xl"
-            />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -bottom-24 right-1/4 w-96 h-96 rounded-full bg-teal-400/15 dark:bg-teal-500/15 blur-3xl"
-            />
+        <section className="inspire-hero relative isolate overflow-hidden border-b border-[var(--border)]">
+          <div aria-hidden="true" className="absolute inset-0 inspire-hero-grid opacity-50" />
+          <div aria-hidden="true" className="absolute -left-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-indigo-500/20 blur-[100px]" />
+          <div aria-hidden="true" className="absolute -bottom-48 right-0 h-[32rem] w-[32rem] rounded-full bg-teal-400/15 blur-[110px]" />
+          <ParallaxSection speed={0.25} className="pointer-events-none absolute inset-0">
+            <FloatingTechIcons />
+            <HeroParticles />
+            <Hero3DBackground />
+            <FloatingGeometry />
           </ParallaxSection>
 
-          <FloatingTechIcons />
-
-          {/* Interactive tsParticles Background */}
-          <HeroParticles />
-
-          {/* Three.js 3D Gyroscopic Emblem + Floating Morphing Sphere (Desktop/Tablet) */}
-          <Hero3DBackground />
-          <FloatingGeometry />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28 text-center">
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="show"
-              className="max-w-2xl mx-auto space-y-6"
-            >
-              {/* Animated Pill Badge with Matrix ScrambleText */}
-              <motion.div variants={fadeUp} className="flex justify-center">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-700 dark:text-indigo-300 text-xs font-bold tracking-wide shadow-sm backdrop-blur-sm">
-                  <Sparkles className="w-3.5 h-3.5" />
+          <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.08fr_.92fr] lg:gap-14 lg:px-8 lg:py-24">
+            <motion.div variants={staggerContainer} initial="hidden" animate="show" className="max-w-2xl">
+              <motion.div variants={fadeUp} className="mb-6">
+                <span className="inline-flex items-center gap-2 rounded-full border border-teal-400/30 bg-teal-400/10 px-4 py-2 text-[11px] font-extrabold uppercase tracking-[.2em] text-teal-700 shadow-sm backdrop-blur dark:text-teal-300">
+                  <Sparkles className="h-4 w-4" />
                   <ScrambleText text={config.hero_badge || t('hero.badge')} />
-                  <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" />
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-teal-400" />
                 </span>
               </motion.div>
 
-              {/* Split-Character Animated Hero Headline */}
-              <SplitHeading
-                text={config.hero_heading || t('hero.title')}
-                className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[var(--text)] leading-[1.08]"
-              />
+              <motion.div variants={fadeUp}>
+                <SplitHeading
+                  text={config.hero_heading || t('hero.title')}
+                  className="text-4xl font-black leading-[1.06] tracking-[-.045em] text-[var(--text)] sm:text-5xl lg:text-[4.25rem]"
+                />
+              </motion.div>
 
-              {/* Dynamic Typewriter Specialty Ribbon */}
-              <motion.div
-                variants={fadeUp}
-                className="min-h-[28px] text-sm sm:text-base font-bold"
-              >
+              <motion.div variants={fadeUp} className="mt-6 min-h-[32px] text-base font-extrabold sm:text-lg">
                 <GradientText>
                   {prefersReduced ? (
                     <span>Full-Stack Web Engineering · Native Android · UI/UX Design Systems</span>
@@ -129,70 +109,77 @@ export const HomePage: React.FC = () => {
                 </GradientText>
               </motion.div>
 
-              {/* Subtitle */}
-              <motion.p
-                variants={fadeUp}
-                className="text-sm sm:text-base text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed"
-              >
+              <motion.p variants={fadeUp} className="mt-5 max-w-xl text-sm leading-7 text-[var(--text-muted)] sm:text-base">
                 {config.hero_subheading || t('hero.subtitle')}
               </motion.p>
 
-              {/* Magnetic & Animated CTA Buttons */}
-              <motion.div
-                variants={fadeUp}
-                className="flex flex-wrap items-center justify-center gap-3 pt-2"
-              >
+              <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-3">
                 <Link to={heroPrimaryLink}>
-                  <MagneticButton
-                    type="button"
-                    className="group inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-6 py-3.5 rounded-xl shadow-xl shadow-indigo-600/25 transition-shadow hover:shadow-indigo-600/40"
-                  >
+                  <MagneticButton type="button" className="group inline-flex items-center gap-3 rounded-xl bg-indigo-600 px-6 py-3.5 text-sm font-extrabold text-white shadow-xl shadow-indigo-600/25 transition hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-indigo-600/40">
                     <span>{config.hero_btn1_text || t('nav.team')}</span>
-                    <ArrowRight className="w-4 h-4 rtl:-scale-x-100 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:-scale-x-100" />
                   </MagneticButton>
                 </Link>
                 <Link to={config.hero_btn2_link || '/contact'}>
-                  <AnimatedButton
-                    type="button"
-                    className="inline-flex items-center gap-2 bg-[var(--surface)]/85 hover:bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] font-bold text-sm px-6 py-3.5 rounded-xl backdrop-blur-sm transition"
-                  >
+                  <AnimatedButton type="button" className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 px-6 py-3.5 text-sm font-bold text-[var(--text)] shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-teal-400/60 hover:bg-[var(--surface-2)]">
                     <span>{config.hero_btn2_text || t('hero.ctaContact')}</span>
                   </AnimatedButton>
                 </Link>
               </motion.div>
+
+              <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-semibold text-[var(--text-muted)]">
+                <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-teal-500" /> Practical learning</span>
+                <span className="inline-flex items-center gap-2"><Layers className="h-4 w-4 text-indigo-500" /> Real-world projects</span>
+              </motion.div>
             </motion.div>
 
-            {/* Animated Stat Counters */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="show"
-              className="mt-14 grid grid-cols-3 gap-3 sm:gap-6 max-w-3xl mx-auto pt-8 border-t border-[var(--border)]/80"
-            >
-              <AnimatedCard className="p-4 rounded-2xl bg-[var(--surface)]/80 border border-[var(--border)] backdrop-blur-md shadow-sm">
-                <div className="text-2xl sm:text-3xl font-black text-indigo-600 dark:text-indigo-400">
-                  <AnimatedCounter end={mockPublishedProjects.length} duration={1.4} />
+            <motion.div initial={{opacity:0, y:24, scale:.97}} animate={{opacity:1, y:0, scale:1}} transition={{duration:.8, delay:.15, ease:[.22,1,.36,1]}} className="relative mx-auto w-full max-w-[540px]">
+              <div className="absolute -inset-5 rounded-[2.5rem] bg-gradient-to-br from-indigo-500/20 via-transparent to-teal-400/20 blur-2xl" />
+              <div className="inspire-hero-showcase relative overflow-hidden rounded-[2rem] border border-white/15 p-5 shadow-2xl shadow-slate-950/20 backdrop-blur-xl sm:p-7">
+                <div className="flex items-center justify-between border-b border-white/10 pb-5">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white"><Sparkles className="h-5 w-5" /></div>
+                    <div>
+                      <p className="text-xs font-black tracking-[.2em] text-white">INSPIRE</p>
+                      <p className="mt-0.5 text-[10px] text-slate-300">LEARN · CREATE · INNOVATE</p>
+                    </div>
+                  </div>
+                  <span className="rounded-full border border-teal-300/30 bg-teal-300/10 px-3 py-1 text-[10px] font-bold text-teal-200">CREATIVE LAB</span>
                 </div>
-                <div className="text-[11px] sm:text-xs text-[var(--text-muted)] font-semibold mt-1">
-                  Projects Published
+
+                <div className="py-8">
+                  <p className="text-[10px] font-bold uppercase tracking-[.28em] text-teal-200">Your next chapter starts here</p>
+                  <h3 className="mt-3 max-w-sm text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">Turn your ideas into <span className="text-teal-300">real-world skills.</span></h3>
+                  <p className="mt-3 max-w-sm text-xs leading-6 text-slate-300 sm:text-sm">Explore technology, build meaningful projects and grow with a team that inspires progress.</p>
                 </div>
-              </AnimatedCard>
-              <AnimatedCard className="p-4 rounded-2xl bg-[var(--surface)]/80 border border-[var(--border)] backdrop-blur-md shadow-sm">
-                <div className="text-2xl sm:text-3xl font-black text-teal-600 dark:text-teal-400">
-                  <AnimatedCounter end={mockCategories.length} duration={1.4} />
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl border border-white/10 bg-white/[.07] p-4">
+                    <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-400/20 text-indigo-200"><Layers className="h-4 w-4" /></div>
+                    <p className="text-xl font-black text-white"><AnimatedCounter end={mockPublishedProjects.length} duration={1.4} /></p>
+                    <p className="mt-1 text-[10px] font-semibold text-slate-300">Featured projects</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/[.07] p-4">
+                    <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-teal-400/20 text-teal-200"><ShieldCheck className="h-4 w-4" /></div>
+                    <p className="text-xl font-black text-white"><AnimatedCounter end={mockMemberProfiles.length} duration={1.4} /></p>
+                    <p className="mt-1 text-[10px] font-semibold text-slate-300">Creative minds</p>
+                  </div>
                 </div>
-                <div className="text-[11px] sm:text-xs text-[var(--text-muted)] font-semibold mt-1">
-                  Categories Added
+
+                <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-gradient-to-r from-indigo-500/20 to-teal-400/15 p-4">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[.16em] text-teal-200">The INSPIRE approach</p>
+                    <p className="mt-1 text-sm font-bold text-white">Learn by building.</p>
+                  </div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-900"><ArrowRight className="h-4 w-4" /></div>
                 </div>
-              </AnimatedCard>
-              <AnimatedCard className="p-4 rounded-2xl bg-[var(--surface)]/80 border border-[var(--border)] backdrop-blur-md shadow-sm">
-                <div className="text-2xl sm:text-3xl font-black text-indigo-600 dark:text-indigo-400">
-                  <AnimatedCounter end={mockMemberProfiles.length} duration={1.4} />
-                </div>
-                <div className="text-[11px] sm:text-xs text-[var(--text-muted)] font-semibold mt-1">
-                  Team Members
-                </div>
-              </AnimatedCard>
+                <div className="pointer-events-none absolute -right-8 top-24 h-24 w-24 rounded-full border border-teal-200/20" />
+                <div className="pointer-events-none absolute -right-4 top-28 h-16 w-16 rounded-full border border-indigo-200/20" />
+              </div>
+              <motion.div animate={prefersReduced ? undefined : {y:[0,-9,0]}} transition={{duration:5,repeat:Infinity,ease:"easeInOut"}} className="absolute -bottom-5 -left-3 hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-xl sm:block">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Built for growth</p>
+                <p className="mt-1 text-xs font-extrabold text-[var(--text)]">Creativity meets technology</p>
+              </motion.div>
             </motion.div>
           </div>
         </section>

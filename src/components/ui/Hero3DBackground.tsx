@@ -86,7 +86,7 @@ export const Hero3DBackground: React.FC = () => {
     // 1. Primary Core Polyhedron
     const coreGeo = new THREE.IcosahedronGeometry(0.92, 0);
     const coreMat = new THREE.MeshPhysicalMaterial({
-      color: 0x4f46e5,
+      color: 0x172554,
       metalness: 0.72,
       roughness: 0.22,
       clearcoat: 1.0,
@@ -100,10 +100,10 @@ export const Hero3DBackground: React.FC = () => {
     // 2. Wireframe Accent Lattice
     const latticeGeo = new THREE.IcosahedronGeometry(1.12, 1);
     const latticeMat = new THREE.MeshStandardMaterial({
-      color: 0x818cf8,
+      color: 0x1e3a8a,
       wireframe: true,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.42,
       metalness: 0.4,
       roughness: 0.5,
     });
@@ -115,7 +115,7 @@ export const Hero3DBackground: React.FC = () => {
     // 3. Inner Gimbal Ring
     const innerRingGeo = new THREE.TorusGeometry(1.42, 0.045, 16, 64);
     const innerRingMat = new THREE.MeshStandardMaterial({
-      color: 0x14b8a6,
+      color: 0x0f766e,
       metalness: 0.88,
       roughness: 0.18,
     });
@@ -128,7 +128,7 @@ export const Hero3DBackground: React.FC = () => {
     // 4. Outer Orbital Ring
     const outerRingGeo = new THREE.TorusGeometry(1.8, 0.032, 16, 72);
     const outerRingMat = new THREE.MeshStandardMaterial({
-      color: 0x6366f1,
+      color: 0x312e81,
       metalness: 0.65,
       roughness: 0.35,
     });
@@ -141,9 +141,9 @@ export const Hero3DBackground: React.FC = () => {
     // 5. Three Orbital Accent Nodes
     const nodeGeo = new THREE.SphereGeometry(0.11, 16, 16);
     const nodeMat = new THREE.MeshStandardMaterial({
-      color: 0x2dd4bf,
-      emissive: 0x0d9488,
-      emissiveIntensity: 0.5,
+      color: 0x0f766e,
+      emissive: 0x064e3b,
+      emissiveIntensity: 0.35,
       metalness: 0.3,
       roughness: 0.2,
     });
@@ -260,7 +260,7 @@ export const Hero3DBackground: React.FC = () => {
       ref={mountRef}
       data-testid="hero-3d-canvas"
       aria-hidden="true"
-      className="pointer-events-none absolute right-2 lg:right-10 top-8 w-56 h-56 lg:w-72 lg:h-72 opacity-55 dark:opacity-75 z-0 hidden sm:block"
+      className="pointer-events-none absolute left-2 lg:left-10 top-8 w-56 h-56 lg:w-72 lg:h-72 opacity-85 dark:opacity-90 z-0 hidden sm:block"
     />
   );
 };

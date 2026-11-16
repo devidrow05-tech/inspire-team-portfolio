@@ -57,7 +57,7 @@ export const HomePage: React.FC = () => {
     <div className="space-y-20 pb-20">
       {/* 1A Hero Section - Interactive Particles + 3D Gyroscopic Emblem + Framer Motion */}
       {config.hero_visible !== false && (
-        <section className="relative overflow-hidden border-b border-[var(--border)] bg-gradient-to-br from-indigo-50/80 via-[var(--bg)] to-teal-50/70 dark:from-[#0f172a] dark:via-[#0b1020] dark:to-[#0d2226]">
+        <section className="relative isolate flex min-h-[620px] items-center overflow-hidden border-b border-[var(--border)] bg-gradient-to-br from-indigo-50/80 via-[var(--bg)] to-teal-50/70 dark:from-[#0f172a] dark:via-[#0b1020] dark:to-[#0d2226]">
           {/* Parallax Ambient Mesh Orbs + Floating Tech Icons */}
           <ParallaxSection speed={0.35} className="pointer-events-none absolute inset-0">
             <div
@@ -197,6 +197,28 @@ export const HomePage: React.FC = () => {
           </div>
         </section>
       )}
+
+      {/* Premium animated academy banner */}
+      <section aria-label="INSPIRE academy highlights" className="inspire-premium-banner relative isolate overflow-hidden border-y border-white/10 py-5 sm:py-6">
+        <div aria-hidden="true" className="pointer-events-none absolute -left-16 -top-24 h-64 w-64 rounded-full bg-indigo-500/30 blur-3xl" />
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 right-0 h-64 w-64 rounded-full bg-teal-400/25 blur-3xl" />
+        <div className="relative mx-auto mb-3 flex max-w-7xl items-center justify-center gap-2 px-4 text-[10px] font-extrabold uppercase tracking-[0.28em] text-teal-200/90 sm:text-xs">
+          <Sparkles className="h-3.5 w-3.5" />
+          <span>Ideas into impact</span>
+          <span className="h-px w-8 bg-teal-300/50" />
+          <span className="text-white/60">The INSPIRE standard</span>
+        </div>
+        <div className="inspire-marquee overflow-hidden" role="presentation">
+          <div className="inspire-marquee-track flex w-max items-center gap-5 whitespace-nowrap px-3 sm:gap-8">
+            {['LEARN WITH PURPOSE', 'BUILD REAL PROJECTS', 'DESIGN THE FUTURE', 'GROW TOGETHER', 'LEARN WITH PURPOSE', 'BUILD REAL PROJECTS', 'DESIGN THE FUTURE', 'GROW TOGETHER'].map((item, index) => (
+              <React.Fragment key={index}>
+                <span className="text-sm font-black tracking-[0.16em] text-white sm:text-base">{item}</span>
+                <span className="h-2 w-2 rotate-45 rounded-[2px] bg-teal-300 shadow-[0_0_18px_rgba(94,234,212,0.8)]" />
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Featured Projects Reel with 3D Depth Cards */}
       <MaskReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

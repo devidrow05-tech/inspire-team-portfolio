@@ -82,10 +82,10 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
       {/* Scroll-Aware Sticky Navigation Header */}
       <header
-        className={`sticky top-0 z-40 border-b transition-all duration-300 ${
+        className={`sticky top-0 z-40 border-b-0 transition-all duration-300 ${
           isScrolled
-            ? 'backdrop-blur-xl border-indigo-500/20 shadow-lg shadow-slate-900/5 dark:shadow-slate-950/50'
-            : 'backdrop-blur-md border-[var(--border)]'
+            ? 'backdrop-blur-xl shadow-lg shadow-slate-900/5 dark:shadow-slate-950/50'
+            : 'backdrop-blur-md'
         }`}
         style={{
           backgroundColor:

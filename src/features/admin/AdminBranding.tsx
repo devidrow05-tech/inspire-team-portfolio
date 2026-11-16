@@ -520,7 +520,7 @@ export const AdminBranding: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <img src={'/logo.svg'} alt="Inspire Academy" className="w-9 h-9 object-contain rounded-md bg-white shrink-0" />
                   <span className="text-xs font-bold truncate" style={{ color: colorText, fontFamily: fontHeading }}>
-                    {siteName || 'Inspire'}
+                    {(siteName || 'INSPIRE').toUpperCase()}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-[10px] opacity-75">
@@ -591,7 +591,7 @@ export const AdminBranding: React.FC = () => {
                 className="px-4 py-3 text-center text-[10px] text-slate-300"
                 style={{ backgroundColor: colorFooterBg || '#0f172a' }}
               >
-                © 2026 {siteName || 'Inspire'}. All rights reserved.
+                © 2026 {(siteName || 'INSPIRE').toUpperCase()}. All rights reserved.
               </div>
             </div>
 

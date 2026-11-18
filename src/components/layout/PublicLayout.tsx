@@ -68,10 +68,10 @@ export const PublicLayout: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
     <div
-      className="min-h-screen flex flex-col transition-colors duration-200 relative"
+      className="public-site min-h-screen flex flex-col transition-colors duration-200 relative"
       style={{
-        backgroundColor: config.color_bg && theme === 'light' ? config.color_bg : undefined,
-        color: config.color_text && theme === 'light' ? config.color_text : undefined,
+        backgroundColor: 'var(--bg)',
+        color: 'var(--text)',
       }}
     >
       {/* 

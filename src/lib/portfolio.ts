@@ -30,6 +30,16 @@ export interface PortfolioProject {
   github_url: string | null;
   is_published: boolean;
   sort_order: number;
+  tagline?: string | null;
+  project_objectives?: string | null;
+  target_audience?: string | null;
+  key_features?: { title: string; description: string; image_url?: string | null }[];
+  usage_steps?: { title: string; description: string }[];
+  gallery_urls?: string[];
+  project_challenges?: string | null;
+  project_solution?: string | null;
+  project_outcomes?: string | null;
+  member_contribution?: string | null;
 }
 const baseUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined) || '';
 const publishableKey = (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) || '';
@@ -86,6 +96,12 @@ export const portfolioApi = {
   getProject: async (slug: string) => {
     const rows = await request<PortfolioProject[]>('portfolio_projects', `?select=*&slug=eq.${encodeURIComponent(slug)}&limit=1`);
     return rows[0] || null;
+  },
+  updateProject: async (id: string, payload: Partial<PortfolioProject>) => {
+    const rows = await request<PortfolioProject[]>('portfolio_projects', `?id=eq.${encodeURIComponent(id)}`, {
+      method: 'PATCH', headers: { Prefer: 'return=representation' }, body: JSON.stringify(payload),
+    });
+    return rows[0];
   },
   createProject: async (payload: Partial<PortfolioProject>) => {
     const rows = await request<PortfolioProject[]>('portfolio_projects', '', {

@@ -86,11 +86,13 @@ export const Hero3DBackground: React.FC = () => {
     // 1. Primary Core Polyhedron
     const coreGeo = new THREE.IcosahedronGeometry(0.92, 0);
     const coreMat = new THREE.MeshPhysicalMaterial({
-      color: 0x172554,
-      metalness: 0.72,
-      roughness: 0.22,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.12,
+      color: 0xdbeafe,
+      metalness: 0.18,
+      roughness: 0.42,
+      transparent: true,
+      opacity: 0.72,
+      clearcoat: 0.45,
+      clearcoatRoughness: 0.28,
     });
     const coreMesh = new THREE.Mesh(coreGeo, coreMat);
     heroGroup.add(coreMesh);
@@ -100,12 +102,12 @@ export const Hero3DBackground: React.FC = () => {
     // 2. Wireframe Accent Lattice
     const latticeGeo = new THREE.IcosahedronGeometry(1.12, 1);
     const latticeMat = new THREE.MeshStandardMaterial({
-      color: 0x1e3a8a,
+      color: 0xa5b4fc,
       wireframe: true,
       transparent: true,
-      opacity: 0.42,
-      metalness: 0.4,
-      roughness: 0.5,
+      opacity: 0.2,
+      metalness: 0.12,
+      roughness: 0.7,
     });
     const latticeMesh = new THREE.Mesh(latticeGeo, latticeMat);
     heroGroup.add(latticeMesh);
@@ -115,9 +117,9 @@ export const Hero3DBackground: React.FC = () => {
     // 3. Inner Gimbal Ring
     const innerRingGeo = new THREE.TorusGeometry(1.42, 0.045, 16, 64);
     const innerRingMat = new THREE.MeshStandardMaterial({
-      color: 0x0f766e,
-      metalness: 0.88,
-      roughness: 0.18,
+      color: 0x99f6e4,
+      metalness: 0.22,
+      roughness: 0.42,
     });
     const innerRing = new THREE.Mesh(innerRingGeo, innerRingMat);
     innerRing.rotation.x = Math.PI / 3;
@@ -128,9 +130,9 @@ export const Hero3DBackground: React.FC = () => {
     // 4. Outer Orbital Ring
     const outerRingGeo = new THREE.TorusGeometry(1.8, 0.032, 16, 72);
     const outerRingMat = new THREE.MeshStandardMaterial({
-      color: 0x312e81,
-      metalness: 0.65,
-      roughness: 0.35,
+      color: 0xc4b5fd,
+      metalness: 0.18,
+      roughness: 0.5,
     });
     const outerRing = new THREE.Mesh(outerRingGeo, outerRingMat);
     outerRing.rotation.y = Math.PI / 4;
@@ -141,11 +143,11 @@ export const Hero3DBackground: React.FC = () => {
     // 5. Three Orbital Accent Nodes
     const nodeGeo = new THREE.SphereGeometry(0.11, 16, 16);
     const nodeMat = new THREE.MeshStandardMaterial({
-      color: 0x0f766e,
-      emissive: 0x064e3b,
-      emissiveIntensity: 0.35,
-      metalness: 0.3,
-      roughness: 0.2,
+      color: 0xccfbf1,
+      emissive: 0x99f6e4,
+      emissiveIntensity: 0.22,
+      metalness: 0.12,
+      roughness: 0.38,
     });
     geometries.push(nodeGeo);
     materials.push(nodeMat);
@@ -260,7 +262,7 @@ export const Hero3DBackground: React.FC = () => {
       ref={mountRef}
       data-testid="hero-3d-canvas"
       aria-hidden="true"
-      className="pointer-events-none absolute left-2 lg:left-10 top-8 w-56 h-56 lg:w-72 lg:h-72 opacity-85 dark:opacity-90 z-0 hidden sm:block"
+      className="pointer-events-none absolute left-2 lg:left-10 top-8 w-56 h-56 lg:w-72 lg:h-72 opacity-40 dark:opacity-50 z-0 hidden sm:block"
     />
   );
 };

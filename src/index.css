@@ -213,3 +213,26 @@ button, a { overflow-wrap: anywhere; }
     color: #cbd5e1 !important;
   }
 }
+
+
+/* Strengthen public-site typography in light mode while retaining light text on dark/colored panels. */
+html:not(.dark) .public-site {
+  --text: #0b1220;
+  --text-muted: #334155;
+}
+html:not(.dark) .public-site :is(h1,h2,h3,h4,h5,h6,p,li,label,span,small,strong,em,a,button) {
+  text-shadow: none;
+}
+html:not(.dark) .public-site :is(.text-gray-400,.text-slate-400,.text-zinc-400,.text-neutral-400) {
+  color: #334155 !important;
+}
+html:not(.dark) .public-site :is(.text-gray-500,.text-slate-500,.text-zinc-500,.text-neutral-500) {
+  color: #1e293b !important;
+}
+html:not(.dark) .public-site :is(.text-gray-600,.text-slate-600,.text-zinc-600,.text-neutral-600) {
+  color: #0f172a !important;
+}
+/* Keep intentional white/light typography legible on dark hero banners and strong CTA surfaces. */
+html:not(.dark) .public-site :is(.inspire-hero-showcase,.inspire-premium-banner,.bg-slate-950,.bg-slate-900,.bg-indigo-950,.bg-indigo-900,.bg-teal-950,.bg-gradient-to-r) :is(.text-white,.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-gray-100,.text-gray-200,.text-gray-300) {
+  color: inherit;
+}

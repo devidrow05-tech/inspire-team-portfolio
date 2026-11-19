@@ -236,3 +236,17 @@ html:not(.dark) .public-site :is(.text-gray-600,.text-slate-600,.text-zinc-600,.
 html:not(.dark) .public-site :is(.inspire-hero-showcase,.inspire-premium-banner,.bg-slate-950,.bg-slate-900,.bg-indigo-950,.bg-indigo-900,.bg-teal-950,.bg-gradient-to-r) :is(.text-white,.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-gray-100,.text-gray-200,.text-gray-300) {
   color: inherit;
 }
+
+
+/* Animated display text: use a solid dark ink color for reliable mobile contrast. */
+@media (max-width: 767px) {
+  html:not(.dark) .public-site :is(.animate-gradient-flow, .animate-text-glow, .bg-clip-text) {
+    color: #0b1220 !important;
+    background-image: none !important;
+    -webkit-text-fill-color: #0b1220 !important;
+    text-shadow: none !important;
+  }
+  html:not(.dark) .public-site :is(.animate-gradient-flow, .animate-text-glow) {
+    animation: none !important;
+  }
+}

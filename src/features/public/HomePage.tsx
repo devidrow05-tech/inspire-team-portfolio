@@ -211,6 +211,23 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* Branded projects banner — site branding only, no member artwork */}
+      <section aria-label="Explore INSPIRE projects" className="inspire-section-banner inspire-projects-banner relative isolate mx-auto w-full max-w-7xl overflow-hidden rounded-[1.75rem] border border-indigo-400/25 px-6 py-8 sm:px-10 sm:py-10">
+        <div aria-hidden="true" className="inspire-banner-orbit inspire-orbit-one" />
+        <div aria-hidden="true" className="inspire-banner-orbit inspire-orbit-two" />
+        <div className="relative z-10 grid items-center gap-7 md:grid-cols-[1fr_auto]">
+          <div className="max-w-2xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.22em] text-cyan-200"><Sparkles className="h-3.5 w-3.5" /> Selected work · Real outcomes</span>
+            <h2 className="mt-4 text-2xl font-black tracking-tight text-white sm:text-3xl lg:text-4xl">Ideas engineered into <span className="inspire-banner-gradient">digital experiences.</span></h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">A closer look at the products, platforms and creative solutions shaped by the INSPIRE team.</p>
+          </div>
+          <Link to="/projects" className="group inline-flex w-fit items-center gap-3 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white shadow-lg backdrop-blur transition hover:-translate-y-1 hover:bg-white/15">
+            Discover our work <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+        <div aria-hidden="true" className="inspire-banner-code hidden sm:block"><span>01</span><span>DESIGN</span><span>BUILD</span><span>LAUNCH</span></div>
+      </section>
+
       {/* Featured Projects Reel with 3D Depth Cards */}
       <MaskReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
@@ -289,7 +306,7 @@ export const HomePage: React.FC = () => {
       {config.about_preview_visible !== false && (
         <ParallaxSection speed={0.2}>
           <MaskReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="p-8 sm:p-12 rounded-3xl border border-[var(--border)] bg-[var(--surface)] flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm">
+            <div className="inspire-section-banner inspire-about-banner relative isolate overflow-hidden p-8 sm:p-12 rounded-3xl border flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
               <div className="space-y-4 max-w-2xl">
                 <span className="text-xs font-bold tracking-wider uppercase">
                   <GradientText>ACADEMY OVERVIEW</GradientText>
@@ -315,7 +332,7 @@ export const HomePage: React.FC = () => {
 
               <AnimatedCard
                 floatDistance={-6}
-                className="w-full md:w-80 h-48 rounded-2xl bg-gradient-to-tr from-indigo-600 to-teal-500 text-white p-6 flex flex-col justify-between shrink-0 shadow-lg"
+                className="inspire-about-stamp w-full md:w-80 h-48 rounded-2xl text-white p-6 flex flex-col justify-between shrink-0 shadow-lg"
               >
                 <ShieldCheck className="w-10 h-10 text-white/90" />
                 <div>
@@ -463,7 +480,7 @@ export const HomePage: React.FC = () => {
 
       {/* Bottom CTA Banner */}
       {config.cta_visible !== false && (
-        <MaskReveal className="max-w-5xl mx-auto px-4 text-center space-y-4">
+        <MaskReveal className="inspire-section-banner inspire-contact-banner relative isolate max-w-6xl mx-auto overflow-hidden rounded-[1.75rem] border border-indigo-400/25 px-6 py-10 sm:px-10 sm:py-12 text-center space-y-4">
           <WordReveal
             text={config.cta_heading || t('sec.ctaTitle')}
             as="h3"

@@ -461,34 +461,6 @@ export const HomePage: React.FC = () => {
         </motion.div>
       </MaskReveal>
 
-      {/* Assignment Showcase Teaser */}
-      {false && (
-        <RevealSection className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl border border-[var(--border)] bg-gradient-to-r from-indigo-900/90 via-slate-900 to-teal-900/90 text-white p-8 sm:p-12 shadow-xl relative overflow-hidden">
-            <div className="max-w-2xl space-y-4 relative z-10">
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/30">
-                Academy Showcase
-              </span>
-              <h3 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-                INSPIRE — Build skills that move you forward
-              </h3>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                Discover practical learning, creative teamwork and real-world project experiences.
-              </p>
-              <div className="pt-2">
-                <Link
-                  to='/team'
-                  className="inline-flex items-center gap-2 bg-white text-slate-900 font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-slate-100 transition"
-                >
-                  <span>Explore Case Study</span>
-                  <ArrowRight className="w-3.5 h-3.5 rtl:-scale-x-100" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </RevealSection>
-      )}
-
       {/* Bottom CTA Banner */}
       {config.cta_visible !== false && (
         <MaskReveal className="max-w-5xl mx-auto px-4 text-center space-y-4">

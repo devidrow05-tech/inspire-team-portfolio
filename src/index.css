@@ -279,3 +279,71 @@ html.dark .public-site :is(.bg-white,.bg-gray-50,.bg-slate-50,.bg-zinc-50,.bg-ne
   color: #0b1220 !important;
   -webkit-text-fill-color: #0b1220 !important;
 }
+
+
+/* INSPIRE visual refresh: richer hero atmosphere, polished motion and responsive depth. */
+.public-site .inspire-hero {
+  background:
+    radial-gradient(ellipse at 12% 18%, rgba(99,102,241,.13), transparent 38%),
+    radial-gradient(ellipse at 88% 78%, rgba(20,184,166,.12), transparent 34%),
+    linear-gradient(135deg, var(--surface) 0%, var(--background) 55%, var(--surface-2) 100%);
+}
+.public-site .inspire-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .32;
+  background-image: radial-gradient(rgba(99,102,241,.38) .8px, transparent .8px);
+  background-size: 26px 26px;
+  mask-image: linear-gradient(110deg, black, transparent 72%);
+  animation: inspire-drift 28s linear infinite;
+}
+.public-site .inspire-hero-showcase {
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(99,102,241,.38), transparent 48%),
+    radial-gradient(ellipse at 100% 100%, rgba(20,184,166,.25), transparent 48%),
+    linear-gradient(145deg, #111827 0%, #172554 54%, #0f3437 100%);
+  box-shadow: 0 28px 80px rgba(15,23,42,.22), inset 0 1px 0 rgba(255,255,255,.12);
+  transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s ease;
+}
+.public-site .inspire-hero-showcase:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 36px 90px rgba(15,23,42,.28), inset 0 1px 0 rgba(255,255,255,.16);
+}
+.public-site .inspire-hero-grid {
+  background-image: linear-gradient(rgba(99,102,241,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,.055) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black, transparent 90%);
+}
+.public-site .inspire-premium-banner {
+  background: linear-gradient(105deg, #111827 0%, #1e1b4b 48%, #0f3738 100%);
+}
+.public-site .inspire-marquee-track { animation: inspire-marquee 34s linear infinite; }
+.public-site .inspire-marquee:hover .inspire-marquee-track { animation-play-state: paused; }
+.public-site main a:not([class*="bg-"]) { transition: color .2s ease, transform .2s ease; }
+.public-site main .rounded-2xl.border,
+.public-site main .rounded-3xl.border {
+  transition: border-color .25s ease, box-shadow .3s ease, transform .3s ease;
+}
+.public-site main .rounded-2xl.border:hover,
+.public-site main .rounded-3xl.border:hover {
+  border-color: rgba(99,102,241,.32);
+  box-shadow: 0 16px 42px rgba(15,23,42,.075);
+}
+@keyframes inspire-drift { to { background-position: 104px 78px; } }
+@keyframes inspire-marquee { to { transform: translateX(-50%); } }
+@media (max-width: 767px) {
+  .public-site .inspire-hero-showcase { border-radius: 1.35rem; padding: 1rem; }
+  .public-site .inspire-hero { background-position: center; }
+  .public-site .inspire-hero::after { opacity: .16; background-size: 22px 22px; }
+  .public-site .inspire-marquee-track { animation-duration: 44s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-site .inspire-hero::after,
+  .public-site .inspire-marquee-track { animation: none !important; }
+  .public-site .inspire-hero-showcase,
+  .public-site main .rounded-2xl.border,
+  .public-site main .rounded-3xl.border { transition: none !important; }
+}

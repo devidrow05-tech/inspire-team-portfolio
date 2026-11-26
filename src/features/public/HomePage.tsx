@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
@@ -8,7 +8,6 @@ import {
   AnimatedButton,
   AnimatedCard,
   AnimatedCounter,
-  RevealSection,
 } from '../../components/ui/MotionPrimitives';
 import {
   ParallaxSection,
@@ -18,7 +17,6 @@ import {
   GradientText,
   MagneticButton,
   MaskReveal,
-  HorizontalProjectsReel,
   ServiceCard,
 } from '../../frontend/components/animations';
 import {
@@ -27,12 +25,8 @@ import {
   EASINGS,
   useDeviceMotionPrefs,
 } from '../../frontend/lib/animations';
-import {
-  mockPublishedProjects,
-  mockMemberProfiles,
-  mockCategories,
-  mockShowcases,
-} from '../../services/demo/data';
+import { mockCategories } from '../../services/demo/data';
+import { portfolioApi, type TeamMember, type PortfolioProject } from '../../lib/portfolio';
 import {
   Sparkles,
   ArrowRight,
@@ -45,6 +39,22 @@ import {
 export const HomePage: React.FC = () => {
   const { config, t, lang } = useApp();
   const { prefersReduced } = useDeviceMotionPrefs();
+  const [publishedProjects, setPublishedProjects] = useState<PortfolioProject[]>([]);
+  const [publishedMembers, setPublishedMembers] = useState<TeamMember[]>([]);
+  const [portfolioLoading, setPortfolioLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    Promise.all([portfolioApi.listMembers(), portfolioApi.listProjects()])
+      .then(([members, projects]) => {
+        if (!active) return;
+        setPublishedMembers(members.filter((member) => member.is_published));
+        setPublishedProjects(projects.filter((project) => project.is_published));
+      })
+      .catch((error) => console.error('Unable to load homepage portfolio content:', error))
+      .finally(() => { if (active) setPortfolioLoading(false); });
+    return () => { active = false; };
+  }, []);
   const heroPrimaryLink =
     config.hero_btn1_link && config.hero_btn1_link !== '/projects'
       ? config.hero_btn1_link
@@ -150,12 +160,12 @@ export const HomePage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-2xl border border-white/10 bg-white/[.07] p-4">
                     <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-400/20 text-indigo-200"><Layers className="h-4 w-4" /></div>
-                    <p className="text-xl font-black text-white"><AnimatedCounter end={mockPublishedProjects.length} duration={1.4} /></p>
+                    <p className="text-xl font-black text-white"><AnimatedCounter end={publishedProjects.length} duration={1.4} /></p>
                     <p className="mt-1 text-[10px] font-semibold text-slate-300">Featured projects</p>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-white/[.07] p-4">
                     <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-teal-400/20 text-teal-200"><ShieldCheck className="h-4 w-4" /></div>
-                    <p className="text-xl font-black text-white"><AnimatedCounter end={mockMemberProfiles.length} duration={1.4} /></p>
+                    <p className="text-xl font-black text-white"><AnimatedCounter end={publishedMembers.length} duration={1.4} /></p>
                     <p className="mt-1 text-[10px] font-semibold text-slate-300">Creative minds</p>
                   </div>
                 </div>
@@ -222,7 +232,36 @@ export const HomePage: React.FC = () => {
           </Link>
         </div>
 
-        <HorizontalProjectsReel projects={mockPublishedProjects} lang={lang} />
+        {portfolioLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" aria-label="Loading featured projects">
+            {[1, 2, 3].map((item) => <div key={item} className="h-64 rounded-2xl bg-[var(--surface-2)] animate-pulse" />)}
+          </div>
+        ) : publishedProjects.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {publishedProjects.slice(0, 6).map((project) => (
+              <motion.div key={project.id} variants={fadeUp} whileHover={prefersReduced ? undefined : { y: -6 }}>
+                <Link to={'/projects/' + project.slug} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm transition hover:border-indigo-400/60 hover:shadow-xl">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-indigo-100 via-slate-100 to-teal-100 dark:from-indigo-950 dark:via-slate-900 dark:to-teal-950">
+                    {project.cover_url ? <img src={project.cover_url} alt={project.title} loading="lazy" decoding="async" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><Layers className="h-12 w-12 text-indigo-400/70" /></div>}
+                    <span className="absolute left-3 top-3 rounded-full border border-white/30 bg-slate-950/70 px-3 py-1 text-[10px] font-bold text-white backdrop-blur">{project.category}</span>
+                  </div>
+                  <div className="flex flex-1 flex-col p-5">
+                    <h3 className="text-base font-extrabold text-[var(--text)] group-hover:text-indigo-600 dark:group-hover:text-indigo-400">{project.title}</h3>
+                    <p className="mt-2 line-clamp-3 text-xs leading-6 text-[var(--text-muted)]">{project.short_description}</p>
+                    <div className="mt-auto flex flex-wrap gap-1.5 pt-4">{project.technologies.slice(0, 3).map((technology) => <span key={technology} className="rounded-md bg-indigo-50 px-2 py-1 text-[10px] font-semibold text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300">{technology}</span>)}</div>
+                    <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-indigo-600 dark:text-indigo-400">Explore project <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" /></span>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)] px-6 py-10 text-center">
+            <Layers className="mx-auto h-8 w-8 text-[var(--text-muted)]" />
+            <p className="mt-3 text-sm font-semibold text-[var(--text)]">New projects are on the way</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">Our published work will appear here as soon as it is ready.</p>
+          </div>
+        )}
       </MaskReveal>
 
       {/* Services / Pillars Section - Morphing Gradient ServiceCards */}
@@ -368,12 +407,12 @@ export const HomePage: React.FC = () => {
           viewport={{ once: true, amount: 0.12 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6"
         >
-          {mockMemberProfiles.length === 0 && (
+          {!portfolioLoading && publishedMembers.length === 0 && (
             <p className="col-span-full py-8 text-center text-sm text-[var(--text-muted)] rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)]">
-              Team profiles will appear here when added.
+              Our team profiles will appear here soon.
             </p>
           )}
-          {mockMemberProfiles.map((member) => (
+          {publishedMembers.slice(0, 3).map((member) => (
             <motion.div key={member.id} variants={fadeUp}>
               <AnimatedCard className="h-full">
                 <Link
@@ -390,13 +429,13 @@ export const HomePage: React.FC = () => {
                           {member.display_name}
                         </h3>
                         <p className="text-xs text-[var(--text-muted)]">
-                          {lang === 'ur' && member.title_ur ? member.title_ur : member.title}
+                          {member.title}
                         </p>
                       </div>
                     </div>
 
                     <p className="text-xs text-[var(--text-muted)] line-clamp-3 leading-relaxed">
-                      {lang === 'ur' && member.bio_ur ? member.bio_ur : member.bio}
+                      {member.bio}
                     </p>
 
                     <div className="flex flex-wrap gap-1.5">
@@ -423,7 +462,7 @@ export const HomePage: React.FC = () => {
       </MaskReveal>
 
       {/* Assignment Showcase Teaser */}
-      {mockShowcases.length > 0 && (
+      {false && (
         <RevealSection className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-3xl border border-[var(--border)] bg-gradient-to-r from-indigo-900/90 via-slate-900 to-teal-900/90 text-white p-8 sm:p-12 shadow-xl relative overflow-hidden">
             <div className="max-w-2xl space-y-4 relative z-10">
@@ -431,14 +470,14 @@ export const HomePage: React.FC = () => {
                 Academy Showcase
               </span>
               <h3 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-                {mockShowcases[0].title}
+                INSPIRE — Build skills that move you forward
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed">
-                {mockShowcases[0].summary}
+                Discover practical learning, creative teamwork and real-world project experiences.
               </p>
               <div className="pt-2">
                 <Link
-                  to={`/projects/${mockShowcases[0].linked_project_slug}`}
+                  to='/team'
                   className="inline-flex items-center gap-2 bg-white text-slate-900 font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-slate-100 transition"
                 >
                   <span>Explore Case Study</span>
